@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2020, wandalong (hnxyhcwdl1003@163.com).
+ * Copyright (c) 2010-2020, vindell (https://github.com/vindell).
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -14,16 +14,6 @@
  * the License.
  */
 package org.apache.shiro.biz.cache.redis;
-
-/**
- * *******************************************************************
- * @className	： RedisCache
- * @description	： TODO(描述这个类的作用)
- * @author 		： <a href="mailto:hnxyhcwdl1003@163.com">wandalong</a>
- * @date		： Oct 29, 2016 10:20:53 PM
- * @version 	V1.0 
- * *******************************************************************
- */
 
 import java.util.ArrayList;
 import java.util.Collection;

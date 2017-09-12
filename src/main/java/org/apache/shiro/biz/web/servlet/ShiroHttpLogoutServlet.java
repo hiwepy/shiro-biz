@@ -16,13 +16,11 @@ import org.apache.shiro.util.StringUtils;
 
 /**
  * 
- * *******************************************************************
- * @className	： LogoutServlet
+ * @className	： ShiroHttpLogoutServlet
  * @description	： TODO(描述这个类的作用)
- * @author 		： <a href="mailto:hnxyhcwdl1003@163.com">wandalong</a>
- * @date		： Sep 24, 2016 11:11:00 PM
- * @version 	V1.0 
- * *******************************************************************
+ * @author 		： <a href="https://github.com/vindell">vindell</a>
+ * @date		： 2017年9月12日 下午10:49:13
+ * @version 	V1.0
  */
 @SuppressWarnings("serial")
 @WebServlet(name = "logoutServlet", urlPatterns = "/logout")

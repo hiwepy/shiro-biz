@@ -2,13 +2,11 @@ package org.apache.shiro.biz.web.servlet.http;
 
 /**
  * 
- *--------------------------------------------------------------------------------
  * @className	： HttpStatus
  * @description	：  标准Http状态码+自定义Http状态码
- * @author 		： wandalong
- * @date		： Feb 2, 2016 2:53:40 PM
- * @version 	V1.0 
- *--------------------------------------------------------------------------------
+ * @author 		： <a href="https://github.com/vindell">vindell</a>
+ * @date		： 2017年9月12日 下午10:48:51
+ * @version 	V1.0
  */
 public interface HttpStatus {
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2020, wandalong (hnxyhcwdl1003@163.com).
+ * Copyright (c) 2010-2020, vindell (https://github.com/vindell).
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -15,16 +15,6 @@
  */
 package org.apache.shiro.biz.cache.redis;
 
-/**
- * *******************************************************************
- * @className	： RedisManager
- * @description	： redismanager主要用来给用户提供一个设计完备的，通过jedis的jar包来管理redis内存数据库的各种方法
- * @author 		： <a href="mailto:hnxyhcwdl1003@163.com">wandalong</a>
- * @date		： Oct 31, 2016 9:00:09 AM
- * @version 	V1.0 
- * *******************************************************************
- */
-
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -34,8 +24,12 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
 /**
- * @author Administrator
- *         
+ * 
+ * @className	： RedisManager
+ * @description	： redismanager主要用来给用户提供一个设计完备的，通过jedis的jar包来管理redis内存数据库的各种方法
+ * @author 		： <a href="https://github.com/vindell">vindell</a>
+ * @date		： 2017年9月12日 下午11:28:53
+ * @version 	V1.0
  */
 public class RedisManager {
 

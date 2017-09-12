@@ -19,15 +19,13 @@ import org.apache.shiro.session.Session;
 import org.apache.shiro.session.SessionListener;
 
 /**
- * *******************************************************************
+ * 
  * @className	： MySessionListener1
  * @description	： TODO(描述这个类的作用)
- * @author 		： <a href="mailto:hnxyhcwdl1003@163.com">wandalong</a>
- * @date		： Nov 28, 2016 11:21:07 PM
- * @version 	V1.0 
- * *******************************************************************
+ * @author 		： <a href="https://github.com/vindell">vindell</a>
+ * @date		： 2017年9月12日 下午11:28:11
+ * @version 	V1.0
  */
-
 public class MySessionListener1 implements SessionListener {
     @Override
     public void onStart(Session session) {//会话创建时触发

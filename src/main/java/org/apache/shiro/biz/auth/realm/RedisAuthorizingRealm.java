@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2020, wandalong (hnxyhcwdl1003@163.com).
+ * Copyright (c) 2010-2020, vindell (https://github.com/vindell).
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -17,15 +17,13 @@ package org.apache.shiro.biz.auth.realm;
 
 
 /**
- * *******************************************************************
+ * 
  * @className	： RedisAuthorizingRealm
  * @description	： TODO(描述这个类的作用)
- * @author 		： <a href="mailto:hnxyhcwdl1003@163.com">wandalong</a>
- * @date		： Oct 29, 2016 10:42:22 PM
- * @version 	V1.0 
- * *******************************************************************
+ * @author 		： <a href="https://github.com/vindell">vindell</a>
+ * @date		： 2017年9月12日 下午10:47:42
+ * @version 	V1.0
  */
-
 public class RedisAuthorizingRealm {
 
 	/*protected AuthorizationInfo getAuthorizationInfo(PrincipalCollection principals) {    

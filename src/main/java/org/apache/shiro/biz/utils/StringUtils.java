@@ -76,9 +76,9 @@ public abstract class StringUtils extends org.apache.shiro.util.StringUtils {
  
 	/**
 	 * 
-	 * @description	：获得以 ",; \t\n"分割的字符数组
-	 * @author 		： <a href="mailto:hnxyhcwdl1003@163.com">wandalong</a>
-	 * @date 		：Dec 17, 2015 9:07:47 PM
+	 * @description	： 获得以 ",; \t\n"分割的字符数组
+	 * @author 		： <a href="https://github.com/vindell">vindell</a>
+	 * @date 		：2017年9月12日 下午10:49:20
 	 * @param str
 	 * @return
 	 */

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2020, wandalong (hnxyhcwdl1003@163.com).
+ * Copyright (c) 2010-2020, vindell (https://github.com/vindell).
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -26,16 +26,6 @@ import org.apache.shiro.biz.utils.SerializeUtils;
 import org.apache.shiro.session.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-/**
- * *******************************************************************
- * @className	： JedisShiroSessionRepository
- * @description	： TODO(描述这个类的作用)
- * @author 		： <a href="mailto:hnxyhcwdl1003@163.com">wandalong</a>
- * @date		： Nov 27, 2016 8:08:57 PM
- * @version 	V1.0 
- * *******************************************************************
- */
 
 public class JedisShiroSessionRepository  implements SessionRepository{
 	

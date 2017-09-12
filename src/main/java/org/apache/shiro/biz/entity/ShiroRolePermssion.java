@@ -19,13 +19,11 @@ import java.io.Serializable;
 
 /**
  * 
- * *******************************************************************
  * @className	： ShiroRolePermssion
- * @description	： Shiro用户角色关系
- * @author 		： <a href="mailto:hnxyhcwdl1003@163.com">wandalong</a>
- * @date		： Sep 24, 2016 8:55:50 PM
- * @version 	V1.0 
- * *******************************************************************
+ * @description	： TODO(描述这个类的作用)
+ * @author 		： <a href="https://github.com/vindell">vindell</a>
+ * @date		： 2017年9月12日 下午11:28:21
+ * @version 	V1.0
  */
 @SuppressWarnings("serial")
 public class ShiroRolePermssion implements Serializable {
