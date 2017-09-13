@@ -15,7 +15,7 @@
  */
 package org.apache.shiro.biz.utils;
 
-import org.apache.shiro.biz.entity.Principal;
+import org.apache.shiro.biz.principal.Principal;
 import org.apache.shiro.crypto.RandomNumberGenerator;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.apache.shiro.crypto.hash.SimpleHash;

@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.apache.shiro.biz.auth.credentials;
+package org.apache.shiro.biz.authc.credential;
 
 
 import java.util.Arrays;

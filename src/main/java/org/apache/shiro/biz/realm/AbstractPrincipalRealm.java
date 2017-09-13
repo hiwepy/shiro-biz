@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.apache.shiro.biz.auth.realm;
+package org.apache.shiro.biz.realm;
 
 import java.util.List;
 import java.util.Set;
@@ -24,9 +24,9 @@ import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAccount;
 import org.apache.shiro.authz.AuthorizationInfo;
-import org.apache.shiro.biz.auth.provider.PrincipalProvider;
 import org.apache.shiro.biz.authc.DelegateAuthenticationInfo;
 import org.apache.shiro.biz.authc.token.DelegateAuthenticationToken;
+import org.apache.shiro.biz.principal.PrincipalRepository;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
@@ -50,7 +50,7 @@ public abstract class AbstractPrincipalRealm extends AuthorizingRealm {
 	//realm listeners
 	protected List<PrincipalRealmListener> realmsListeners;
 	
-	protected PrincipalProvider provider;
+	protected PrincipalRepository repository;
     
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
@@ -61,11 +61,11 @@ public abstract class AbstractPrincipalRealm extends AuthorizingRealm {
     	
     	Set<String> permissionsSet, rolesSet = null;
 		if(principals.asList().size() <= 1){
-			permissionsSet = getProvider().getPermissions(principals.getPrimaryPrincipal());
-			rolesSet = getProvider().getRoles(principals.getPrimaryPrincipal());
+			permissionsSet = getRepository().getPermissions(principals.getPrimaryPrincipal());
+			rolesSet = getRepository().getRoles(principals.getPrimaryPrincipal());
 		}else{
-			permissionsSet = getProvider().getPermissions(principals.asSet());
-			rolesSet = getProvider().getRoles(principals.asSet());
+			permissionsSet = getRepository().getPermissions(principals.asSet());
+			rolesSet = getRepository().getRoles(principals.asSet());
 		}
 		
     	SimpleAccount account = new SimpleAccount();
@@ -85,7 +85,7 @@ public abstract class AbstractPrincipalRealm extends AuthorizingRealm {
     	try {
 			// do real thing
 			// new delegate authentication token and invoke doAuthc method
-			DelegateAuthenticationInfo delegateAuthcInfo = getProvider().getAuthenticationInfo(this.createDelegateAuthenticationToken(token));
+			DelegateAuthenticationInfo delegateAuthcInfo = getRepository().getAuthenticationInfo(this.createDelegateAuthenticationToken(token));
 			if (delegateAuthcInfo != null) {
 				account = new SimpleAccount(delegateAuthcInfo.getPrincipal(),
 						delegateAuthcInfo.getCredentials(),
@@ -121,15 +121,15 @@ public abstract class AbstractPrincipalRealm extends AuthorizingRealm {
     
 	protected abstract DelegateAuthenticationToken createDelegateAuthenticationToken(AuthenticationToken token);
 	
-
-	public PrincipalProvider getProvider() {
-		return provider;
-	}
-
-	public void setProvider(PrincipalProvider provider) {
-		this.provider = provider;
-	}
 	
+	public PrincipalRepository getRepository() {
+		return repository;
+	}
+
+	public void setRepository(PrincipalRepository repository) {
+		this.repository = repository;
+	}
+
 	public List<PrincipalRealmListener> getRealmsListeners() {
 		return realmsListeners;
 	}

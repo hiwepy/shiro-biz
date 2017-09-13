@@ -13,22 +13,25 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.apache.shiro.biz.auth.realm;
+package org.apache.shiro.biz.realm;
 
+import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.biz.authc.token.DefaultAuthenticationToken;
-import org.apache.shiro.biz.authc.token.DelegateAuthenticationToken;
+import org.apache.shiro.session.Session;
 
-public class DefaultPrincipalRealm  extends AbstractPrincipalRealm{
+public interface PrincipalRealmListener {
+
+	/**
+	 * 当认证失败时调用【报异常或则是查询不到认证信息认为是失败】
+	 * @param token
+	 */
+	void onAuthenticationFail(AuthenticationToken token);
 	
-	public DefaultPrincipalRealm(){
-		super.setAuthenticationTokenClass(DefaultAuthenticationToken.class);
-	}
-	
-	@Override
-	protected DelegateAuthenticationToken createDelegateAuthenticationToken(AuthenticationToken token) {
-		return (DelegateAuthenticationToken)token;
-	}
-	 
+	/**
+	 * 当认证成功时调用
+	 * @param info
+	 * @param session
+	 */
+	void onAuthenticationSuccess(AuthenticationInfo info, Session session);
 	
 }

@@ -13,17 +13,22 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.apache.shiro.biz.auth.credentials;
+package org.apache.shiro.biz.realm;
 
-import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.credential.CredentialsMatcher;
+import org.apache.shiro.biz.authc.token.DefaultAuthenticationToken;
+import org.apache.shiro.biz.authc.token.DelegateAuthenticationToken;
 
-public class CasCredentialsMatcher implements CredentialsMatcher {
-
-	@Override
-	public boolean doCredentialsMatch(AuthenticationToken token, AuthenticationInfo info) {
-		return true;
+public class DefaultPrincipalRealm  extends AbstractPrincipalRealm{
+	
+	public DefaultPrincipalRealm(){
+		super.setAuthenticationTokenClass(DefaultAuthenticationToken.class);
 	}
-
+	
+	@Override
+	protected DelegateAuthenticationToken createDelegateAuthenticationToken(AuthenticationToken token) {
+		return (DelegateAuthenticationToken)token;
+	}
+	 
+	
 }

@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.apache.shiro.biz.auth.strategy;
+package org.apache.shiro.biz.authc.pam;
 
 import java.util.Collection;
 

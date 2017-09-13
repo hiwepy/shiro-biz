@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.apache.shiro.biz.auth.provider;
+package org.apache.shiro.biz.principal;
 
 import java.util.Set;
 
@@ -29,7 +29,7 @@ import org.apache.shiro.biz.authc.token.DelegateAuthenticationToken;
  * @date		： 2017年8月26日 下午10:31:02
  * @version 	V1.0
  */
-public interface PrincipalProvider {
+public interface PrincipalRepository {
 
 	/**
 	 * 
