@@ -73,7 +73,7 @@ public abstract class AbstractPrincipalRealm extends AuthorizingRealm {
     	account.setStringPermissions(permissionsSet);
         return account;
     }
-
+    
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
     	
@@ -83,15 +83,7 @@ public abstract class AbstractPrincipalRealm extends AuthorizingRealm {
     	AuthenticationException ex = null;
     	SimpleAccount account = null;
     	try {
-			// do real thing
-			// new delegate authentication token and invoke doAuthc method
-			DelegateAuthenticationInfo delegateAuthcInfo = getRepository().getAuthenticationInfo(this.createDelegateAuthenticationToken(token));
-			if (delegateAuthcInfo != null) {
-				account = new SimpleAccount(delegateAuthcInfo.getPrincipal(),
-						delegateAuthcInfo.getCredentials(),
-						ByteSource.Util.bytes(delegateAuthcInfo.getCredentialsSalt()),
-						getName());
-			}
+			this.doGetAuthenticationInfoInternal(token);
 		} catch (AuthenticationException e) {
 			ex = e;
 		}
@@ -114,13 +106,26 @@ public abstract class AbstractPrincipalRealm extends AuthorizingRealm {
 		return account;
         
     }
+    
+	protected AuthenticationInfo doGetAuthenticationInfoInternal(AuthenticationToken token){
+		SimpleAccount account = null;
+		// do real thing
+		// new delegate authentication token and invoke doAuthc method
+		DelegateAuthenticationInfo delegateAuthcInfo = getRepository().getAuthenticationInfo(this.createDelegateAuthenticationToken(token));
+		if (delegateAuthcInfo != null) {
+			account = new SimpleAccount(delegateAuthcInfo.getPrincipal(),
+					delegateAuthcInfo.getCredentials(),
+					ByteSource.Util.bytes(delegateAuthcInfo.getCredentialsSalt()),
+					getName());
+		}
+		return account;
+	}
 
+	protected abstract DelegateAuthenticationToken createDelegateAuthenticationToken(AuthenticationToken token);
+	
 	public void clearAuthorizationCache(){
 		clearCachedAuthorizationInfo(SecurityUtils.getSubject().getPrincipals());
 	}
-    
-	protected abstract DelegateAuthenticationToken createDelegateAuthenticationToken(AuthenticationToken token);
-	
 	
 	public PrincipalRepository getRepository() {
 		return repository;

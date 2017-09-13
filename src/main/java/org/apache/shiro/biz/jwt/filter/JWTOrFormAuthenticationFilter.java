@@ -1,4 +1,4 @@
-package org.apache.shiro.biz.web.filter.authc;
+package org.apache.shiro.biz.jwt.filter;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -13,7 +13,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.biz.authc.token.JWTAuthenticationToken;
+import org.apache.shiro.biz.jwt.token.JWTAuthenticationToken;
 import org.apache.shiro.web.filter.authc.AuthenticatingFilter;
 import org.apache.shiro.web.util.WebUtils;
 
