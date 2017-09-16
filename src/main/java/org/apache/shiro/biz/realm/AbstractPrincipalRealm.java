@@ -23,6 +23,8 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAccount;
+import org.apache.shiro.authc.credential.DefaultPasswordService;
+import org.apache.shiro.authc.credential.PasswordService;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.biz.authc.DelegateAuthenticationInfo;
 import org.apache.shiro.biz.authc.token.DelegateAuthenticationToken;
@@ -51,7 +53,18 @@ public abstract class AbstractPrincipalRealm extends AuthorizingRealm {
 	protected List<PrincipalRealmListener> realmsListeners;
 	
 	protected PrincipalRepository repository;
+	
+	protected PasswordService passwordService = new DefaultPasswordService();  
     
+	/**
+	 * 
+	 * @description	： 获取授权信息;
+	 * 
+	 * @author 		：<a href="https://github.com/vindell">vindell</a>
+	 * @date 		：2017年9月16日 下午8:43:32
+	 * @param principals : PrincipalCollection是一个身份集合，因为我们现在就一个Realm，所以直接调用getPrimaryPrincipal得到之前传入的用户名即可；然后根据用户名调用UserService接口获取角色及权限信息。
+	 * @return
+	 */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
     	
@@ -73,7 +86,29 @@ public abstract class AbstractPrincipalRealm extends AuthorizingRealm {
     	account.setStringPermissions(permissionsSet);
         return account;
     }
-    
+
+	/**
+	 * 
+	 * @description ： 获取身份验证相关信息
+	 * 
+	 *  <pre>
+	 * 	首先根据传入的用户名获取User信息；然后如果user为空，那么抛出没找到帐号异常UnknownAccountException；
+	 * 	如果user找到但锁定了抛出锁定异常LockedAccountException；
+	 *  最后生成AuthenticationInfo信息，交给间接父类AuthenticatingRealm使用CredentialsMatcher进行判断密码是否匹配，如果不匹配将抛出密码错误异常IncorrectCredentialsException；
+	 *  
+	 *  另外如果密码重试此处太多将抛出超出重试次数异常ExcessiveAttemptsException；
+	 *  在组装SimpleAuthenticationInfo信息时，需要传入：
+	 *  	身份信息（用户名）、凭据（密文密码）、盐（username+salt），
+	 *  CredentialsMatcher使用盐加密传入的明文密码和此处的密文密码进行匹配。
+	 * 
+	 *  </pre>
+	 * 
+	 * @author ：<a href="https://github.com/vindell">vindell</a>
+	 * @date ：2017年9月16日 下午8:41:10
+	 * @param token
+	 * @return
+	 * @throws AuthenticationException
+	 */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
     	
@@ -113,8 +148,12 @@ public abstract class AbstractPrincipalRealm extends AuthorizingRealm {
 		// new delegate authentication token and invoke doAuthc method
 		DelegateAuthenticationInfo delegateAuthcInfo = getRepository().getAuthenticationInfo(this.createDelegateAuthenticationToken(token));
 		if (delegateAuthcInfo != null) {
-			account = new SimpleAccount(delegateAuthcInfo.getPrincipal(),
-					delegateAuthcInfo.getCredentials(),
+			account = new SimpleAccount(
+					//用户名
+					delegateAuthcInfo.getPrincipal(),
+					//加密后的密码
+					passwordService.encryptPassword(delegateAuthcInfo.getCredentials()), 
+					//盐是用户名+随机数 
 					ByteSource.Util.bytes(delegateAuthcInfo.getCredentialsSalt()),
 					getName());
 		}
@@ -142,6 +181,10 @@ public abstract class AbstractPrincipalRealm extends AuthorizingRealm {
 	public void setRealmsListeners(List<PrincipalRealmListener> realmsListeners) {
 		this.realmsListeners = realmsListeners;
 	}
+
+	public void setPasswordService(PasswordService passwordService) {  
+		 this.passwordService = passwordService;  
+	} 
 
 	
 }

@@ -4,10 +4,10 @@ import java.io.Serializable;
 
 public interface DelegateAuthenticationInfo extends Serializable{
 
-	Object getPrincipal();
+	Object getPrincipal(); //身份
 
-	Object getCredentials();
+	Object getCredentials(); //凭据 
 
-	String getCredentialsSalt();
+	String getCredentialsSalt(); //盐 
 	
 }

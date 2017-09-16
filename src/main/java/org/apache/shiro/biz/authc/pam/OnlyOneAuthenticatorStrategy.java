@@ -29,51 +29,61 @@ import org.slf4j.LoggerFactory;
 
 /**
  * 
- * @className	： OnlyOneAuthenticatorStrategy
- * @description	： 唯一认证策略实现
- * @author 		： <a href="https://github.com/vindell">vindell</a>
- * @date		： 2017年7月28日 下午10:10:19
- * @version 	V1.0
+ * @className ： OnlyOneAuthenticatorStrategy
+ * @description ： 唯一认证策略实现
+ * @author ： <a href="https://github.com/vindell">vindell</a>
+ * @date ： 2017年7月28日 下午10:10:19
+ * @version V1.0
  */
 public class OnlyOneAuthenticatorStrategy extends AbstractAuthenticationStrategy {
 
 	protected static Logger LOG = LoggerFactory.getLogger(OnlyOneAuthenticatorStrategy.class);
-	
-    @Override
-    public AuthenticationInfo beforeAllAttempts(Collection<? extends Realm> realms, AuthenticationToken token) throws AuthenticationException {
-    	//返回一个权限的认证信息
-    	return new SimpleAuthenticationInfo();
-    }
 
-    @Override
-    public AuthenticationInfo beforeAttempt(Realm realm, AuthenticationToken token, AuthenticationInfo aggregate) throws AuthenticationException {
-    	//返回之前合并的
-    	return aggregate;
-    }
+	/** 在所有Realm验证之前调用 */
+	@Override
+	public AuthenticationInfo beforeAllAttempts(Collection<? extends Realm> realms, AuthenticationToken token)
+			throws AuthenticationException {
+		// 返回一个权限的认证信息
+		return new SimpleAuthenticationInfo();
+	}
 
-    @Override
-    public AuthenticationInfo afterAttempt(Realm realm, AuthenticationToken token, AuthenticationInfo singleRealmInfo, AuthenticationInfo aggregateInfo, Throwable t) throws AuthenticationException {
-        AuthenticationInfo info;
-        if (singleRealmInfo == null) {
-            info = aggregateInfo;
-        } else {
-            if (aggregateInfo == null) {
-                info = singleRealmInfo;
-            } else {
-                info = merge(singleRealmInfo, aggregateInfo);
-                if(info.getPrincipals().getRealmNames().size() > 1) {
-                	LOG.debug("RealmNames:" + StringUtils.join(info.getPrincipals().getRealmNames(),","));
-                    throw new AuthenticationException("Authentication token of type [" + token.getClass() + "] " +
-                            "could not be authenticated by any configured realms.  Please ensure that only one realm can " +
-                            "authenticate these tokens.");
-                }
-            }
-        }
-        return info;
-    }
+	/** 在每个Realm之前调用 */
+	@Override
+	public AuthenticationInfo beforeAttempt(Realm realm, AuthenticationToken token, AuthenticationInfo aggregate)
+			throws AuthenticationException {
+		// 返回之前合并的
+		return aggregate;
+	}
 
-    @Override
-    public AuthenticationInfo afterAllAttempts(AuthenticationToken token, AuthenticationInfo aggregate) throws AuthenticationException {
-        return aggregate;
-    }
+	/**
+	 * 在每个Realm之后调用
+	 */
+	@Override
+	public AuthenticationInfo afterAttempt(Realm realm, AuthenticationToken token, AuthenticationInfo singleRealmInfo,
+			AuthenticationInfo aggregateInfo, Throwable t) throws AuthenticationException {
+		AuthenticationInfo info;
+		if (singleRealmInfo == null) {
+			info = aggregateInfo;
+		} else {
+			if (aggregateInfo == null) {
+				info = singleRealmInfo;
+			} else {
+				info = merge(singleRealmInfo, aggregateInfo);
+				if (info.getPrincipals().getRealmNames().size() > 1) {
+					LOG.debug("RealmNames:" + StringUtils.join(info.getPrincipals().getRealmNames(), ","));
+					throw new AuthenticationException("Authentication token of type [" + token.getClass() + "] "
+							+ "could not be authenticated by any configured realms.  Please ensure that only one realm can "
+							+ "authenticate these tokens.");
+				}
+			}
+		}
+		return info;
+	}
+
+	/** 在所有Realm之后调用 */
+	@Override
+	public AuthenticationInfo afterAllAttempts(AuthenticationToken token, AuthenticationInfo aggregate)
+			throws AuthenticationException {
+		return aggregate;
+	}
 }

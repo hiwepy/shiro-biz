@@ -2,17 +2,14 @@ package org.apache.shiro.biz.web.servlet;
 
 import java.io.IOException;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.biz.web.Parameter;
 import org.apache.shiro.biz.web.Parameters;
-import org.apache.shiro.util.StringUtils;
 
 /**
  * 
@@ -23,7 +20,7 @@ import org.apache.shiro.util.StringUtils;
  * @version 	V1.0
  */
 @SuppressWarnings("serial")
-@WebServlet(name = "logoutServlet", urlPatterns = "/logout")
+//@WebServlet(name = "logoutServlet", urlPatterns = "/logout")
 public class ShiroHttpLogoutServlet extends AbstractHttpServlet {
 
 	protected String redirectURL = "";

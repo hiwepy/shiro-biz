@@ -35,7 +35,6 @@ import org.apache.shiro.web.util.WebUtils;
 public class AnyRolesFilter extends AccessControlFilter {
 	
     private String unauthorizedUrl = "/unauthorized.jsp";
-    private String loginUrl = "/login.jsp";
     
     /*
      * 1、首先判断用户有没有任意角色，如果没有返回false，将到onAccessDenied进行处理；
@@ -60,7 +59,7 @@ public class AnyRolesFilter extends AccessControlFilter {
         Subject subject = getSubject(request, response);
         if (subject.getPrincipal() == null) {//表示没有登录，重定向到登录页面
             saveRequest(request);
-            WebUtils.issueRedirect(request, response, loginUrl);
+            WebUtils.issueRedirect(request, response, getLoginUrl());
         } else {
             if (StringUtils.hasText(unauthorizedUrl)) {//如果有未授权页面跳转过去
                 WebUtils.issueRedirect(request, response, unauthorizedUrl);

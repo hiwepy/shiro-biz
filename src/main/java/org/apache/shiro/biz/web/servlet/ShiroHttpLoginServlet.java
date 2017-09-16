@@ -23,7 +23,8 @@ import org.apache.shiro.subject.Subject;
  * <p>Date: 14-1-29
  * <p>Version: 1.0
  */
-@WebServlet(name = "loginServlet", urlPatterns = "/login")
+@SuppressWarnings("serial")
+//@WebServlet(name = "loginServlet", urlPatterns = "/login")
 public class ShiroHttpLoginServlet extends AbstractHttpServlet {
 
 	protected String redirectURL = "";

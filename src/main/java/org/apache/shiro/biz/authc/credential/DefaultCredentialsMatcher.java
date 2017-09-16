@@ -63,6 +63,7 @@ public class DefaultCredentialsMatcher extends CodecSupport implements Credentia
 		return credentialsMatch(token, info);
 	}
 
+	//匹配用户输入的token的凭证（未加密）与系统提供的凭证（已加密） 
 	protected boolean credentialsMatch(AuthenticationToken token, AuthenticationInfo info) {
 		Object tokenCredentials = token.getCredentials();
 		Object accountCredentials = info.getCredentials();
