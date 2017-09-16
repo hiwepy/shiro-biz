@@ -128,6 +128,15 @@
 		<property name="loginUrl" value="/login?kickout=1"></property>
 	</bean>
 	
+	
+	<bean id="kickoutSessionControlFilter" class="org.apache.shiro.biz.web.filter.authc.KickoutSessionControlFilter">  
+	    <property name="cacheManager" ref="cacheManager"/>  
+	    <property name="sessionManager" ref="sessionManager"/>  
+	    <property name="kickoutAfter" value="false"/>  
+	    <property name="maxSession" value="2"/>  
+	    <property name="kickoutUrl" value="/login?kickout=1"/>  
+	</bean>
+	
 	<bean id="logoutFilter" class="org.apache.shiro.web.filter.authc.LogoutFilter"></bean>
 	
 	<bean id="sessionExpiredFilter" class="org.apache.shiro.biz.web.filter.HttpServletSessionExpiredFilter"></bean>
@@ -152,6 +161,7 @@
 				<entry key="sessionExpired" value-ref="sessionExpiredFilter"></entry>
 				<!-- <entry key="ssl" value-ref="sslFilter"/> -->
 				<entry key="logout" value-ref="logoutFilter"></entry>
+				<entry key="kickout" value-ref="kickoutSessionControlFilter"/>  
 			</util:map>
 		</property>
 		<!-- 过滤链定义 -->
@@ -165,7 +175,7 @@
 				/kaptcha* = anon
 				/druid/* = roles[admin]
 				/logout = logout
-				/** = sessionExpired,sessionControl,authc
+				/** = kickout,sessionExpired,sessionControl,authc
 			</value>
 		</property>
 	</bean>
