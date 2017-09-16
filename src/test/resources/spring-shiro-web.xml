@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd  
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+	http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+	
+	<!-- 缓存管理器: 使用Ehcache实现 -->
+    <bean id="shiroCacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+		<property name="cacheManager" ref="ehCacheManager"></property>
+		<!-- <property name="cacheManagerConfigFile" value="classpath:ehcache.xml"/> -->  
+    </bean>
+	
+	<!-- 凭证匹配器 -->
+	<bean id="credentialsMatcher" class="org.apache.shiro.biz.authc.credential.RetryLimitHashedCredentialsMatcher">  
+	    <constructor-arg ref="cacheManager"/>  
+	    <property name="hashAlgorithmName" value="md5"/>  
+	    <property name="hashIterations" value="2"/>  
+	    <property name="storedCredentialsHexEncoded" value="true"/>  
+	</bean>  
+
+	<!-- Realm实现 --> 	
+	<bean id="userRealm" class="org.apache.shiro.biz.realm.DefaultPrincipalRealm">
+		<property name="repository" ref="defaultRepository"/>
+		<property name="credentialsMatcher">
+			<bean class="org.apache.shiro.biz.authc.credential.DefaultCredentialsMatcher" />
+		</property>
+		<property name="realmsListeners">
+			<list>
+				<bean class="com.zfsoft.globalweb.shiro.DefaultRealmListener"/>
+			</list>
+		</property>
+		<property name="cachingEnabled" value="true"/>
+        <property name="authenticationCachingEnabled" value="false"/>
+        <property name="authenticationCacheName" value="SHIRO_AUTHC"/>
+        <property name="authorizationCachingEnabled" value="true"/>
+        <property name="authorizationCacheName" value="SHIRO_AUTHZ"/>
+	</bean>
+	
+	<!-- 会话ID生成器 -->  
+	<bean id="sessionIdGenerator" class="org.apache.shiro.biz.session.mgt.eis.SequenceSessionIdGenerator"/>  
+	
+	<!-- 会话DAO -->  
+	<bean id="sessionDAO" class="org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO">  
+	    <property name="activeSessionsCacheName" value="shiro-activeSessionCache"/>  
+	    <property name="sessionIdGenerator" ref="sessionIdGenerator"/>  
+	</bean>
+	
+	<!-- 会话验证调度器 -->  
+	<bean id="sessionValidationScheduler" class="org.apache.shiro.session.mgt.quartz.QuartzSessionValidationScheduler">  
+	    <property name="sessionValidationInterval" value="1800000"/>  
+	    <property name="sessionManager" ref="sessionManager"/>  
+	</bean>
+	
+	<!-- 会话管理器: 如果需要启用tomcat集群，会话管理必须交由tomcat -->
+	<bean id="sessionManager" class="org.apache.shiro.web.session.mgt.ServletContainerSessionManager">
+		<property name="globalSessionTimeout" value="1800000"/>  
+	    <property name="deleteInvalidSessions" value="true"/>
+	    <property name="sessionValidationSchedulerEnabled" value="true"/>  
+	    <property name="sessionValidationScheduler" ref="sessionValidationScheduler"/>  
+	    <property name="sessionDAO" ref="sessionDAO"/> 
+	    <property name="sessionIdCookieEnabled" value="true"/>  
+    	<property name="sessionIdCookie" ref="sessionIdCookie"/>  
+	</bean>
+	
+	<!-- 会话Cookie模板: sessionIdCookie：maxAge=-1表示浏览器关闭时失效此Cookie； -->  
+	<bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie">  
+	    <constructor-arg value="sid"/>  
+	    <property name="httpOnly" value="true"/>  
+	    <property name="maxAge" value="180000"/>  
+	</bean>  
+	
+	<!-- RememberMe配置： rememberMeCookie：即记住我的Cookie，保存时长30天；-->
+	<bean id="rememberMeCookie" class="org.apache.shiro.web.servlet.SimpleCookie">  
+	    <constructor-arg value="rememberMe"/>  
+	    <property name="httpOnly" value="true"/>  
+	    <property name="maxAge" value="2592000"/><!-- 30天 -->  
+	</bean> 
+	
+    <!-- RememberMe管理器：cipherKey是加密rememberMe Cookie的密钥；默认AES算法； -->  
+    <bean id="rememberMeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">  
+        <property name="cipherKey" value="#{T(org.apache.shiro.codec.Base64).decode('4AvVhmFLUs0KTA3Kprsdag==')}"/>  
+        <property name="cookie" ref="rememberMeCookie"/>  
+    </bean>   
+    
+	<!-- 安全管理器 -->
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<property name="realms">
+			<list>
+				<ref bean="userRealm"/>
+			</list>
+		</property>
+        <property name="sessionManager" ref="sessionManager"/>
+        <property name="cacheManager" ref="shiroCacheManager"/>
+        <!-- RememberMe管理器 -->
+        <property name="rememberMeManager" ref="rememberMeManager"/>  
+	</bean>
+	
+	<!-- 基于Form表单的身份验证过滤器 -->  
+	<bean id="formAuthenticationFilter" class="org.apache.shiro.web.filter.authc.FormAuthenticationFilter">  
+	    <property name="usernameParam" value="username"/>
+	    <property name="passwordParam" value="password"/>
+	    <property name="rememberMeParam" value="rememberMe"/>
+	    <property name="loginUrl" value="/login.jsp"/>  
+	</bean>
+	
+	<!-- 相当于调用SecurityUtils.setSecurityManager(securityManager) -->  
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">  
+		<property name="staticMethod" value="org.apache.shiro.SecurityUtils.setSecurityManager"/>  
+	    <property name="arguments" ref="securityManager"/>  
+	</bean>  
+
+	<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+		<property name="securityManager" ref="securityManager" />
+	</bean>
+	
+	<bean id="sessionControFilter" class="org.apache.shiro.biz.web.filter.HttpServletSessionControlFilter">
+		<property name="cacheManager" ref="shiroCacheManager"/>
+		<property name="sessionControlCacheName" value="SHIRO_SESSION"></property>
+		<property name="loginUrl" value="/login?kickout=1"></property>
+	</bean>
+	
+	<bean id="logoutFilter" class="org.apache.shiro.web.filter.authc.LogoutFilter"></bean>
+	
+	<bean id="sessionExpiredFilter" class="org.apache.shiro.biz.web.filter.HttpServletSessionExpiredFilter"></bean>
+    
+    <bean id="sslFilter" class="org.apache.shiro.web.filter.authz.SslFilter">  
+	    <property name="port" value="8443"/>  
+	</bean> 
+
+	<!-- Shiro的Web过滤器 --> 
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<!-- securityManager -->
+		<property name="securityManager" ref="securityManager" />
+		<!-- 登录路径 -->
+		<property name="loginUrl" value="/login" />
+		<!-- 登录成功后跳转路径 -->
+		<property name="successUrl" value="/index" />
+		<property name="unauthorizedUrl" value="/403.zf" />
+		<property name="filters">
+			<util:map>
+				<entry key="authc" value-ref="formAuthenticationFilter" />
+				<entry key="sessionControl" value-ref="sessionControFilter" />
+				<entry key="sessionExpired" value-ref="sessionExpiredFilter"></entry>
+				<!-- <entry key="ssl" value-ref="sslFilter"/> -->
+				<entry key="logout" value-ref="logoutFilter"></entry>
+			</util:map>
+		</property>
+		<!-- 过滤链定义 -->
+		<property name="filterChainDefinitions">
+			<value>
+				/ = anon
+				/css/** = anon
+				/js/** = anon
+				/err/** = anon
+				/logo/** = anon
+				/kaptcha* = anon
+				/druid/* = roles[admin]
+				/logout = logout
+				/** = sessionExpired,sessionControl,authc
+			</value>
+		</property>
+	</bean>
+	
+</beans>
