@@ -62,10 +62,20 @@ public abstract class KickoutSessionControlFilter extends AccessControlFilter {
 	private SessionManager sessionManager;
 	
 	private String kickoutAttr; //Session中的踢出标记
-	private String kickoutUrl; //踢出后到的地址
     private boolean kickoutAfter = false; //踢出之前登录的/之后登录的用户 默认踢出之前登录的用户
     private int maxSession = 1; //同一个帐号最大会话数 默认1
 	
+    /**
+     * The default redirect URL to where the user will be redirected after kickout.  The value is {@code "/"}, Shiro's
+     * representation of the web application's context root.
+     */
+    public static final String DEFAULT_REDIRECT_URL = "/";
+
+    /**
+     * The URL to where the user will be redirected after kickout.
+     */
+    private String redirectUrl = DEFAULT_REDIRECT_URL;
+    
     @Override
 	protected boolean isAccessAllowed(ServletRequest request,
 			ServletResponse response, Object mappedValue) {
@@ -140,12 +150,10 @@ public abstract class KickoutSessionControlFilter extends AccessControlFilter {
             saveRequest(request);
             // 检查是否相对目录
             boolean contextRelative = true;
-            if(escapeURL(getKickoutUrl()).contains(escapeURL(request.getScheme() + "://" + request.getServerName() ))){
+            if(escapeURL(getRedirectUrl()).contains(escapeURL(request.getScheme() + "://" + request.getServerName() ))){
             	contextRelative = false;
             }
-            WebUtils.issueRedirect(request, response, getKickoutUrl(), null, contextRelative);
-            
-            WebUtils.issueRedirect(request, response, kickoutUrl);
+            WebUtils.issueRedirect(request, response, getRedirectUrl(), null, contextRelative);
             return false;
         }
 
@@ -177,14 +185,6 @@ public abstract class KickoutSessionControlFilter extends AccessControlFilter {
 
 	public void setKickoutAttr(String kickoutAttr) {
 		this.kickoutAttr = kickoutAttr;
-	}
-
-	public String getKickoutUrl() {
-		return kickoutUrl;
-	}
-
-	public void setKickoutUrl(String kickoutUrl) {
-		this.kickoutUrl = kickoutUrl;
 	}
 
 	public boolean isKickoutAfter() {
@@ -222,4 +222,13 @@ public abstract class KickoutSessionControlFilter extends AccessControlFilter {
 	public void setSessionControlCacheName(String sessionControlCacheName) {
 		this.sessionControlCacheName = sessionControlCacheName;
 	}
+
+	public String getRedirectUrl() {
+		return redirectUrl;
+	}
+
+	public void setRedirectUrl(String redirectUrl) {
+		this.redirectUrl = redirectUrl;
+	}
+	
 }
