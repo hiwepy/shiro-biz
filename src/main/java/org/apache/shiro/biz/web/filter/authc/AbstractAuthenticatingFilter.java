@@ -17,6 +17,7 @@ package org.apache.shiro.biz.web.filter.authc;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletRequest;
@@ -40,18 +41,35 @@ public abstract class AbstractAuthenticatingFilter extends AuthenticatingFilter 
 	
 	protected String failureKeyAttribute = DEFAULT_ERROR_KEY_ATTRIBUTE_NAME;
 	
-	@Override
-	protected boolean onLoginSuccess(AuthenticationToken token, Subject subject, ServletRequest request,
-			ServletResponse response) throws Exception {
-		issueSuccessRedirect(request, response);
-		return false;
-	}
+	/**
+	 * 登录回调监听
+	 */
+	protected List<LoginListener> loginListeners;
 	
 	@Override
 	protected boolean onLoginFailure(AuthenticationToken token, AuthenticationException e, ServletRequest request,
 			ServletResponse response) {
-        setFailureAttribute(request, e);
-        return true;
+		//调用事件监听器
+		if(getLoginListeners() != null && getLoginListeners().size() > 0){
+			for (LoginListener loginListener : getLoginListeners()) {
+				loginListener.onLoginFailure(token, e, request, response);
+			}
+		}
+		setFailureAttribute(request, e);
+		return super.onLoginFailure(token, e, request, response);
+	}
+	
+	@Override
+	protected boolean onLoginSuccess(AuthenticationToken token, Subject subject, ServletRequest request,
+			ServletResponse response) throws Exception {
+		//调用事件监听器
+		if(getLoginListeners() != null && getLoginListeners().size() > 0){
+			for (LoginListener loginListener : getLoginListeners()) {
+				loginListener.onLoginSuccess(token, subject, request, response);
+			}
+		}
+		issueSuccessRedirect(request, response);
+		return super.onLoginSuccess(token, subject, request, response);
 	}
 	
 	/**
@@ -146,6 +164,14 @@ public abstract class AbstractAuthenticatingFilter extends AuthenticatingFilter 
 		String className = ae.getClass().getName();
 		request.setAttribute(getFailureKeyAttribute(), className);
 	}
+	
+	
+	public List<LoginListener> getLoginListeners() {
+		return loginListeners;
+	}
 
+	public void setLoginListeners(List<LoginListener> loginListeners) {
+		this.loginListeners = loginListeners;
+	}
 
 }
