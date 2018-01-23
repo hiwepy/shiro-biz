@@ -16,22 +16,14 @@
 package org.apache.shiro.biz.realm;
 
 import java.util.List;
-import java.util.Set;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.SimpleAccount;
 import org.apache.shiro.authc.credential.DefaultPasswordService;
 import org.apache.shiro.authc.credential.PasswordService;
-import org.apache.shiro.authz.AuthorizationInfo;
-import org.apache.shiro.biz.authc.DelegateAuthenticationInfo;
-import org.apache.shiro.biz.authc.token.DelegateAuthenticationToken;
-import org.apache.shiro.biz.principal.PrincipalRepository;
 import org.apache.shiro.realm.AuthorizingRealm;
-import org.apache.shiro.subject.PrincipalCollection;
-import org.apache.shiro.util.ByteSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,49 +36,16 @@ import org.slf4j.LoggerFactory;
  * @date		： 2017年8月26日 下午10:01:27
  * @version 	V1.0
  */
-@SuppressWarnings("unchecked")
-public abstract class AbstractPrincipalRealm extends AuthorizingRealm {
+public abstract class ExternalAuthorizingRealm extends AuthorizingRealm {
 	
-	private static final Logger LOG = LoggerFactory.getLogger(AbstractPrincipalRealm.class);
-
+	private static final Logger LOG = LoggerFactory.getLogger(ExternalAuthorizingRealm.class);
+	
 	//realm listeners
 	protected List<PrincipalRealmListener> realmsListeners;
 	
-	protected PrincipalRepository repository;
-	
 	protected PasswordService passwordService = new DefaultPasswordService();  
     
-	/**
-	 * 
-	 * @description	： 获取授权信息;
-	 * 
-	 * @author 		：<a href="https://github.com/vindell">vindell</a>
-	 * @date 		：2017年9月16日 下午8:43:32
-	 * @param principals : PrincipalCollection是一个身份集合，因为我们现在就一个Realm，所以直接调用getPrimaryPrincipal得到之前传入的用户名即可；然后根据用户名调用UserService接口获取角色及权限信息。
-	 * @return
-	 */
-    @Override
-    protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-    	
-    	if(principals == null || principals.isEmpty()){
-			return null;
-		}
-    	
-    	Set<String> permissionsSet, rolesSet = null;
-		if(principals.asList().size() <= 1){
-			permissionsSet = getRepository().getPermissions(principals.getPrimaryPrincipal());
-			rolesSet = getRepository().getRoles(principals.getPrimaryPrincipal());
-		}else{
-			permissionsSet = getRepository().getPermissions(principals.asSet());
-			rolesSet = getRepository().getRoles(principals.asSet());
-		}
-		
-    	SimpleAccount account = new SimpleAccount();
-    	account.setRoles(rolesSet);
-    	account.setStringPermissions(permissionsSet);
-        return account;
-    }
-
+	
 	/**
 	 * 
 	 * @description ： 获取身份验证相关信息
@@ -116,9 +75,9 @@ public abstract class AbstractPrincipalRealm extends AuthorizingRealm {
     	
     	
     	AuthenticationException ex = null;
-    	SimpleAccount account = null;
+    	AuthenticationInfo info = null;
     	try {
-			this.doGetAuthenticationInfoInternal(token);
+    		info = this.doGetExternalAuthenticationInfo(token);
 		} catch (AuthenticationException e) {
 			ex = e;
 		}
@@ -126,10 +85,10 @@ public abstract class AbstractPrincipalRealm extends AuthorizingRealm {
 		//调用事件监听器
 		if(getRealmsListeners() != null && getRealmsListeners().size() > 0){
 			for (PrincipalRealmListener realmListener : getRealmsListeners()) {
-				if(ex != null || null == account){
+				if(ex != null || null == info){
 					realmListener.onAuthenticationFail(token);
 				}else{
-					realmListener.onAuthenticationSuccess(account, SecurityUtils.getSubject().getSession());
+					realmListener.onAuthenticationSuccess(info, SecurityUtils.getSubject().getSession());
 				}
 			}
 		}
@@ -138,42 +97,15 @@ public abstract class AbstractPrincipalRealm extends AuthorizingRealm {
 			throw ex;
 		}
 		
-		return account;
-        
+		return info;
     }
     
-	protected AuthenticationInfo doGetAuthenticationInfoInternal(AuthenticationToken token){
-		SimpleAccount account = null;
-		// do real thing
-		// new delegate authentication token and invoke doAuthc method
-		DelegateAuthenticationInfo delegateAuthcInfo = getRepository().getAuthenticationInfo(this.createDelegateAuthenticationToken(token));
-		if (delegateAuthcInfo != null) {
-			account = new SimpleAccount(
-					//用户名
-					delegateAuthcInfo.getPrincipal(),
-					//加密后的密码
-					passwordService.encryptPassword(delegateAuthcInfo.getCredentials()), 
-					//盐是用户名+随机数 
-					ByteSource.Util.bytes(delegateAuthcInfo.getCredentialsSalt()),
-					getName());
-		}
-		return account;
-	}
+    protected abstract AuthenticationInfo doGetExternalAuthenticationInfo(AuthenticationToken token);
 
-	protected abstract DelegateAuthenticationToken createDelegateAuthenticationToken(AuthenticationToken token);
-	
 	public void clearAuthorizationCache(){
 		clearCachedAuthorizationInfo(SecurityUtils.getSubject().getPrincipals());
 	}
-	
-	public PrincipalRepository getRepository() {
-		return repository;
-	}
-
-	public void setRepository(PrincipalRepository repository) {
-		this.repository = repository;
-	}
-
+	 
 	public List<PrincipalRealmListener> getRealmsListeners() {
 		return realmsListeners;
 	}
@@ -182,9 +114,12 @@ public abstract class AbstractPrincipalRealm extends AuthorizingRealm {
 		this.realmsListeners = realmsListeners;
 	}
 
-	public void setPasswordService(PasswordService passwordService) {  
-		 this.passwordService = passwordService;  
-	} 
+	public PasswordService getPasswordService() {
+		return passwordService;
+	}
 
+	public void setPasswordService(PasswordService passwordService) {
+		this.passwordService = passwordService;
+	}
 	
 }

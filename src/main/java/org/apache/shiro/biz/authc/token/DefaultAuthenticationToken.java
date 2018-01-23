@@ -27,8 +27,8 @@ import org.apache.shiro.authc.UsernamePasswordToken;
  */
 @SuppressWarnings("serial")
 public class DefaultAuthenticationToken extends UsernamePasswordToken
-		implements DelegateAuthenticationToken, CaptchaAuthenticationToken, UsertypeAuthenticationToken,
-		StrengthAuthenticationToken, LoginTypeAuthenticationToken {
+		implements DelegateAuthenticationToken, CaptchaAuthenticationToken, 
+		PwdStrengthAuthenticationToken, LoginTypeAuthenticationToken {
 
 	/**
 	 * 登录类型枚举；1：系统正常登录；2：外部单点登录；3：外部票据登录（通过握手秘钥等参数认证登录）
@@ -174,7 +174,7 @@ public class DefaultAuthenticationToken extends UsernamePasswordToken
 
 	@Override
 	public String toString() {
-		return "DefaultAuthenticationToken [username=" + getUsername() + ", userType=" + userType + ", host="
+		return "DefaultAuthenticationToken [username=" + getUsername() + ", host="
 				+ getHost() + ", rememberMe=" + isRememberMe() + "]";
 	}
 

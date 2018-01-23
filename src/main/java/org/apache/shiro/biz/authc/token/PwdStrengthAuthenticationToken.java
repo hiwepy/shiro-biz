@@ -10,7 +10,7 @@ import org.apache.shiro.authc.AuthenticationToken;
  * @date		： 2017年8月26日 下午9:48:34
  * @version 	V1.0
  */
-public interface StrengthAuthenticationToken extends AuthenticationToken {
+public interface PwdStrengthAuthenticationToken extends AuthenticationToken {
 
 	public int getStrength();
 	

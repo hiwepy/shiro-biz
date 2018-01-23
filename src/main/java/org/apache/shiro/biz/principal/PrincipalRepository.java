@@ -23,7 +23,7 @@ import org.apache.shiro.biz.authc.token.DelegateAuthenticationToken;
 
 /**
  * 
- * @className	： PrincipalProvider
+ * @className	： PrincipalRepository
  * @description	： 认证主体信息提供者接口
  * @author 		： <a href="https://github.com/vindell">vindell</a>
  * @date		： 2017年8月26日 下午10:31:02

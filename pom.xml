@@ -252,13 +252,18 @@
 	
     <properties>
     	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+ 		<commons-codec.version>1.11</commons-codec.version>
  		<commons-lang3.version>3.5</commons-lang3.version>
+ 		<commons-io.version>2.6</commons-io.version>
+ 		<fastjson.version>1.2.45</fastjson.version>
+ 		<flexjson.version>3.3</flexjson.version>
  		<jedis.version>2.9.0</jedis.version>
  		<junit.version>4.12</junit.version>
  		<servlet-api.version>3.0.1</servlet-api.version>
  		<shiro.version>1.4.0</shiro.version>
  		<slf4j.version>1.7.21</slf4j.version>
- 		<spring.version>4.3.11.RELEASE</spring.version><!-- 4.3.x（JDK 1.7 ）、4.1.x（JDK 1.6）、4.0.x（JDK 1.6） -->
+ 		<spring.version>4.3.13.RELEASE</spring.version><!-- 4.3.x（JDK 1.7 ）、4.1.x（JDK 1.6）、4.0.x（JDK 1.6） -->
+ 		<xstream.version>1.4.10</xstream.version>
 	</properties>
 	
 	<dependencyManagement>
@@ -293,19 +298,47 @@
 			</dependency>
 			
 			<dependency>
+			    <groupId>commons-codec</groupId>
+			    <artifactId>commons-codec</artifactId>
+			    <version>${commons-codec.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-lang3</artifactId>
 				<version>${commons-lang3.version}</version>
 			</dependency>
+			<dependency>
+			    <groupId>commons-io</groupId>
+			    <artifactId>commons-io</artifactId>
+			    <version>${commons-io.version}</version>
+			</dependency>
 			
-			<!-- Redis是一款开源的、高性能的键-值存储（key-value store）。它常被称作是一款数据结构服务器（data structure server）。 -->
+		 	<!-- Redis是一款开源的、高性能的键-值存储（key-value store）。它常被称作是一款数据结构服务器（data structure server）。 -->
 			<!-- Jedis 是 Redis 官方首选的 Java 客户端开发包。-->
 			<dependency>
 			    <groupId>redis.clients</groupId>
 			    <artifactId>jedis</artifactId>
 			    <version>${jedis.version}</version>
 			</dependency>
-			
+			<!-- https://mvnrepository.com/artifact/com.thoughtworks.xstream/xstream -->
+			<dependency>
+			    <groupId>com.thoughtworks.xstream</groupId>
+			    <artifactId>xstream</artifactId>
+			    <version>${xstream.version}</version>
+			</dependency>
+			<!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
+			<dependency>
+			    <groupId>com.alibaba</groupId>
+			    <artifactId>fastjson</artifactId>
+			    <version>${fastjson.version}</version>
+			</dependency>
+			<!-- https://mvnrepository.com/artifact/net.sf.flexjson/flexjson -->
+			<dependency>
+			    <groupId>net.sf.flexjson</groupId>
+			    <artifactId>flexjson</artifactId>
+			    <version>${flexjson.version}</version>
+			</dependency>
+
 			<!-- ###################### Shiro ###################### -->
 			
 			<dependency>
@@ -354,11 +387,27 @@
 				<artifactId>shiro-spring</artifactId>
 				<version>${shiro.version}</version>
 			</dependency>
-			 
+			
+			<dependency>
+			    <groupId>org.springframework</groupId>
+			    <artifactId>spring-beans</artifactId>
+			    <version>${spring.version}</version>
+			</dependency>
+			<dependency>
+			    <groupId>org.springframework</groupId>
+			    <artifactId>spring-aop</artifactId>
+			    <version>${spring.version}</version>
+			</dependency>
+			<dependency>
+			    <groupId>org.springframework</groupId>
+			    <artifactId>spring-webmvc</artifactId>
+			    <version>${spring.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>	
 	
 	<dependencies>
+	
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -376,8 +425,16 @@
 		</dependency>
 		
 		<dependency>
+		    <groupId>commons-codec</groupId>
+		    <artifactId>commons-codec</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>commons-io</groupId>
+		    <artifactId>commons-io</artifactId>
 		</dependency>
 		
 		<!-- ###################### Shiro ###################### -->
@@ -417,36 +474,6 @@
 			<artifactId>shiro-ehcache</artifactId>
 			<scope>provided</scope>
 		</dependency>
-		<!-- <dependency>
-			<groupId>org.apache.shiro</groupId>
-			<artifactId>shiro-guice</artifactId>
-			<scope>provided</scope>
-		</dependency> -->
-		
-		<dependency>
-            <groupId>org.apache.oltu.oauth2</groupId>
-            <artifactId>org.apache.oltu.oauth2.client</artifactId>
-            <version>1.0.2</version>
-        </dependency>
-        
-		<dependency>
-		    <groupId>org.springframework</groupId>
-		    <artifactId>spring-beans</artifactId>
-		    <version>4.3.10.RELEASE</version>
-		    <scope>provided</scope>
-		</dependency>
-		<dependency>
-		    <groupId>org.springframework</groupId>
-		    <artifactId>spring-aop</artifactId>
-		    <version>4.3.10.RELEASE</version>
-		    <scope>provided</scope>
-		</dependency>
-		<dependency>
-		    <groupId>org.springframework</groupId>
-		    <artifactId>spring-webmvc</artifactId>
-		    <version>4.3.10.RELEASE</version>
-		    <scope>provided</scope>
-		</dependency>
 		<dependency>
 			<groupId>org.apache.shiro</groupId>
 			<artifactId>shiro-spring</artifactId>
@@ -463,55 +490,40 @@
 			<scope>provided</scope>
 		</dependency>
 		
-		
-		<!-- https://mvnrepository.com/artifact/com.nimbusds/nimbus-jose-jwt -->
 		<dependency>
-		    <groupId>com.nimbusds</groupId>
-		    <artifactId>nimbus-jose-jwt</artifactId>
-		    <version>5.1</version>
-		</dependency>
-		<dependency>
-		    <groupId>commons-io</groupId>
-		    <artifactId>commons-io</artifactId>
-		    <version>2.5</version>
-		</dependency>
-		<!--
-			Redis是一款开源的、高性能的键-值存储（key-value store）。它常被称作是一款数据结构服务器（data structure
-			server）。
-		-->
-		<dependency>
-			<groupId>redis.clients</groupId>
-			<artifactId>jedis</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<!-- <dependency>
-		    <groupId>org.crazycake</groupId>
-		    <artifactId>shiro-redis</artifactId>
-		    <version>2.4.2.1-RELEASE</version>
-		</dependency> -->
-		<!-- <dependency>
-            <groupId>org.springframework.data</groupId>  
-            <artifactId>spring-data-redis</artifactId>  
-        </dependency>  -->
-      
-		        
-        
-        <dependency>
-		    <groupId>net.sf.flexjson</groupId>
-		    <artifactId>flexjson</artifactId>
-		    <version>3.3</version>
-		    <scope>provided</scope>
+		    <groupId>redis.clients</groupId>
+		    <artifactId>jedis</artifactId>
+		     <scope>provided</scope>
 		</dependency>
 		<dependency>
 		    <groupId>com.thoughtworks.xstream</groupId>
 		    <artifactId>xstream</artifactId>
-		    <version>1.4.10</version>
 		    <scope>provided</scope>
 		</dependency>
 		<dependency>
 		    <groupId>com.alibaba</groupId>
 		    <artifactId>fastjson</artifactId>
-		    <version>1.2.32</version>
+		    <scope>provided</scope>
+		</dependency>
+        <dependency>
+		    <groupId>net.sf.flexjson</groupId>
+		    <artifactId>flexjson</artifactId>
+		    <scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-beans</artifactId>
+		    <scope>provided</scope>
+		</dependency>
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-aop</artifactId>
+		    <scope>provided</scope>
+		</dependency>
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-webmvc</artifactId>
 		    <scope>provided</scope>
 		</dependency>
 
