@@ -18,12 +18,8 @@ package org.apache.shiro.biz.authc.token;
 import org.apache.shiro.authc.AuthenticationToken;
 
 /**
- * 
- * @className	： LoginProtocolAuthenticationToken
- * @description	： 认证协议支持
- * @author 		： <a href="https://github.com/vindell">vindell</a>
- * @date		： 2018年1月23日 上午11:16:46
- * @version 	V1.0
+ * 认证协议支持
+ * @author <a href="https://github.com/vindell">vindell</a>
  */
 public interface LoginProtocolAuthenticationToken extends AuthenticationToken {
 

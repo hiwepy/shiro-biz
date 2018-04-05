@@ -28,13 +28,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 
- * @className	： AbstractPrincipalRealm
- * @description	：  抽象realm，个业务系统自己实现接口中的方法
- * 公共需要做的事：1.记录日志；2.提高更高级api；3.封装内部处理逻辑；4.事件监听；
- * @author 		： <a href="https://github.com/vindell">vindell</a>
- * @date		： 2017年8月26日 下午10:01:27
- * @version 	V1.0
+ * <p>抽象realm，个业务系统自己实现接口中的方法</p>
+ * <p>公共需要做的事：1.记录日志；2.提高更高级api；3.封装内部处理逻辑；4.事件监听；</p>
+ * @author <a href="https://github.com/vindell">vindell</a>
  */
 public abstract class ExternalAuthorizingRealm extends AuthorizingRealm {
 	
@@ -48,7 +44,7 @@ public abstract class ExternalAuthorizingRealm extends AuthorizingRealm {
 	
 	/**
 	 * 
-	 * @description ： 获取身份验证相关信息
+	 *  获取身份验证相关信息
 	 * 
 	 *  <pre>
 	 * 	首先根据传入的用户名获取User信息；然后如果user为空，那么抛出没找到帐号异常UnknownAccountException；
@@ -63,10 +59,9 @@ public abstract class ExternalAuthorizingRealm extends AuthorizingRealm {
 	 *  </pre>
 	 * 
 	 * @author ：<a href="https://github.com/vindell">vindell</a>
-	 * @date ：2017年9月16日 下午8:41:10
-	 * @param token
-	 * @return
-	 * @throws AuthenticationException
+	 * @param token 认证Token
+	 * @return 认证信息
+	 * @throws AuthenticationException 认证异常
 	 */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {

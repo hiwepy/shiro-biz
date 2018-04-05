@@ -27,12 +27,7 @@ import org.apache.shiro.web.filter.mgt.FilterChainResolver;
 import org.apache.shiro.web.filter.mgt.PathMatchingFilterChainResolver;
 
 /**
- * 
- * @className	： ShiroIniWebEnvironment
- * @description	： TODO(描述这个类的作用)
- * @author 		： <a href="https://github.com/vindell">vindell</a>
- * @date		： 2017年9月12日 下午10:49:02
- * @version 	V1.0
+ * @author <a href="https://github.com/vindell">vindell</a>
  */
 public class ShiroIniWebEnvironment extends IniWebEnvironment {
 

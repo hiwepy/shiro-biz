@@ -22,12 +22,8 @@ import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
 
 /**
- * 
- * @className	： PasswordEncryptUtils
- * @description	： 密码加密工具
- * @author 		： <a href="https://github.com/vindell">vindell</a>
- * @date		： 2017年7月28日 下午10:04:29
- * @version 	V1.0
+ * 密码加密工具
+ * @author <a href="https://github.com/vindell">vindell</a>
  */
 public class PasswordEncryptUtils {
 

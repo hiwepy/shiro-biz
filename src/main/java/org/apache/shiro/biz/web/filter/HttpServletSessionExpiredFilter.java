@@ -11,12 +11,8 @@ import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.AccessControlFilter;
 
 /**
- * 
- * @className ： SessionExpiredFilter
- * @description ： 会话超时过滤器
- * @author ： <a href="https://github.com/vindell">vindell</a>
- * @date ： 2017年8月26日 下午10:53:05
- * @version V1.0
+ * 会话超时过滤器
+ * @author <a href="https://github.com/vindell">vindell</a>
  */
 public class HttpServletSessionExpiredFilter extends AccessControlFilter {
 

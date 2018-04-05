@@ -62,8 +62,7 @@ public abstract class AuthenticatingHttpServlet extends AbstractHttpServlet {
     }
 
     /**
-     * Convenience method for subclasses to use when a login redirect is required.
-     * <p/>
+     * <p>Convenience method for subclasses to use when a login redirect is required.</p>
      * This implementation simply calls {@link #saveRequest(javax.servlet.ServletRequest) saveRequest(request)}
      * and then {@link #redirectToLogin(javax.servlet.ServletRequest, javax.servlet.ServletResponse) redirectToLogin(request,response)}.
      *
@@ -77,11 +76,10 @@ public abstract class AuthenticatingHttpServlet extends AbstractHttpServlet {
     }
 
     /**
-     * Convenience method merely delegates to
+     * <p>Convenience method merely delegates to
      * {@link WebUtils#saveRequest(javax.servlet.ServletRequest) WebUtils.saveRequest(request)} to save the request
      * state for reuse later.  This is mostly used to retain user request state when a redirect is issued to
-     * return the user to their originally requested url/resource.
-     * <p/>
+     * return the user to their originally requested url/resource.</p>
      * If you need to save and then immediately redirect the user to login, consider using
      * {@link #saveRequestAndRedirectToLogin(javax.servlet.ServletRequest, javax.servlet.ServletResponse)
      * saveRequestAndRedirectToLogin(request,response)} directly.
@@ -93,9 +91,8 @@ public abstract class AuthenticatingHttpServlet extends AbstractHttpServlet {
     }
     
     /**
-     * Convenience method for subclasses that merely acquires the {@link #getLoginUrl() getLoginUrl} and redirects
-     * the request to that url.
-     * <p/>
+     * <p>Convenience method for subclasses that merely acquires the {@link #getLoginUrl() getLoginUrl} and redirects
+     * the request to that url.</p>
      * <b>N.B.</b>  If you want to issue a redirect with the intention of allowing the user to then return to their
      * originally requested URL, don't use this method directly.  Instead you should call
      * {@link #saveRequestAndRedirectToLogin(javax.servlet.ServletRequest, javax.servlet.ServletResponse)
@@ -112,20 +109,23 @@ public abstract class AuthenticatingHttpServlet extends AbstractHttpServlet {
     }
     
 	/**
-	 * 
-	 * <p>方法说明：判断是否允许访问<p>
-	 * <p>作者：a href="#">Zhangxiaobin[1036]<a><p>
-	 * <p>时间：2016年7月20日上午10:54:13<p>
+	 * 判断是否允许访问
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws ServletException
+	 * @throws IOException
 	 */
 	protected boolean isAccessAllowed(ServletRequest request,ServletResponse response)  throws ServletException, IOException {
 		return SecurityUtils.getSubject().isAuthenticated();
 	}
 	
 	/**
-	 * 
-	 * <p>方法说明：当访问被禁止是，需要做的操作<p>
-	 * <p>作者：a href="#">Zhangxiaobin[1036]<a><p>
-	 * <p>时间：2016年7月20日上午10:55:24<p>
+	 * 当访问被禁止时需要做的操作
+	 * @param request
+	 * @param response
+	 * @throws ServletException
+	 * @throws IOException
 	 */
 	protected void onAccessDeniad(ServletRequest request,ServletResponse response)  throws ServletException, IOException{};
     

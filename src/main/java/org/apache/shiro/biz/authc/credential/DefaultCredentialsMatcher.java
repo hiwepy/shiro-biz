@@ -30,12 +30,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 
- * @className	： DefaultCredentialsMatcher
- * @description	： MD5加密对比, 密码重试限制, 默认是5次
- * @author 		： <a href="https://github.com/vindell">vindell</a>
- * @date		： 2017年8月26日 下午11:05:55
- * @version 	V1.0
+ * MD5加密对比, 密码重试限制, 默认是5次
+ * @author <a href="https://github.com/vindell">vindell</a>
  */
 public class DefaultCredentialsMatcher extends CodecSupport implements CredentialsMatcher {
 

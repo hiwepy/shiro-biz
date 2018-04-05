@@ -22,65 +22,45 @@ import org.apache.shiro.biz.authc.DelegateAuthenticationInfo;
 import org.apache.shiro.biz.authc.token.DelegateAuthenticationToken;
 
 /**
- * 
- * @className	： PrincipalRepository
- * @description	： 认证主体信息提供者接口
- * @author 		： <a href="https://github.com/vindell">vindell</a>
- * @date		： 2017年8月26日 下午10:31:02
- * @version 	V1.0
+ * 认证主体信息提供者接口
+ * @author <a href="https://github.com/vindell">vindell</a>
  */
 public interface PrincipalRepository {
 
 	/**
-	 * 
-	 * @description	： 用户信息
-	 * @author 		： <a href="https://github.com/vindell">vindell</a>
-	 * @date 		：2017年8月26日 下午10:31:34
-	 * @param token
-	 * @return
-	 * @throws AuthenticationException
+	 * 用户信息
+	 * @param token 用于认证的Token
+	 * @return 委托的认证信息对象
+	 * @throws AuthenticationException 认证异常
 	 */
 	DelegateAuthenticationInfo getAuthenticationInfo(DelegateAuthenticationToken token) throws AuthenticationException;
     
 	/**
-     * 
-     * @description	： 用户角色列表
-     * @author 		： <a href="https://github.com/vindell">vindell</a>
-     * @date 		：2017年8月26日 下午10:32:12
-     * @param principal
-     * @return
-     */
+	 * 用户角色列表
+	 * @param principal 认证主体对象
+	 * @return 角色列表
+	 */
     Set<String> getRoles(Object principal);
     
     /**
-     * 
-     * @description	： 用户角色列表【多realms认证的情况下使用】
-     * @author 		： <a href="https://github.com/vindell">vindell</a>
-     * @date 		：2017年8月26日 下午10:32:35
-     * @param principals
-     * @return
+     * 用户角色列表【多realm认证的情况下使用】
+     * @param principals 认证主体对象集合
+     * @return 角色列表
      */
     Set<String> getRoles(Set<Object> principals);
 
     /**
-     * 
-     * @description	： 用户权限列表
-     * @author 		： <a href="https://github.com/vindell">vindell</a>
-     * @date 		：2017年8月26日 下午10:31:59
-     * @param principal
-     * @return
+     * 用户权限列表
+     * @param principal 认证主体对象
+     * @return 权限列表
      */
     Set<String> getPermissions(Object principal);
     
     /**
-     * 
-     * @description	： 用户权限列表【多realms认证的情况下使用】
-     * @author 		： <a href="https://github.com/vindell">vindell</a>
-     * @date 		：2017年8月26日 下午10:32:50
-     * @param principals
-     * @return
+     * 用户权限列表【多realm认证的情况下使用】
+     * @param principals 认证主体对象集合
+     * @return 权限列表
      */
     Set<String> getPermissions(Set<Object> principals);
-    
 	
 }

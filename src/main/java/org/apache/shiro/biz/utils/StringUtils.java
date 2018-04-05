@@ -76,11 +76,8 @@ public abstract class StringUtils extends org.apache.shiro.util.StringUtils {
  
 	/**
 	 * 
-	 * @description	： 获得以 ",; \t\n"分割的字符数组
+	 * 获得以 ",; \t\n"分割的字符数组
 	 * @author 		： <a href="https://github.com/vindell">vindell</a>
-	 * @date 		：2017年9月12日 下午10:49:20
-	 * @param str
-	 * @return
 	 */
 	public static String[] tokenizeToStringArray(String str) {
 		return tokenizeToStringArray(str, CONFIG_LOCATION_DELIMITERS, true, true);

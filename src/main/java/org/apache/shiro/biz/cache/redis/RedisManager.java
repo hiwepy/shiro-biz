@@ -24,12 +24,8 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
 /**
- * 
- * @className	： RedisManager
- * @description	： redismanager主要用来给用户提供一个设计完备的，通过jedis的jar包来管理redis内存数据库的各种方法
- * @author 		： <a href="https://github.com/vindell">vindell</a>
- * @date		： 2017年9月12日 下午11:28:53
- * @version 	V1.0
+ * redismanager主要用来给用户提供一个设计完备的，通过jedis的jar包来管理redis内存数据库的各种方法
+ * @author <a href="https://github.com/vindell">vindell</a>
  */
 public class RedisManager {
 
@@ -65,7 +61,7 @@ public class RedisManager {
 	 * get value from redis
 	 * 
 	 * @param key
-	 * @return
+	 * @return session value
 	 */
 	public byte[] get(byte[] key) {
 		byte[] value = null;
@@ -80,9 +76,6 @@ public class RedisManager {
 
 	/**
 	 * get value from redis
-	 * 
-	 * @param key
-	 * @return
 	 */
 	public String get(String key) {
 		String value = null;
@@ -126,13 +119,6 @@ public class RedisManager {
 		return value;
 	}
 
-	/**
-	 * set
-	 * 
-	 * @param key
-	 * @param value
-	 * @return
-	 */
 	public String set(String key, String value) {
 		Jedis jedis = jedisPool.getResource();
 		try {
@@ -146,14 +132,6 @@ public class RedisManager {
 		return value;
 	}
 
-	/**
-	 * set
-	 * 
-	 * @param key
-	 * @param value
-	 * @param expire
-	 * @return
-	 */
 	public byte[] set(byte[] key, byte[] value, int expire) {
 		Jedis jedis = jedisPool.getResource();
 		try {
@@ -167,14 +145,6 @@ public class RedisManager {
 		return value;
 	}
 
-	/**
-	 * set
-	 * 
-	 * @param key
-	 * @param value
-	 * @param expire
-	 * @return
-	 */
 	public String set(String key, String value, int expire) {
 		Jedis jedis = jedisPool.getResource();
 		try {
@@ -188,11 +158,6 @@ public class RedisManager {
 		return value;
 	}
 
-	/**
-	 * del
-	 * 
-	 * @param key
-	 */
 	public void del(byte[] key) {
 		Jedis jedis = jedisPool.getResource();
 		try {
@@ -202,11 +167,6 @@ public class RedisManager {
 		}
 	}
 
-	/**
-	 * del
-	 * 
-	 * @param key
-	 */
 	public void del(String key) {
 		Jedis jedis = jedisPool.getResource();
 		try {
@@ -244,9 +204,6 @@ public class RedisManager {
 
 	/**
 	 * keys
-	 * 
-	 * @param regex
-	 * @return
 	 */
 	public Set<byte[]> keys(String pattern) {
 		Set<byte[]> keys = null;

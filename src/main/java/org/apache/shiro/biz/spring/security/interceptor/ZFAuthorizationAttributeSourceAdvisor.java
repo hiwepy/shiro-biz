@@ -73,9 +73,6 @@ public class ZFAuthorizationAttributeSourceAdvisor extends AuthorizationAttribut
 
 	/**
 	 * 查看Controller类是否有权限注解
-	 * 
-	 * @param clazz
-	 * @return
 	 */
 	private boolean isAuthzAnnotationPresent(Class clazz) {
 		for (Class<? extends Annotation> annClass : AUTHZ_ANNOTATION_CLASSES) {

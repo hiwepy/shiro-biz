@@ -12,12 +12,7 @@ import org.apache.shiro.biz.web.Parameter;
 import org.apache.shiro.biz.web.Parameters;
 
 /**
- * 
- * @className	： ShiroHttpLogoutServlet
- * @description	： TODO(描述这个类的作用)
- * @author 		： <a href="https://github.com/vindell">vindell</a>
- * @date		： 2017年9月12日 下午10:49:13
- * @version 	V1.0
+ * @author <a href="https://github.com/vindell">vindell</a>
  */
 @SuppressWarnings("serial")
 //@WebServlet(name = "logoutServlet", urlPatterns = "/logout")

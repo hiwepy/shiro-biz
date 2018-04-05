@@ -98,7 +98,6 @@ public class UsernameWithoutPwdToken implements HostAuthenticationToken, Remembe
      * Returns the host name or IP string from where the authentication attempt occurs.  May be <tt>null</tt> if the
      * host name/IP is unknown or explicitly omitted.  It is up to the Authenticator implementation processing this
      * token if an authentication attempt without a host is valid or not.
-     * <p/>
      * <p>(Shiro's default Authenticator allows <tt>null</tt> hosts to support localhost and proxy server environments).</p>
      *
      * @return the host from where the authentication attempt occurs, or <tt>null</tt> if it is unknown or
@@ -112,7 +111,6 @@ public class UsernameWithoutPwdToken implements HostAuthenticationToken, Remembe
     /**
      * Sets the host name or IP string from where the authentication attempt occurs.  It is up to the Authenticator
      * implementation processing this token if an authentication attempt without a host is valid or not.
-     * <p/>
      * <p>(Shiro's default Authenticator
      * allows <tt>null</tt> hosts to allow localhost and proxy server environments).</p>
      *

@@ -15,12 +15,8 @@
  */
 package org.apache.shiro.biz.authc.token;
 /**
- * 
- * @className	： LoginType
- * @description	：登录类型枚举；1：系统正常登录；2：外部单点登录；3：外部票据登录（通过握手秘钥等参数认证登录）
- * @author 		： <a href="https://github.com/vindell">vindell</a>
- * @date		： 2017年8月26日 下午6:10:15
- * @version 	V1.0
+ * 登录类型枚举；1：系统正常登录；2：外部单点登录；3：外部票据登录（通过握手秘钥等参数认证登录）
+ * @author <a href="https://github.com/vindell">vindell</a>
  */
 public enum LoginType {
 

@@ -18,12 +18,8 @@ package org.apache.shiro.biz.authc.exception;
 import org.apache.shiro.authc.AccountException;
 
 /**
- * 
- * @className	： InvalidStateException
- * @description	：用户状态异常
- * @author 		： <a href="https://github.com/vindell">vindell</a>
- * @date		： 2017年8月26日 下午6:08:07
- * @version 	V1.0
+ * 用户状态异常
+ * @author <a href="https://github.com/vindell">vindell</a>
  */
 public class InvalidStateException extends AccountException{
 

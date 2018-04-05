@@ -32,12 +32,13 @@ DAO大家都用过，数据访问对象，用于会话的CRUD，比如我们想�
 密码模块，Shiro提高了一些常见的加密组件用于如密码加密/解密的。
 
 
+```java
 //获取唯一主键对象
-    	Object uniquely = token.getPrincipal();
+    Object uniquely = token.getPrincipal();
 
-    	Principal principal = this.getPrincipal(uniquely);
-        /*
-        	如果身份验证失败请捕获AuthenticationException或其子类，常见的如：
+    Principal principal = this.getPrincipal(uniquely);
+    /*
+        如果身份验证失败请捕获AuthenticationException或其子类，常见的如：
         	DisabledAccountException（禁用的帐号）、
         	LockedAccountException（锁定的帐号）、
         	UnknownAccountException（错误的帐号）、
@@ -45,21 +46,20 @@ DAO大家都用过，数据访问对象，用于会话的CRUD，比如我们想�
         	IncorrectCredentialsException （错误的凭证）、
         	ExpiredCredentialsException（过期的凭证）等，具体请查看其继承关系；
         	对于页面的错误消息展示，最好使用如“用户名/密码错误”而不是“用户名错误”/“密码错误”，防止一些恶意用户非法扫描帐号库；
-        */
-        
-        if(principal == null) {
-        	//没找到帐号
-            throw new UnknownAccountException(PrincipalRealmEnum.UNKONWN_ACCOUNT.getText());
+       */
+     if(principal == null) {
+        //没找到帐号
+        throw new UnknownAccountException(PrincipalRealmEnum.UNKONWN_ACCOUNT.getText());
         }
         
         if(Boolean.TRUE.equals(principal.getDisabled())) {
-        	//帐号锁定
+       //帐号锁定
             throw new DisabledAccountException(PrincipalRealmEnum.DISABLED_ACCOUNT.getText()); 
         }
         
         if(Boolean.TRUE.equals(principal.getLocked())) {
-        	//帐号锁定
-            throw new LockedAccountException(PrincipalRealmEnum.LOCKED_ACCOUNT.getText()); 
+        //帐号锁定
+            throw new LockedAccountException(PrincipalRealmEnum.LOCKED_ACCOUNT.getText());
         }
 
         //交给AuthenticatingRealm使用CredentialsMatcher进行密码匹配，如果觉得人家的不好可以自定义实现
@@ -70,7 +70,5 @@ DAO大家都用过，数据访问对象，用于会话的CRUD，比如我们想�
                 principal.getPassword(), //密码
                 ByteSource.Util.bytes(principal.getCredentialsSalt()),//salt=username+salt
                 getName()  //realm name
-        );
-
-
-
+       );
+```

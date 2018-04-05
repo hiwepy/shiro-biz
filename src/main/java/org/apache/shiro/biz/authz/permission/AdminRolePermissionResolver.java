@@ -23,12 +23,7 @@ import org.apache.shiro.authz.permission.RolePermissionResolver;
 import org.apache.shiro.authz.permission.WildcardPermission;
 
 /**
- * 
- * @className	： AdminRolePermissionResolver
- * @description	： TODO(描述这个类的作用)
- * @author 		： <a href="https://github.com/vindell">vindell</a>
- * @date		： 2017年7月28日 下午9:57:14
- * @version 	V1.0
+ * @author <a href="https://github.com/vindell">vindell</a>
  */
 public class AdminRolePermissionResolver implements RolePermissionResolver {
 

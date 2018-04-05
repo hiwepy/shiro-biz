@@ -127,7 +127,7 @@ public class JedisShiroSessionRepository  implements SessionRepository{
      * 获取redis中的session key
      * 
      * @param sessionId
-     * @return
+     * @return session key
      */
     protected String getRedisSessionKey(Serializable sessionId) {
         return this.keyPrefix + sessionId;

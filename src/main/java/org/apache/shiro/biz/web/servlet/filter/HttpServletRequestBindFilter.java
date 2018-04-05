@@ -11,12 +11,8 @@ import org.apache.shiro.biz.utils.WebThreadContext;
 import org.apache.shiro.web.servlet.OncePerRequestFilter;
 
 /**
- * 
- * @className	： HttpServletRequestBindFilter
- * @description	： WebThreadContext对象绑定过滤器
- * @author 		： <a href="https://github.com/vindell">vindell</a>
- * @date		： 2017年8月26日 下午6:13:49
- * @version 	V1.0
+ * WebThreadContext对象绑定过滤器
+ * @author <a href="https://github.com/vindell">vindell</a>
  */
 public class HttpServletRequestBindFilter extends OncePerRequestFilter {
 	

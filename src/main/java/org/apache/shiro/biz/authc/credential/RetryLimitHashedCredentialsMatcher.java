@@ -25,12 +25,8 @@ import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheManager;
 
 /**
- * 
- * @className	： RetryLimitHashedCredentialsMatcher
- * @description	： 密码校验器，支持重复提交次数校验，防范暴力破解
- * @author 		： <a href="https://github.com/vindell">vindell</a>
- * @date		： 2017年7月28日 下午9:56:44
- * @version 	V1.0
+ * 密码校验器，支持重复提交次数校验，防范暴力破解
+ * @author <a href="https://github.com/vindell">vindell</a>
  */
 public class RetryLimitHashedCredentialsMatcher extends HashedCredentialsMatcher {
 

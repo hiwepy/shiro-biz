@@ -48,7 +48,6 @@ public abstract class AbstractAuthenticatingFilter extends AccessControlFilter {
     
     /**
      * Convenience method for subclasses to use when a login redirect is required.
-     * <p/>
      * This implementation simply calls {@link #saveRequest(javax.servlet.ServletRequest) saveRequest(request)}
      * and then {@link #redirectToLogin(javax.servlet.ServletRequest, javax.servlet.ServletResponse) redirectToLogin(request,response)}.
      *
@@ -66,7 +65,6 @@ public abstract class AbstractAuthenticatingFilter extends AccessControlFilter {
      * {@link WebUtils#saveRequest(javax.servlet.ServletRequest) WebUtils.saveRequest(request)} to save the request
      * state for reuse later.  This is mostly used to retain user request state when a redirect is issued to
      * return the user to their originally requested url/resource.
-     * <p/>
      * If you need to save and then immediately redirect the user to login, consider using
      * {@link #saveRequestAndRedirectToLogin(javax.servlet.ServletRequest, javax.servlet.ServletResponse)
      * saveRequestAndRedirectToLogin(request,response)} directly.
@@ -80,7 +78,6 @@ public abstract class AbstractAuthenticatingFilter extends AccessControlFilter {
     /**
      * Convenience method for subclasses that merely acquires the {@link #getLoginUrl() getLoginUrl} and redirects
      * the request to that url.
-     * <p/>
      * <b>N.B.</b>  If you want to issue a redirect with the intention of allowing the user to then return to their
      * originally requested URL, don't use this method directly.  Instead you should call
      * {@link #saveRequestAndRedirectToLogin(javax.servlet.ServletRequest, javax.servlet.ServletResponse)

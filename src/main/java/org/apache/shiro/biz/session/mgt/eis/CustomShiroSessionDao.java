@@ -25,14 +25,6 @@ import org.apache.shiro.session.mgt.eis.AbstractSessionDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
  
-/**
- * 
- * @className	： CustomShiroSessionDao
- * @description	： TODO(描述这个类的作用)
- * @author 		： <a href="https://github.com/vindell">vindell</a>
- * @date		： 2017年7月28日 下午10:07:56
- * @version 	V1.0
- */
 public class CustomShiroSessionDao extends AbstractSessionDAO {
 	
 	protected static Logger LOG = LoggerFactory.getLogger(CustomShiroSessionDao.class);

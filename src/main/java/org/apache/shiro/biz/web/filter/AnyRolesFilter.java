@@ -25,12 +25,7 @@ import org.apache.shiro.web.filter.AccessControlFilter;
 import org.apache.shiro.web.util.WebUtils;
 
 /**
- * 
- * @className	： AnyRolesFilter
- * @description	： TODO(描述这个类的作用)
- * @author 		： <a href="https://github.com/vindell">vindell</a>
- * @date		： 2017年9月12日 下午10:48:45
- * @version 	V1.0
+ * @author <a href="https://github.com/vindell">vindell</a>
  */
 public class AnyRolesFilter extends AccessControlFilter {
 	

@@ -28,12 +28,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 
- * @className ： OnlyOneAuthenticatorStrategy
- * @description ： 唯一认证策略实现
- * @author ： <a href="https://github.com/vindell">vindell</a>
- * @date ： 2017年7月28日 下午10:10:19
- * @version V1.0
+ * 唯一认证策略实现
+ * @author <a href="https://github.com/vindell">vindell</a>
  */
 public class OnlyOneAuthenticatorStrategy extends AbstractAuthenticationStrategy {
 

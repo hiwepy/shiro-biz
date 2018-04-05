@@ -36,13 +36,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 
- * @className	： InternalAuthorizingRealm
- * @description	： 内部账户抽象Realm <br/>
- * 公共需要做的事：1.记录日志；2.提高更高级api；3.封装内部处理逻辑；4.事件监听；
- * @author 		： <a href="https://github.com/vindell">vindell</a>
- * @date		： 2017年8月26日 下午10:01:27
- * @version 	V1.0
+ * <b>内部账户抽象Realm</b> 
+ * <p>公共需要做的事：1.记录日志；2.提高更高级api；3.封装内部处理逻辑；4.事件监听；</p>
+ * @author <a href="https://github.com/vindell">vindell</a>
  */
 @SuppressWarnings("unchecked")
 public abstract class InternalAuthorizingRealm extends AuthorizingRealm {
@@ -57,13 +53,11 @@ public abstract class InternalAuthorizingRealm extends AuthorizingRealm {
 	protected PasswordService passwordService = new DefaultPasswordService();  
     
 	/**
-	 * 
-	 * @description	： 获取授权信息;
+	 * 获取授权信息;
 	 * 
 	 * @author 		：<a href="https://github.com/vindell">vindell</a>
-	 * @date 		：2017年9月16日 下午8:43:32
 	 * @param principals : PrincipalCollection是一个身份集合，因为我们现在就一个Realm，所以直接调用getPrimaryPrincipal得到之前传入的用户名即可；然后根据用户名调用UserService接口获取角色及权限信息。
-	 * @return
+	 * @return 授权信息
 	 */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
@@ -89,7 +83,7 @@ public abstract class InternalAuthorizingRealm extends AuthorizingRealm {
 
 	/**
 	 * 
-	 * @description ： 获取身份验证相关信息
+	 *  获取身份验证相关信息
 	 * 
 	 *  <pre>
 	 * 	首先根据传入的用户名获取User信息；然后如果user为空，那么抛出没找到帐号异常UnknownAccountException；
@@ -104,9 +98,8 @@ public abstract class InternalAuthorizingRealm extends AuthorizingRealm {
 	 *  </pre>
 	 * 
 	 * @author ：<a href="https://github.com/vindell">vindell</a>
-	 * @date ：2017年9月16日 下午8:41:10
 	 * @param token
-	 * @return
+	 * @return 授权信息
 	 * @throws AuthenticationException
 	 */
     @Override

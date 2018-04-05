@@ -18,12 +18,8 @@ package org.apache.shiro.biz.authc.exception;
 import org.apache.shiro.authc.AccountException;
 
 /**
- * 
- * @className	： InvalidAccountException
- * @description	： 无效账号异常
- * @author 		： <a href="https://github.com/vindell">vindell</a>
- * @date		： 2017年8月26日 下午6:07:47
- * @version 	V1.0
+ * 无效账号异常
+ * @author <a href="https://github.com/vindell">vindell</a>
  */
 public class InvalidAccountException extends AccountException {
 

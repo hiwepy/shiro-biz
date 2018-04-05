@@ -23,12 +23,7 @@ import org.apache.shiro.session.mgt.SessionFactory;
 import org.apache.shiro.web.session.mgt.WebSessionContext;
 
 /**
- * 
- * @className	： OnlineSessionFactory
- * @description	： TODO(描述这个类的作用)
- * @author 		： <a href="https://github.com/vindell">vindell</a>
- * @date		： 2017年7月28日 下午10:07:27
- * @version 	V1.0
+ * @author <a href="https://github.com/vindell">vindell</a>
  */
 public class OnlineSessionFactory implements SessionFactory {  
 	  

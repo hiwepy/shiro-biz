@@ -11,12 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.shiro.biz.web.Parameters;
 
 /**
- * 
- * @className	： AbstractHttpServlet
- * @description	： 基础HttpServlet
- * @author 		： <a href="https://github.com/vindell">vindell</a>
- * @date		： 2017年8月26日 下午6:18:08
- * @version 	V1.0
+ * 基础HttpServlet
+ * @author <a href="https://github.com/vindell">vindell</a>
  */
 @SuppressWarnings("serial")
 public abstract class AbstractHttpServlet extends HttpServlet {

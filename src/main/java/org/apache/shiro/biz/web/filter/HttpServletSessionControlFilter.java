@@ -18,13 +18,8 @@ import org.apache.shiro.web.filter.AccessControlFilter;
 import org.apache.shiro.web.util.WebUtils;
 
 /**
- * 
- * @className	： SessionControlFilter
- * @description	：Session Control Filter, 用户session控制 <br/>
- * 只允许用户在一个地方登录
- * @author 		： <a href="https://github.com/vindell">vindell</a>
- * @date		： 2017年8月26日 下午10:50:11
- * @version 	V1.0
+ * <p>Session Control Filter, 用户session控制 只允许用户在一个地方登录</p>
+ * @author <a href="https://github.com/vindell">vindell</a>
  */
 public abstract class HttpServletSessionControlFilter extends AccessControlFilter {
 

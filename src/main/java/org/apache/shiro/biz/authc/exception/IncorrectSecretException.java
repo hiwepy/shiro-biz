@@ -18,12 +18,8 @@ package org.apache.shiro.biz.authc.exception;
 import org.apache.shiro.authc.AuthenticationException;
 
 /**
- * 
- * @className	： IncorrectSecretException
- * @description	：  密钥无效异常
- * @author 		： <a href="https://github.com/vindell">vindell</a>
- * @date		： 2017年8月26日 下午6:11:15
- * @version 	V1.0
+ * 密钥无效异常
+ * @author <a href="https://github.com/vindell">vindell</a>
  */
 public class IncorrectSecretException extends AuthenticationException {
 

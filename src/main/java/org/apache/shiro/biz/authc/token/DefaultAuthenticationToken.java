@@ -18,12 +18,8 @@ package org.apache.shiro.biz.authc.token;
 import org.apache.shiro.authc.UsernamePasswordToken;
 
 /**
- * 
- * @className ： DefaultAuthenticationToken
- * @description ： 默认的认证token
- * @author ： <a href="https://github.com/vindell">vindell</a>
- * @date ： 2017年8月26日 下午9:27:51
- * @version V1.0
+ * 默认的认证token
+ * @author <a href="https://github.com/vindell">vindell</a>
  */
 @SuppressWarnings("serial")
 public class DefaultAuthenticationToken extends UsernamePasswordToken

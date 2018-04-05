@@ -18,12 +18,7 @@ package org.apache.shiro.biz.principal;
 import java.io.Serializable;
 
 /**
- * 
- * @className	： ShiroRole
- * @description	： TODO(描述这个类的作用)
- * @author 		： <a href="https://github.com/vindell">vindell</a>
- * @date		： 2017年9月12日 下午11:28:25
- * @version 	V1.0
+ * @author <a href="https://github.com/vindell">vindell</a>
  */
 @SuppressWarnings("serial")
 public class ShiroRole implements Serializable {

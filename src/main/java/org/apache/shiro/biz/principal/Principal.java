@@ -18,12 +18,7 @@ package org.apache.shiro.biz.principal;
 import java.io.Serializable;
 
 /**
- * 
- * @className	： Principal
- * @description	： TODO(描述这个类的作用)
- * @author 		： <a href="https://github.com/vindell">vindell</a>
- * @date		： 2017年7月28日 下午10:01:22
- * @version 	V1.0
+ * @author <a href="https://github.com/vindell">vindell</a>
  */
 @SuppressWarnings("serial")
 public class Principal implements Cloneable, Serializable {

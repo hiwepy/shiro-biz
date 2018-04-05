@@ -93,7 +93,7 @@ public class RedisCache<K,V> implements Cache<K,V> {
     /** 
      * 获得byte[]型的key 
      * @param key 
-     * @return 
+     * @return session key
      */  
     private byte[] getByteKey(K key){  
         if(key instanceof String){  

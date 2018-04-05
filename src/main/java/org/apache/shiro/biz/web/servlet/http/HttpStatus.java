@@ -1,18 +1,13 @@
 package org.apache.shiro.biz.web.servlet.http;
 
 /**
- * 
- * @className	： HttpStatus
- * @description	：  标准Http状态码+自定义Http状态码
- * @author 		： <a href="https://github.com/vindell">vindell</a>
- * @date		： 2017年9月12日 下午10:48:51
- * @version 	V1.0
+ * 标准Http状态码+自定义Http状态码
+ * @author <a href="https://github.com/vindell">vindell</a>
  */
 public interface HttpStatus {
 
     // --- 1xx Informational ---
 	// HTTP: Status 1xx(临时响应) ->表示临时响应并需要请求者继续执行操作的状态代码。 
-
 	
     /** {@code 100 Continue} (HTTP/1.1 - RFC 2616) */
 	//HTTP: Status 100(继续)	  -> 请求者应当继续提出请求。 服务器返回此代码表示已收到请求的第一部分，正在等待其余部分。

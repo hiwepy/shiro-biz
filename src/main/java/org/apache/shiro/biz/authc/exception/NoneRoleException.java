@@ -18,12 +18,8 @@ package org.apache.shiro.biz.authc.exception;
 import org.apache.shiro.ShiroException;
 
 /**
- * 
- * @className	： NoneRoleException
- * @description	： 登录用户未分配角色异常
- * @author 		： <a href="https://github.com/vindell">vindell</a>
- * @date		： 2017年8月26日 下午6:09:05
- * @version 	V1.0
+ * 登录用户未分配角色异常
+ * @author <a href="https://github.com/vindell">vindell</a>
  */
 public class NoneRoleException extends ShiroException {
 
