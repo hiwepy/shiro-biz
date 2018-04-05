@@ -42,7 +42,7 @@ public class JedisShiroSessionRepository  implements SessionRepository{
     protected String keyPrefix = "shiro_redis_session:";  
  
     /** 
-     * 保存 Session 
+     * 保存 Session
      */
     @Override
     public void saveSession(Session session) {
@@ -126,8 +126,8 @@ public class JedisShiroSessionRepository  implements SessionRepository{
     /**
      * 获取redis中的session key
      * 
-     * @param sessionId
-     * @return session key
+     * @param sessionId The id of session
+     * @return The key of session 
      */
     protected String getRedisSessionKey(Serializable sessionId) {
         return this.keyPrefix + sessionId;

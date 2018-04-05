@@ -139,8 +139,8 @@ public abstract class AuthenticatingHttpServlet extends HttpServlet {
      * saveRequestAndRedirectToLogin(request,response)}, which will save the current request state so that it can
      * be reconstructed and re-used after a successful login.
      *
-     * @param request  the incoming <code>ServletRequest</code>
-     * @param response the outgoing <code>ServletResponse</code>
+     * @param request  the incoming {@link ServletRequest}
+     * @param response the outgoing {@link ServletResponse}
      * @throws IOException if an error occurs.
      */
     protected void redirectToLogin(ServletRequest request, ServletResponse response) throws IOException {
@@ -150,6 +150,11 @@ public abstract class AuthenticatingHttpServlet extends HttpServlet {
     
 	/**
 	 * 判断是否允许访问
+	 * @param request  the incoming {@link ServletRequest}
+     * @param response the outgoing {@link ServletResponse}
+	 * @return 是否允许访问
+	 * @throws ServletException if an error occurs.
+	 * @throws IOException if an error occurs.
 	 */
 	protected boolean isAccessAllowed(ServletRequest request,ServletResponse response)  throws ServletException, IOException {
 		return SecurityUtils.getSubject().isAuthenticated();
@@ -157,6 +162,10 @@ public abstract class AuthenticatingHttpServlet extends HttpServlet {
 	
 	/**
 	 * 当访问被禁止时需要做的操作
+	 * @param request  the incoming {@link ServletRequest}
+     * @param response the outgoing {@link ServletResponse}
+	 * @throws ServletException if an error occurs.
+	 * @throws IOException if an error occurs.
 	 */
 	protected void onAccessDeniad(ServletRequest request,ServletResponse response)  throws ServletException, IOException{};
     

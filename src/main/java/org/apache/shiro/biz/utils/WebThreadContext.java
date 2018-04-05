@@ -46,6 +46,7 @@ public class WebThreadContext extends ThreadContext {
     
 	/**
 	 * 绑定ServletContext对象到当前上下文
+	 * @param servletContext {@link ServletContext} 对象
 	 */
 	public static void bindServletContext(ServletContext servletContext){
 		if (servletContext != null) {
@@ -55,6 +56,7 @@ public class WebThreadContext extends ThreadContext {
 	
 	/**
 	 * 绑定ServletRequest对象到当前上下文
+	 * @param request {@link ServletRequest} 对象
 	 */
 	public static void bindRequest(ServletRequest request){
 		if (request != null) {
@@ -64,6 +66,7 @@ public class WebThreadContext extends ThreadContext {
 	
 	/**
 	 * 绑定ServletResponse对象到当前上下文
+	 * @param response {@link ServletResponse} 对象
 	 */
 	public static void bindResponse(ServletResponse response){
 		if (response != null) {
@@ -74,6 +77,7 @@ public class WebThreadContext extends ThreadContext {
 	
 	/**
 	 * 获取ServletRequest
+	 * @return {@link ServletRequest} 对象
 	 */
 	public static ServletRequest getRequest(){
 		return (ServletRequest) get(HTTP_REQUEST);
@@ -81,6 +85,7 @@ public class WebThreadContext extends ThreadContext {
 	
 	/**
 	 * 获取HttpSession
+	 * @return {@link HttpSession} 对象
 	 */
 	public static HttpSession getSession() {
 		HttpServletRequest request = (HttpServletRequest) getRequest();
@@ -89,6 +94,7 @@ public class WebThreadContext extends ThreadContext {
 	
 	/**
 	 * 获取ServletResponse
+	 * @return {@link ServletResponse} 对象
 	 */
 	public static ServletResponse getResponse(){
 		return (ServletResponse) get(HTTP_RESPONSE);
@@ -96,6 +102,7 @@ public class WebThreadContext extends ThreadContext {
 	
 	/**
 	 * 获取ServletContext
+	 * @return {@link ServletContext} 对象
 	 */
 	public static ServletContext getServletContext(){
 		return (ServletContext) get(SERVLET_CONTEXT);
@@ -103,6 +110,8 @@ public class WebThreadContext extends ThreadContext {
 	
 	/**
 	 * 绑定键值对到到当前上下文的ServletContext对象中
+	 * @param name 属性名
+	 * @param object 属性值
 	 */
 	public static void setAttribute(String name, Object object){
 		ServletContext servletContext = getServletContext();
@@ -112,7 +121,10 @@ public class WebThreadContext extends ThreadContext {
 	}
 	
 	/**
+	 * 
 	 * 获取ServletContext对象中的属性对象
+	 * @param name 属性名称
+	 * @return ServletContext对象中的属性对象
 	 */
 	public static Object getAttribute(String name){
 		ServletContext servletContext = getServletContext();

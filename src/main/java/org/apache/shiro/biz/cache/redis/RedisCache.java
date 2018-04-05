@@ -58,17 +58,19 @@ public class RedisCache<K,V> implements Cache<K,V> {
     }  
   
     /** 
+     * 
      * Sets the Redis sessions key  
      * prefix. 
      * @param keyPrefix The prefix 
-     */  
+     */
     public void setKeyPrefix(String keyPrefix) {  
         this.keyPrefix = keyPrefix;  
     }  
       
     /** 
      * 通过一个JedisManager实例构造RedisCache 
-     */  
+     * @param cache {@link RedisManager} 对象
+     */
     public RedisCache(RedisManager cache){  
          if (cache == null) {  
              throw new IllegalArgumentException("Cache argument cannot be null.");  

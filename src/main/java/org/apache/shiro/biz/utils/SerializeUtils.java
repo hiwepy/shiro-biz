@@ -28,8 +28,8 @@ public class SerializeUtils extends org.apache.commons.lang3.SerializationUtils 
 	
 	/**
 	 * 序列化
-	 * @param object
-	 * @return
+	 * @param object 序列化对象
+	 * @return 字节数组
 	 */
 	public static byte[] serialize(Object object) {
 		

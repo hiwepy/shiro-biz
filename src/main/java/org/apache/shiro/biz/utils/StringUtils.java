@@ -68,7 +68,7 @@ public abstract class StringUtils extends org.apache.shiro.util.StringUtils {
 	 * that commonly deals with Strings but generally has to iterate over
 	 * Objects since attributes may e.g. be primitive value objects as well.
 	 * @param str the candidate String
-	 * @since 3.2.1
+	 * @return 是否为空
 	 */
 	public static boolean isEmpty(Object str) {
 		return (str == null || "".equals(str));
@@ -77,7 +77,8 @@ public abstract class StringUtils extends org.apache.shiro.util.StringUtils {
 	/**
 	 * 
 	 * 获得以 ",; \t\n"分割的字符数组
-	 * @author 		： <a href="https://github.com/vindell">vindell</a>
+	 * @param str 待分割字符串
+	 * @return 分割后的字符串数组
 	 */
 	public static String[] tokenizeToStringArray(String str) {
 		return tokenizeToStringArray(str, CONFIG_LOCATION_DELIMITERS, true, true);

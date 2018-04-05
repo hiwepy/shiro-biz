@@ -85,9 +85,8 @@ public class UsernameWithoutPwdToken implements HostAuthenticationToken, Remembe
     }
 
     /**
-     * Returns the {@link #getPassword() password} char array.
-     *
-     * @return the {@link #getPassword() password} char array.
+     * Returns the password char array.
+     * @return the password char array.
      * @see org.apache.shiro.authc.AuthenticationToken#getCredentials()
      */
     public Object getCredentials() {

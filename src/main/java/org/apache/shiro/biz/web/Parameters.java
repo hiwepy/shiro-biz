@@ -49,7 +49,7 @@ public abstract class Parameters {
 		return servletContext;
 	}
 
-	/**
+	/*
 	 * 单个Boolean值解析
 	 */
 	public static boolean getBoolean(Parameter key,String def) {
@@ -59,7 +59,7 @@ public abstract class Parameters {
 		return Boolean.parseBoolean( para == null ? def : para);
 	}
 	
-	/**
+	/*
 	 * 单个Int值解析
 	 */
 	public static int getInt(Parameter key,String def) {
@@ -69,7 +69,7 @@ public abstract class Parameters {
 		return Integer.parseInt(para == null ? def : para);
 	}
 	
-	/**
+	/*
 	 * 单个Long值解析
 	 */
 	public static long getLong(Parameter key,String def) {
@@ -79,7 +79,7 @@ public abstract class Parameters {
 		return Long.parseLong(para == null ? def : para);
 	}
 	
-	/**
+	/*
 	 * 单个String值解析
 	 */
 	public static String getString(Parameter key,String def) {
@@ -89,7 +89,7 @@ public abstract class Parameters {
 		return para == null ? def : para;
 	}
 	
-	/**
+	/*
 	 * 单个String值解析
 	 */
 	public static String getString(Parameter key) {
@@ -98,7 +98,7 @@ public abstract class Parameters {
 		return getParameterByName(name);
 	}
 
-	/**
+	/*
 	 * 多个String值解析 ;多个配置可以用",; \t\n"中任意字符分割
 	 */
 	public static String[] getStringArray(Parameter key){
@@ -108,7 +108,7 @@ public abstract class Parameters {
 		return para == null ? new String[]{} : StringUtils.tokenizeToStringArray(para);
 	}
 	
-	/**多个键值对解析*/
+	/*多个键值对解析*/
 	public static Map<String, String[]> getStringMultiMap(Parameter key) {
         Map<String, String[]> result = new LinkedHashMap<String, String[]>();
         String[] entries = getStringArray(key);

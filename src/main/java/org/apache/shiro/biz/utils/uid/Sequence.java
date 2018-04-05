@@ -43,10 +43,6 @@ public class Sequence {
 		this.workerId = getMaxWorkerId(datacenterId, maxWorkerId);
 	}
 
-	/**
-	 * @param workerId 工作机器ID
-	 * @param datacenterId 序列号
-	 */
 	public Sequence(long workerId, long datacenterId) {
 		if (workerId > maxWorkerId || workerId < 0) {
 			throw new IllegalArgumentException(
@@ -60,7 +56,7 @@ public class Sequence {
 		this.datacenterId = datacenterId;
 	}
 
-	/**
+	/*
 	 * 获取下一个ID
 	 */
 	public synchronized long nextId() {
@@ -96,11 +92,6 @@ public class Sequence {
 		return SystemClock.now();
 	}
 
-	/**
-	 * <p>
-	 * 获取 maxWorkerId
-	 * </p>
-	 */
 	protected static long getMaxWorkerId(long datacenterId, long maxWorkerId) {
 		StringBuffer mpid = new StringBuffer();
 		mpid.append(datacenterId);
@@ -117,11 +108,6 @@ public class Sequence {
 		return (mpid.toString().hashCode() & 0xffff) % (maxWorkerId + 1);
 	}
 
-	/**
-	 * <p>
-	 * 数据标识id部分
-	 * </p>
-	 */
 	protected static long getDatacenterId(long maxDatacenterId) {
 		long id = 0L;
 		try {

@@ -26,7 +26,6 @@ import org.apache.shiro.biz.utils.uid.Sequence;
  * </p>
  *
  * @author hubin
- * @Date 2016-08-01
  */
 public class IDWorker {
 
@@ -43,6 +42,7 @@ public class IDWorker {
 	 * <p>
 	 * 获取去掉"-" UUID
 	 * </p>
+	 * @return 获取去掉"-" 的 UUID 
 	 */
 	public static synchronized String get32UUID() {
 		return UUID.randomUUID().toString().replace("-", "");

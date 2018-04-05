@@ -59,8 +59,7 @@ public class RedisManager {
 
 	/**
 	 * get value from redis
-	 * 
-	 * @param key
+	 * @param key session key
 	 * @return session value
 	 */
 	public byte[] get(byte[] key) {
@@ -76,6 +75,8 @@ public class RedisManager {
 
 	/**
 	 * get value from redis
+	 * @param key session key
+	 * @return session value
 	 */
 	public String get(String key) {
 		String value = null;
@@ -99,13 +100,6 @@ public class RedisManager {
 		return valueList;
 	}
 
-	/**
-	 * set
-	 * 
-	 * @param key
-	 * @param value
-	 * @return
-	 */
 	public byte[] set(byte[] key, byte[] value) {
 		Jedis jedis = jedisPool.getResource();
 		try {
@@ -176,9 +170,6 @@ public class RedisManager {
 		}
 	}
 
-	/**
-	 * flush
-	 */
 	public void flushDB() {
 		Jedis jedis = jedisPool.getResource();
 		try {
@@ -188,9 +179,6 @@ public class RedisManager {
 		}
 	}
 
-	/**
-	 * size
-	 */
 	public Long dbSize() {
 		Long dbSize = 0L;
 		Jedis jedis = jedisPool.getResource();
@@ -202,9 +190,6 @@ public class RedisManager {
 		return dbSize;
 	}
 
-	/**
-	 * keys
-	 */
 	public Set<byte[]> keys(String pattern) {
 		Set<byte[]> keys = null;
 		Jedis jedis = jedisPool.getResource();

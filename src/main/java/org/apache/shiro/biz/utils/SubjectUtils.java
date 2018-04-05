@@ -30,11 +30,7 @@ public class SubjectUtils {
    /**
      * Creates a {@link WebSubject} instance to associate with the incoming request/response pair which will be used
      * throughout the request/response execution.
-     *
-     * @param request  the incoming {@code ServletRequest}
-     * @param response the outgoing {@code ServletResponse}
      * @return the {@code WebSubject} instance to associate with the request/response execution
-     * @since 1.0
      */
 	public static WebSubject getWebSubject(){
 		Subject subject = ThreadContext.getSubject();

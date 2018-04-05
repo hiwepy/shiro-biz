@@ -98,9 +98,9 @@ public abstract class InternalAuthorizingRealm extends AuthorizingRealm {
 	 *  </pre>
 	 * 
 	 * @author ：<a href="https://github.com/vindell">vindell</a>
-	 * @param token
+	 * @param token 认证Token
 	 * @return 授权信息
-	 * @throws AuthenticationException
+	 * @throws AuthenticationException 认证异常
 	 */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
