@@ -14,9 +14,9 @@ import org.apache.shiro.biz.authz.aop.RoleAllowsAnnotationMethodInterceptor;
 import org.apache.shiro.spring.aop.SpringAnnotationResolver;
 import org.apache.shiro.spring.security.interceptor.AopAllianceAnnotationsAuthorizingMethodInterceptor;
 
-public class ZFAnnotationsAuthorizingMethodInterceptor extends AopAllianceAnnotationsAuthorizingMethodInterceptor {
+public class ExtendAnnotationsAuthorizingMethodInterceptor extends AopAllianceAnnotationsAuthorizingMethodInterceptor {
 
-	public ZFAnnotationsAuthorizingMethodInterceptor() {
+	public ExtendAnnotationsAuthorizingMethodInterceptor() {
 		
 		List<AuthorizingAnnotationMethodInterceptor> interceptors = new ArrayList<AuthorizingAnnotationMethodInterceptor>(5);
 

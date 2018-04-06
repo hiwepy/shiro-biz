@@ -40,7 +40,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * </pre>
  */
 @SuppressWarnings({ "unchecked", "serial", "rawtypes" })
-public class ZFAuthorizationAttributeSourceAdvisor extends AuthorizationAttributeSourceAdvisor {
+public class ExtendAuthorizationAttributeSourceAdvisor extends AuthorizationAttributeSourceAdvisor {
 
 	// 权限注解
 	private static final Class<? extends Annotation>[] AUTHZ_ANNOTATION_CLASSES = new Class[] { RolesAllowed.class,
@@ -53,8 +53,8 @@ public class ZFAuthorizationAttributeSourceAdvisor extends AuthorizationAttribut
 	/**
 	 * Create a new AuthorizationAttributeSourceAdvisor.
 	 */
-	public ZFAuthorizationAttributeSourceAdvisor() {
-		setAdvice(new ZFAnnotationsAuthorizingMethodInterceptor());
+	public ExtendAuthorizationAttributeSourceAdvisor() {
+		setAdvice(new ExtendAnnotationsAuthorizingMethodInterceptor());
 	}
 
 	/**

@@ -110,11 +110,11 @@ public abstract class AuthenticatingHttpServlet extends AbstractHttpServlet {
     
 	/**
 	 * 判断是否允许访问
-	 * @param request
-	 * @param response
-	 * @return
-	 * @throws ServletException
-	 * @throws IOException
+	 * @param request  the incoming {@link ServletRequest}
+     * @param response the outgoing {@link ServletResponse}
+	 * @return 是否允许访问
+	 * @throws ServletException if an error occurs.
+	 * @throws IOException if an error occurs.
 	 */
 	protected boolean isAccessAllowed(ServletRequest request,ServletResponse response)  throws ServletException, IOException {
 		return SecurityUtils.getSubject().isAuthenticated();
@@ -122,10 +122,10 @@ public abstract class AuthenticatingHttpServlet extends AbstractHttpServlet {
 	
 	/**
 	 * 当访问被禁止时需要做的操作
-	 * @param request
-	 * @param response
-	 * @throws ServletException
-	 * @throws IOException
+	 * @param request  the incoming {@link ServletRequest}
+     * @param response the outgoing {@link ServletResponse}
+	 * @throws ServletException if an error occurs.
+	 * @throws IOException if an error occurs.
 	 */
 	protected void onAccessDeniad(ServletRequest request,ServletResponse response)  throws ServletException, IOException{};
     

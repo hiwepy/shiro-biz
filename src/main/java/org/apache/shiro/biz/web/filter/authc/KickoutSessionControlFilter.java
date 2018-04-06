@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2020, vindell (https://github.com/vindell).
+ * Copyright (c) 2018 (https://github.com/vindell).
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -41,7 +41,7 @@ import org.apache.shiro.web.util.WebUtils;
  *	<p>kickoutAfter：是否踢出后来登录的，默认是false；即后者登录的用户踢出前者登录的用户；</p>
  *	<p>maxSession：同一个用户最大的会话数，默认1；比如2的意思是同一个用户允许最多同时两个人登录；</p>
  *	<p>kickoutUrl：被踢出后重定向到的地址；</p>
- * 
+ *  部分资料来自：http://jinnianshilongnian.iteye.com/blog/2039760 
  * @author 		： <a href="https://github.com/vindell">vindell</a>
  */
 public abstract class KickoutSessionControlFilter extends AccessControlFilter {

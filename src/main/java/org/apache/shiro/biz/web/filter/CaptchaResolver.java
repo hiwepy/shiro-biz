@@ -13,24 +13,20 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.apache.shiro.biz.cache.redis.io;
+package org.apache.shiro.biz.web.filter;
 
-import org.apache.shiro.biz.utils.GenericsUtils;
+import javax.servlet.ServletRequest;
 
-import com.alibaba.fastjson.JSONObject;
+import org.apache.shiro.biz.authc.exception.IncorrectCaptchaException;
+import org.apache.shiro.biz.authc.token.CaptchaAuthenticationToken;
 
-public class FastjsonSessionSerializer<T> implements SessionSerializer<T> {
-	
-	@Override
-	public String serialize(T source) {
-		return JSONObject.toJSONString(source);
-	}
+public interface CaptchaResolver {
 
-	@Override
-	@SuppressWarnings("unchecked")
-	public T deserialize(String source) {
-		Class<T> clazz = GenericsUtils.getSuperClassGenricType(getClass());
-		return (T) JSONObject.parseObject(source, clazz);
-	}
+	/**
+	 * Valid the current captcha via the given request.
+	 * @param request request to be used for resolution
+	 * @return the result
+	 */
+	boolean validCaptcha(ServletRequest request, CaptchaAuthenticationToken token) throws IncorrectCaptchaException;
 	
 }

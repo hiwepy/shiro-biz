@@ -1,20 +1,15 @@
-package org.apache.shiro.biz.servlet;
+package org.apache.shiro.biz.web.servlet.filter;
 
 import java.io.IOException;
 
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.web.filter.AccessControlFilter;
 import org.apache.shiro.web.util.WebUtils;
 
-@SuppressWarnings("serial")
-public abstract class AuthenticatingHttpServlet extends HttpServlet {
+public abstract class AbstractAuthenticatingFilter extends AccessControlFilter {
 
 	/**
      * Simple default login URL equal to <code>/login.jsp</code>, which can be overridden by calling the
@@ -32,60 +27,12 @@ public abstract class AuthenticatingHttpServlet extends HttpServlet {
     private String successUrl = DEFAULT_SUCCESS_URL;
     
     @Override
-    public void init(ServletConfig config) throws ServletException {
-    	super.init(config);
-    	this.setLoginUrl(config.getInitParameter("loginUrl"));
-		this.setSuccessUrl(config.getInitParameter("successUrl"));
+    protected void onFilterConfigSet() throws Exception {
+    	super.onFilterConfigSet();
+    	this.setLoginUrl(getFilterConfig().getInitParameter("loginUrl"));
+		this.setSuccessUrl(getFilterConfig().getInitParameter("successUrl"));
     }
     
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		doPost(request, response);
-	}
-
-	@Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    		throws ServletException, IOException {
-		if(isAccessAllowed(request, response)){
-			// 已登录会话直接进入主页
-			issueSuccessRedirect(request, response);
-			return;
-		}
-		onAccessDeniad(request, response);
-	}
-
-	@Override
-	protected void doDelete(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-
-	}
-
-	@Override
-	protected void doHead(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-
-	}
-
-	@Override
-	protected void doOptions(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-
-	}
-
-	@Override
-	protected void doPut(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-
-	}
-
-	@Override
-	protected void doTrace(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-
-	}
-    
-    
-	
     /**
      * Redirects to user to the previously attempted URL after a successful login.  This implementation simply calls
      * <code>{@link org.apache.shiro.web.util.WebUtils WebUtils}.{@link WebUtils#redirectToSavedRequest(javax.servlet.ServletRequest, javax.servlet.ServletResponse, String) redirectToSavedRequest}</code>
@@ -98,9 +45,9 @@ public abstract class AuthenticatingHttpServlet extends HttpServlet {
     protected void issueSuccessRedirect(ServletRequest request, ServletResponse response) throws IOException {
         WebUtils.redirectToSavedRequest(request, response, getSuccessUrl());
     }
-
+    
     /**
-     * <p>Convenience method for subclasses to use when a login redirect is required.</p>
+     * Convenience method for subclasses to use when a login redirect is required.
      * This implementation simply calls {@link #saveRequest(javax.servlet.ServletRequest) saveRequest(request)}
      * and then {@link #redirectToLogin(javax.servlet.ServletRequest, javax.servlet.ServletResponse) redirectToLogin(request,response)}.
      *
@@ -114,11 +61,10 @@ public abstract class AuthenticatingHttpServlet extends HttpServlet {
     }
 
     /**
-     * <p>Convenience method merely delegates to
+     * Convenience method merely delegates to
      * {@link WebUtils#saveRequest(javax.servlet.ServletRequest) WebUtils.saveRequest(request)} to save the request
      * state for reuse later.  This is mostly used to retain user request state when a redirect is issued to
      * return the user to their originally requested url/resource.
-     * </p>
      * If you need to save and then immediately redirect the user to login, consider using
      * {@link #saveRequestAndRedirectToLogin(javax.servlet.ServletRequest, javax.servlet.ServletResponse)
      * saveRequestAndRedirectToLogin(request,response)} directly.
@@ -128,19 +74,18 @@ public abstract class AuthenticatingHttpServlet extends HttpServlet {
     protected void saveRequest(ServletRequest request) {
         WebUtils.saveRequest(request);
     }
-    
+
     /**
-     * <p>Convenience method for subclasses that merely acquires the {@link #getLoginUrl() getLoginUrl} and redirects
+     * Convenience method for subclasses that merely acquires the {@link #getLoginUrl() getLoginUrl} and redirects
      * the request to that url.
-     * </p>
      * <b>N.B.</b>  If you want to issue a redirect with the intention of allowing the user to then return to their
      * originally requested URL, don't use this method directly.  Instead you should call
      * {@link #saveRequestAndRedirectToLogin(javax.servlet.ServletRequest, javax.servlet.ServletResponse)
      * saveRequestAndRedirectToLogin(request,response)}, which will save the current request state so that it can
      * be reconstructed and re-used after a successful login.
      *
-     * @param request  the incoming {@link ServletRequest}
-     * @param response the outgoing {@link ServletResponse}
+     * @param request  the incoming <code>ServletRequest</code>
+     * @param response the outgoing <code>ServletResponse</code>
      * @throws IOException if an error occurs.
      */
     protected void redirectToLogin(ServletRequest request, ServletResponse response) throws IOException {
@@ -148,26 +93,12 @@ public abstract class AuthenticatingHttpServlet extends HttpServlet {
         WebUtils.issueRedirect(request, response, loginUrl);
     }
     
-	/**
-	 * 判断是否允许访问
-	 * @param request  the incoming {@link ServletRequest}
-     * @param response the outgoing {@link ServletResponse}
-	 * @return 是否允许访问
-	 * @throws ServletException if an error occurs.
-	 * @throws IOException if an error occurs.
-	 */
-	protected boolean isAccessAllowed(ServletRequest request,ServletResponse response)  throws ServletException, IOException {
-		return SecurityUtils.getSubject().isAuthenticated();
-	}
-	
-	/**
-	 * 当访问被禁止时需要做的操作
-	 * @param request  the incoming {@link ServletRequest}
-     * @param response the outgoing {@link ServletResponse}
-	 * @throws ServletException if an error occurs.
-	 * @throws IOException if an error occurs.
-	 */
-	protected void onAccessDeniad(ServletRequest request,ServletResponse response)  throws ServletException, IOException{};
+    @Override
+    protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue)
+    		throws Exception {
+    	// 已登录会话不进行拦截处理
+    	return SecurityUtils.getSubject().isAuthenticated();
+    }
     
 	public String getLoginUrl() {
 		return loginUrl;
@@ -184,5 +115,5 @@ public abstract class AuthenticatingHttpServlet extends HttpServlet {
 	public void setSuccessUrl(String successUrl) {
 		this.successUrl = successUrl;
 	}
-
+    
 }
