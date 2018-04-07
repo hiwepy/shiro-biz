@@ -27,6 +27,11 @@ import com.alibaba.fastjson.JSONObject;
 
 public class WebUtils extends org.apache.shiro.web.util.WebUtils {
 
+	private static String[] headers = new String[]{"Cdn-Src-Ip", "X-Real-IP", "X-Forwarded-For", "Proxy-Client-IP", "WL-Proxy-Client-IP", "HTTP_CLIENT_IP", "HTTP_X_FORWARDED_FOR"};
+	private static String localIP = "127.0.0.1";
+	private static String UNKNOWN = "unknown";    
+	private static String LOCALHOST = "localhost";
+	
 	private static final String XML_HTTP_REQUEST = "XMLHttpRequest";
     private static final String X_REQUESTED_WITH = "X-Requested-With";
 
@@ -41,6 +46,34 @@ public class WebUtils extends org.apache.shiro.web.util.WebUtils {
         return toHttp(request).getHeader(CONTENT_TYPE).contains(CONTENT_TYPE_JSON);
     }
     
+    /**
+	 * 获取请求客户端IP地址，支持代理服务器
+	 * http://blog.csdn.net/caoshuming_500/article/details/20952329
+	 * @param request {@link ServletRequest} 对象
+	 * @return
+	 */
+	public static String getRemoteAddr(ServletRequest request) {
+		
+		// 1、获取客户端IP地址，支持代理服务器
+		String remoteAddr = null;
+		for (String header : headers) {
+			remoteAddr = toHttp(request).getHeader(header);
+			if(StringUtils.hasText(remoteAddr) && !UNKNOWN.equalsIgnoreCase(remoteAddr)){
+				break;
+			}
+		}
+		// 2、没有取得特定标记的值
+		if(StringUtils.isEmpty(remoteAddr) ){
+			remoteAddr = request.getRemoteAddr();
+		}
+		// 3、判断是否localhost访问
+		if(LOCALHOST.equalsIgnoreCase(remoteAddr)){
+			remoteAddr = localIP;
+		}
+		 
+		return remoteAddr;
+	}
+	
     public static void writeJSONString(ServletResponse response, int status, String message)  {
     	
     	try {

@@ -26,6 +26,8 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.biz.authc.exception.IncorrectCaptchaException;
 import org.apache.shiro.biz.authc.token.CaptchaAuthenticationToken;
+import org.apache.shiro.biz.authc.token.DefaultAuthenticationToken;
+import org.apache.shiro.biz.utils.WebUtils;
 import org.apache.shiro.biz.web.filter.CaptchaResolver;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
@@ -36,17 +38,15 @@ import org.slf4j.LoggerFactory;
 public class TrustableFormAuthenticationFilter extends FormAuthenticationFilter {
 
 	private static final Logger LOG = LoggerFactory.getLogger(TrustableFormAuthenticationFilter.class);
-
-	/**
-     * 是否校验验证码
-     */
+    public static final String DEFAULT_CAPTCHA_PARAM = "captcha";
 	private boolean captchaEnabled = false;
+	private String captchaParam = DEFAULT_CAPTCHA_PARAM;
 	private CaptchaResolver captchaResolver;
-	
+
 	public TrustableFormAuthenticationFilter() {
 		setLoginUrl(DEFAULT_LOGIN_URL);
 	}
-	
+
 	@Override
 	protected boolean executeLogin(ServletRequest request, ServletResponse response) throws Exception {
 		Subject subject = getSubject(request, response);
@@ -74,7 +74,24 @@ public class TrustableFormAuthenticationFilter extends FormAuthenticationFilter 
 			return onLoginFailure(token, e, request, response);
 		}
 	}
-	
+
+	@Override
+	protected AuthenticationToken createToken(String username, String password, ServletRequest request,
+			ServletResponse response) {
+		
+		DefaultAuthenticationToken token = new DefaultAuthenticationToken(username, password);
+		
+		token.setHost(WebUtils.getRemoteAddr(request));
+		token.setRememberMe(isRememberMe(request));
+		token.setCaptcha(getCaptcha(request));
+		
+		return token;
+	}
+
+	protected String getCaptcha(ServletRequest request) {
+		return WebUtils.getCleanParam(request, getCaptchaParam());
+	}
+
 	/**
 	 * 登陆成功后重新生成session【基于安全考虑】
 	 * 
@@ -101,8 +118,7 @@ public class TrustableFormAuthenticationFilter extends FormAuthenticationFilter 
 		}
 		return newSession;
 	}
-	
-	
+
 	public CaptchaResolver getCaptchaResolver() {
 		return captchaResolver;
 	}
@@ -118,5 +134,13 @@ public class TrustableFormAuthenticationFilter extends FormAuthenticationFilter 
 	public void setCaptchaEnabled(boolean captchaEnabled) {
 		this.captchaEnabled = captchaEnabled;
 	}
-	
+
+	public String getCaptchaParam() {
+		return captchaParam;
+	}
+
+	public void setCaptchaParam(String captchaParam) {
+		this.captchaParam = captchaParam;
+	}
+
 }

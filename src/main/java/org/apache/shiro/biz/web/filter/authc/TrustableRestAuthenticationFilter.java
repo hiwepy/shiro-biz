@@ -27,6 +27,7 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.biz.authc.exception.IncorrectCaptchaException;
 import org.apache.shiro.biz.authc.token.CaptchaAuthenticationToken;
+import org.apache.shiro.biz.authc.token.DefaultAuthenticationToken;
 import org.apache.shiro.biz.utils.WebUtils;
 import org.apache.shiro.biz.web.filter.CaptchaResolver;
 import org.apache.shiro.biz.web.servlet.http.HttpStatus;
@@ -39,11 +40,9 @@ import org.slf4j.LoggerFactory;
 public class TrustableRestAuthenticationFilter extends FormAuthenticationFilter {
 
 	private static final Logger LOG = LoggerFactory.getLogger(TrustableRestAuthenticationFilter.class);
-	
-	/**
-     * 是否校验验证码
-     */
+	public static final String DEFAULT_CAPTCHA_PARAM = "captcha";
 	private boolean captchaEnabled = false;
+	private String captchaParam = DEFAULT_CAPTCHA_PARAM;
 	private CaptchaResolver captchaResolver;
 	
 	public TrustableRestAuthenticationFilter() {
@@ -76,6 +75,23 @@ public class TrustableRestAuthenticationFilter extends FormAuthenticationFilter 
 		} catch (AuthenticationException e) {
 			return onLoginFailure(token, e, request, response);
 		}
+	}
+	
+	@Override
+	protected AuthenticationToken createToken(String username, String password, ServletRequest request,
+			ServletResponse response) {
+		
+		DefaultAuthenticationToken token = new DefaultAuthenticationToken(username, password);
+		
+		token.setHost(WebUtils.getRemoteAddr(request));
+		token.setRememberMe(isRememberMe(request));
+		token.setCaptcha(getCaptcha(request));
+		
+		return token;
+	}
+
+	protected String getCaptcha(ServletRequest request) {
+		return WebUtils.getCleanParam(request, getCaptchaParam());
 	}
 
     /**
@@ -161,6 +177,14 @@ public class TrustableRestAuthenticationFilter extends FormAuthenticationFilter 
 
 	public void setCaptchaEnabled(boolean captchaEnabled) {
 		this.captchaEnabled = captchaEnabled;
+	}
+	
+	public String getCaptchaParam() {
+		return captchaParam;
+	}
+
+	public void setCaptchaParam(String captchaParam) {
+		this.captchaParam = captchaParam;
 	}
 	
 }
