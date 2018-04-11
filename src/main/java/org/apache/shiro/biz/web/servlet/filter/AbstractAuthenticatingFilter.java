@@ -2,14 +2,23 @@ package org.apache.shiro.biz.web.servlet.filter;
 
 import java.io.IOException;
 
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
+import org.apache.shiro.util.ThreadContext;
 import org.apache.shiro.web.filter.AccessControlFilter;
+import org.apache.shiro.web.mgt.WebSecurityManager;
+import org.apache.shiro.web.subject.WebSubject;
 import org.apache.shiro.web.util.WebUtils;
 
 public abstract class AbstractAuthenticatingFilter extends AccessControlFilter {
+
+    // Reference to the security manager used by this filter
+    private WebSecurityManager securityManager;
 
 	/**
      * Simple default login URL equal to <code>/login.jsp</code>, which can be overridden by calling the
@@ -33,7 +42,21 @@ public abstract class AbstractAuthenticatingFilter extends AccessControlFilter {
 		this.setSuccessUrl(getFilterConfig().getInitParameter("successUrl"));
     }
     
-    /**
+    @Override
+    public void doFilterInternal(ServletRequest request, ServletResponse response, FilterChain chain)
+    		throws ServletException, IOException {
+    	
+    	// 在不经过Shiro过滤器的情况下进行单点登录时，需要绑定Subject到ThreadContext中
+    	Subject subject = ThreadContext.getSubject();
+        if (subject == null) {
+            subject = new WebSubject.Builder(getSecurityManager(), request, response).buildWebSubject();
+            ThreadContext.bind(subject);
+        }
+    	
+    	super.doFilterInternal(request, response, chain);
+    }
+    
+	/**
      * Redirects to user to the previously attempted URL after a successful login.  This implementation simply calls
      * <code>{@link org.apache.shiro.web.util.WebUtils WebUtils}.{@link WebUtils#redirectToSavedRequest(javax.servlet.ServletRequest, javax.servlet.ServletResponse, String) redirectToSavedRequest}</code>
      * using the {@link #getSuccessUrl() successUrl} as the {@code fallbackUrl} argument to that call.
@@ -98,6 +121,14 @@ public abstract class AbstractAuthenticatingFilter extends AccessControlFilter {
     		throws Exception {
     	// 已登录会话不进行拦截处理
     	return SecurityUtils.getSubject().isAuthenticated();
+    }
+    
+    public WebSecurityManager getSecurityManager() {
+        return securityManager;
+    }
+
+    public void setSecurityManager(WebSecurityManager sm) {
+        this.securityManager = sm;
     }
     
 	public String getLoginUrl() {

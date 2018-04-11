@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.biz.web.filter.authc.listener.LoginListener;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.AuthenticatingFilter;
@@ -33,6 +34,10 @@ import org.apache.shiro.web.util.WebUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * 扩展Shiro认证拦截器逻辑，增加监听回调接口
+ * @author 		： <a href="https://github.com/vindell">vindell</a>
+ */
 public abstract class AbstractAuthenticatingFilter extends AuthenticatingFilter {
 
 	private static final Logger LOG = LoggerFactory.getLogger(AbstractAuthenticatingFilter.class);

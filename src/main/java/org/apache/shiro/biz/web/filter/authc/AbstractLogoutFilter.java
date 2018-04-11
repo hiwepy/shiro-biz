@@ -5,9 +5,14 @@ import java.util.List;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
+import org.apache.shiro.biz.web.filter.authc.listener.LogoutListener;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.LogoutFilter;
 
+/**
+ * 扩展Shiro登出逻辑，增加监听回调接口
+ * @author 		： <a href="https://github.com/vindell">vindell</a>
+ */
 public class AbstractLogoutFilter extends LogoutFilter {
 
 	/**

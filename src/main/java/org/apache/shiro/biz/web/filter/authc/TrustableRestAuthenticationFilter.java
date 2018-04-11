@@ -29,7 +29,7 @@ import org.apache.shiro.biz.authc.exception.IncorrectCaptchaException;
 import org.apache.shiro.biz.authc.token.CaptchaAuthenticationToken;
 import org.apache.shiro.biz.authc.token.DefaultAuthenticationToken;
 import org.apache.shiro.biz.utils.WebUtils;
-import org.apache.shiro.biz.web.filter.CaptchaResolver;
+import org.apache.shiro.biz.web.filter.authc.captcha.CaptchaResolver;
 import org.apache.shiro.biz.web.servlet.http.HttpStatus;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
