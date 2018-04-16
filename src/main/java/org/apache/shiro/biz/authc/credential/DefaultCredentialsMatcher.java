@@ -37,7 +37,7 @@ public class DefaultCredentialsMatcher extends CodecSupport implements Credentia
 
 	private static final Logger LOG = LoggerFactory.getLogger(DefaultCredentialsMatcher.class);
 	
-	private static final String DEFAULT_CREDENTIALS_RETRY_CACHE_NAME = "ZFTAL_SHIRO_CREDENTIALS_RETRY_CACHE";
+	private static final String DEFAULT_CREDENTIALS_RETRY_CACHE_NAME = "SHIRO_CREDENTIALS_RETRY_CACHE";
 
 	private static final int DEFALUE_CREDENTIALS_RETRY_LIMIT = 5;
 
