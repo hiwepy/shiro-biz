@@ -42,6 +42,10 @@ public class TrustableFormAuthenticationFilter extends FormAuthenticationFilter 
 	private boolean captchaEnabled = false;
 	private String captchaParam = DEFAULT_CAPTCHA_PARAM;
 	private CaptchaResolver captchaResolver;
+	/**
+	 * 是否重定向到前一个访问地址
+	 */
+	private boolean redirectToSavedRequest;
 
 	public TrustableFormAuthenticationFilter() {
 		setLoginUrl(DEFAULT_LOGIN_URL);
@@ -118,7 +122,21 @@ public class TrustableFormAuthenticationFilter extends FormAuthenticationFilter 
 		}
 		return newSession;
 	}
-
+	
+	@Override
+	protected boolean onLoginSuccess(AuthenticationToken token, Subject subject, ServletRequest request,
+			ServletResponse response) throws Exception {
+		
+		if(isRedirectToSavedRequest()) {
+			issueSuccessRedirect(request, response);
+		} else {
+			 WebUtils.issueRedirect(request, response, getSuccessUrl());
+		}
+		//we handled the success redirect directly, prevent the chain from continuing:
+        return false;
+	}
+	
+	
 	public CaptchaResolver getCaptchaResolver() {
 		return captchaResolver;
 	}
@@ -141,6 +159,14 @@ public class TrustableFormAuthenticationFilter extends FormAuthenticationFilter 
 
 	public void setCaptchaParam(String captchaParam) {
 		this.captchaParam = captchaParam;
+	}
+
+	public boolean isRedirectToSavedRequest() {
+		return redirectToSavedRequest;
+	}
+
+	public void setRedirectToSavedRequest(boolean redirectToSavedRequest) {
+		this.redirectToSavedRequest = redirectToSavedRequest;
 	}
 
 }

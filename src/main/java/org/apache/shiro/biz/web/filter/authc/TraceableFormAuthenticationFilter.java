@@ -25,6 +25,7 @@ import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.biz.web.filter.authc.listener.LoginListener;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
+import org.apache.shiro.web.util.WebUtils;
 
 public class TraceableFormAuthenticationFilter extends FormAuthenticationFilter {
 
@@ -32,6 +33,10 @@ public class TraceableFormAuthenticationFilter extends FormAuthenticationFilter 
 	 * 登录回调监听
 	 */
 	private List<LoginListener> loginListeners;
+	/**
+	 * 是否重定向到前一个访问地址
+	 */
+	private boolean redirectToSavedRequest;
 	
 	@Override
 	protected boolean onLoginFailure(AuthenticationToken token, AuthenticationException e, ServletRequest request,
@@ -54,7 +59,15 @@ public class TraceableFormAuthenticationFilter extends FormAuthenticationFilter 
 				loginListener.onLoginSuccess(token, subject, request, response);
 			}
 		}
-		return super.onLoginSuccess(token, subject, request, response);
+		
+		if(isRedirectToSavedRequest()) {
+			issueSuccessRedirect(request, response);
+		} else {
+			 WebUtils.issueRedirect(request, response, getSuccessUrl());
+		}
+		 
+		//we handled the success redirect directly, prevent the chain from continuing:
+        return false;
 	}
 	
 	public List<LoginListener> getLoginListeners() {
@@ -63,6 +76,14 @@ public class TraceableFormAuthenticationFilter extends FormAuthenticationFilter 
 	
 	public void setLoginListeners(List<LoginListener> loginListeners) {
 		this.loginListeners = loginListeners;
+	}
+
+	public boolean isRedirectToSavedRequest() {
+		return redirectToSavedRequest;
+	}
+
+	public void setRedirectToSavedRequest(boolean redirectToSavedRequest) {
+		this.redirectToSavedRequest = redirectToSavedRequest;
 	}
 	
 }
