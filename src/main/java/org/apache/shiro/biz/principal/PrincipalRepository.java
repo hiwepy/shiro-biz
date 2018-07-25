@@ -25,7 +25,7 @@ import org.apache.shiro.biz.authc.token.DelegateAuthenticationToken;
  * 认证主体信息提供者接口
  * @author <a href="https://github.com/vindell">vindell</a>
  */
-public interface PrincipalRepository {
+public interface PrincipalRepository<T extends Principal> {
 
 	/**
 	 * 用户信息
@@ -40,27 +40,27 @@ public interface PrincipalRepository {
 	 * @param principal 认证主体对象
 	 * @return 角色列表
 	 */
-    Set<String> getRoles(Object principal);
+    Set<String> getRoles(T principal);
     
     /**
      * 用户角色列表【多realm认证的情况下使用】
      * @param principals 认证主体对象集合
      * @return 角色列表
      */
-    Set<String> getRoles(Set<Object> principals);
+    Set<String> getRoles(Set<T> principals);
 
     /**
      * 用户权限列表
      * @param principal 认证主体对象
      * @return 权限列表
      */
-    Set<String> getPermissions(Object principal);
+    Set<String> getPermissions(T principal);
     
     /**
      * 用户权限列表【多realm认证的情况下使用】
      * @param principals 认证主体对象集合
      * @return 权限列表
      */
-    Set<String> getPermissions(Set<Object> principals);
+    Set<String> getPermissions(Set<T> principals);
 	
 }

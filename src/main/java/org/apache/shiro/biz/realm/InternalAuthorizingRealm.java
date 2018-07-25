@@ -28,6 +28,7 @@ import org.apache.shiro.authc.credential.PasswordService;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.biz.authc.DelegateAuthenticationInfo;
 import org.apache.shiro.biz.authc.token.DelegateAuthenticationToken;
+import org.apache.shiro.biz.principal.Principal;
 import org.apache.shiro.biz.principal.PrincipalRepository;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
@@ -48,7 +49,7 @@ public abstract class InternalAuthorizingRealm extends AuthorizingRealm {
 	//realm listeners
 	protected List<PrincipalRealmListener> realmsListeners;
 	
-	protected PrincipalRepository repository;
+	protected PrincipalRepository<Principal> repository;
 	
 	protected PasswordService passwordService = new DefaultPasswordService();  
     
@@ -68,8 +69,8 @@ public abstract class InternalAuthorizingRealm extends AuthorizingRealm {
     	
     	Set<String> permissionsSet, rolesSet = null;
 		if(principals.asList().size() <= 1){
-			permissionsSet = getRepository().getPermissions(principals.getPrimaryPrincipal());
-			rolesSet = getRepository().getRoles(principals.getPrimaryPrincipal());
+			permissionsSet = getRepository().getPermissions((Principal) principals.getPrimaryPrincipal());
+			rolesSet = getRepository().getRoles((Principal)principals.getPrimaryPrincipal());
 		}else{
 			permissionsSet = getRepository().getPermissions(principals.asSet());
 			rolesSet = getRepository().getRoles(principals.asSet());
@@ -158,11 +159,11 @@ public abstract class InternalAuthorizingRealm extends AuthorizingRealm {
 		clearCachedAuthorizationInfo(SecurityUtils.getSubject().getPrincipals());
 	}
 	
-	public PrincipalRepository getRepository() {
+	public PrincipalRepository<Principal> getRepository() {
 		return repository;
 	}
 
-	public void setRepository(PrincipalRepository repository) {
+	public void setRepository(PrincipalRepository<Principal> repository) {
 		this.repository = repository;
 	}
 
