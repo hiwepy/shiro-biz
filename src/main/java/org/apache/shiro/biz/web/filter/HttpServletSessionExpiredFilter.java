@@ -2,8 +2,6 @@ package org.apache.shiro.biz.web.filter;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.biz.utils.WebUtils;
@@ -23,9 +21,8 @@ public class HttpServletSessionExpiredFilter extends AccessControlFilter {
 		Subject subject = SecurityUtils.getSubject();
 		if (subject == null || !subject.isAuthenticated()) {
 			if (WebUtils.isAjaxRequest(request)) {
-				HttpServletResponse httpResponse = (HttpServletResponse) response;
-				httpResponse.setStatus(HttpStatus.SC_SESSION_TIMEOUT);
-				httpResponse.getWriter().write("session timeout.");
+				// 响应成功状态信息
+		        WebUtils.writeJSONString(response, HttpStatus.SC_SESSION_TIMEOUT, "Session Timeout.");
 				return false;
 			}
 		}

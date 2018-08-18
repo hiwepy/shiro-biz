@@ -36,7 +36,7 @@ public class WebUtils extends org.apache.shiro.web.util.WebUtils {
     private static final String X_REQUESTED_WITH = "X-Requested-With";
 
     private static final String CONTENT_TYPE = "Content-type";
-    private static final String CONTENT_TYPE_JSON = "application/json";
+    private static final String CONTENT_TYPE_JSON = "application/json; charset=utf-8";
 
     public static boolean isAjaxRequest(ServletRequest request) {
         return XML_HTTP_REQUEST.equals(toHttp(request).getHeader(X_REQUESTED_WITH));
@@ -80,6 +80,7 @@ public class WebUtils extends org.apache.shiro.web.util.WebUtils {
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("status", status);
 			map.put("message", message);
+			response.setCharacterEncoding("UTF-8");
 			response.setContentType(CONTENT_TYPE_JSON);
 			PrintWriter out = response.getWriter();
 			out.write(JSONObject.toJSONString(map));

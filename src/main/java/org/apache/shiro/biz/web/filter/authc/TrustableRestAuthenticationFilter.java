@@ -22,6 +22,7 @@ import java.util.Map;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -114,7 +115,7 @@ public class TrustableRestAuthenticationFilter extends FormAuthenticationFilter 
     protected boolean onLoginSuccess(AuthenticationToken token, Subject subject,
                                      ServletRequest request, ServletResponse response) throws Exception {
         // 响应成功状态信息
-        WebUtils.writeJSONString(response, HttpStatus.SC_OK, "Authentication Success.");
+        WebUtils.writeJSONString(response, HttpServletResponse.SC_OK, "Authentication Success.");
         
         
         //we handled the success , prevent the chain from continuing:
