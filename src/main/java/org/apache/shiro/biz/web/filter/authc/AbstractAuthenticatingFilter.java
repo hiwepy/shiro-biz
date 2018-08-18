@@ -23,14 +23,15 @@ import java.util.Map;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.biz.utils.WebUtils;
 import org.apache.shiro.biz.web.filter.authc.listener.LoginListener;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.AuthenticatingFilter;
-import org.apache.shiro.web.util.WebUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -126,6 +127,7 @@ public abstract class AbstractAuthenticatingFilter extends AuthenticatingFilter 
 	}
 
 	protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
+		// 登录请求
 		if (isLoginRequest(request, response)) {
 			if (isLoginSubmission(request, response)) {
 				if (LOG.isTraceEnabled()) {
@@ -139,7 +141,15 @@ public abstract class AbstractAuthenticatingFilter extends AuthenticatingFilter 
 				// allow them to see the login page ;)
 				return true;
 			}
-		} else {
+		}
+		// 其他请求
+		else {
+			// Ajax 请求方式
+			if (WebUtils.isAjaxRequest(request)) {
+    	        WebUtils.writeJSONString(response, HttpServletResponse.SC_UNAUTHORIZED, "Unauthentication.");
+    	        return false;
+    		}
+			// 非Ajax请求
 			if (LOG.isTraceEnabled()) {
 				LOG.trace("Attempting to access a path which requires authentication.  Forwarding to the "
 						+ "Authentication url [" + getLoginUrl() + "]");
