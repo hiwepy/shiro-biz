@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.apache.shiro.biz.principal;
+package org.apache.shiro.biz.authz.principal;
 
 import java.util.Set;
 
@@ -25,7 +25,7 @@ import org.apache.shiro.biz.authc.token.DelegateAuthenticationToken;
  * 认证主体信息提供者接口
  * @author <a href="https://github.com/vindell">vindell</a>
  */
-public interface PrincipalRepository<T extends Principal> {
+public interface ShiroPrincipalRepository<T extends ShiroPrincipal> {
 
 	/**
 	 * 用户信息

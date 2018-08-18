@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.apache.shiro.biz.principal;
+package org.apache.shiro.biz.authz.principal;
 
 import java.io.Serializable;
 
@@ -21,7 +21,7 @@ import java.io.Serializable;
  * @author <a href="https://github.com/vindell">vindell</a>
  */
 @SuppressWarnings("serial")
-public class Principal implements Cloneable, Serializable {
+public class ShiroPrincipal implements Cloneable, Serializable {
 	
 	/**
 	 * 用户ID（用户来源表Id）
@@ -43,10 +43,10 @@ public class Principal implements Cloneable, Serializable {
     protected Boolean disabled = Boolean.FALSE;
     protected Boolean locked = Boolean.FALSE;
     
-    public Principal() {
+    public ShiroPrincipal() {
     }
 
-    public Principal(String username, String password) {
+    public ShiroPrincipal(String username, String password) {
         this.username = username;
         this.password = password;
     }
@@ -119,7 +119,7 @@ public class Principal implements Cloneable, Serializable {
         if (o == null || getClass() != o.getClass()){
         	return false;
         }
-        Principal user = (Principal) o;
+        ShiroPrincipal user = (ShiroPrincipal) o;
         if (userid != null ? !userid.equals(user.getUserid()) : user.getUserid() != null){
         	return false;
         }

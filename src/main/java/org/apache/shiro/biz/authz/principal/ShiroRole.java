@@ -13,45 +13,44 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.apache.shiro.biz.principal;
+package org.apache.shiro.biz.authz.principal;
 
 import java.io.Serializable;
 
 /**
- * Shiro 认证对象
  * @author <a href="https://github.com/vindell">vindell</a>
  */
 @SuppressWarnings("serial")
-public class ShiroPermission implements Serializable {
+public class ShiroRole implements Serializable {
 	
 	protected String id;
-    protected String permission; //权限标识 程序中判断使用,如"user:create"
-    protected String description; //权限描述,UI界面显示使用
+    protected String role; //角色标识 程序中判断使用,如"admin"
+    protected String description; //角色描述,UI界面显示使用
     protected Boolean available = Boolean.FALSE; //是否可用,如果不可用将不会添加给用户
 
-    public ShiroPermission() {
+    public ShiroRole() {
     }
 
-    public ShiroPermission(String permission, String description, Boolean available) {
-        this.permission = permission;
+    public ShiroRole(String role, String description, Boolean available) {
+        this.role = role;
         this.description = description;
         this.available = available;
     }
 
     public String getId() {
-        return id;
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getRole() {
+        return role;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getPermission() {
-        return permission;
-    }
-
-    public void setPermission(String permission) {
-        this.permission = permission;
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getDescription() {
@@ -72,14 +71,14 @@ public class ShiroPermission implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o){
+        if (this == o) { 
         	return true;
         }
-        if (o == null || getClass() != o.getClass()){
+        if (o == null || getClass() != o.getClass()) {
         	return false;
         }
-        ShiroPermission permission = (ShiroPermission) o;
-        if (id != null ? !id.equals(permission.getId()) : permission.getId() != null){
+        ShiroRole role = (ShiroRole) o;
+        if (id != null ? !id.equals(role.getId()) : role.getId() != null) {
         	return false;
         }
         return true;
@@ -92,6 +91,6 @@ public class ShiroPermission implements Serializable {
 
     @Override
     public String toString() {
-		return "Permission{" + "id=" + id + ", permission='" + permission + '\'' + ", description='" + description + '\'' + ", available=" + available + '}';
+		return "Role {" + "id=" + id + ", role='" + role + '\'' + ", description='" + description + '\'' + ", available=" + available + '}';
     }
 }
