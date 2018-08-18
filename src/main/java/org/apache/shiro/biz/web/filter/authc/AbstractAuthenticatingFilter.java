@@ -36,7 +36,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 扩展Shiro认证拦截器逻辑，增加监听回调接口
+ * 抽象的认证 (authentication)过滤器
  * @author 		： <a href="https://github.com/vindell">vindell</a>
  */
 public abstract class AbstractAuthenticatingFilter extends AuthenticatingFilter {

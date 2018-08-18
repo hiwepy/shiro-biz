@@ -26,6 +26,10 @@ import org.apache.shiro.biz.utils.WebUtils;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authz.AuthorizationFilter;
 
+/**
+ * 抽象的授权 (authorization)过滤器 
+ * @author <a href="https://github.com/vindell">vindell</a>
+ */
 public abstract class AbstracAuthorizationFilter extends AuthorizationFilter {
 
 	@Override
