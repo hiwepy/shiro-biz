@@ -18,24 +18,37 @@ package org.apache.shiro.biz.web.filter.authz;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
+import org.apache.shiro.subject.Subject;
+
 public class AnyRolesAuthorizationFilter extends AbstracAuthorizationFilter {
 
+	
+	protected boolean checkRoles(Subject subject, Object mappedValue) {
+
+		String[] rolesArray = (String[]) mappedValue;
+		if (rolesArray == null || rolesArray.length == 0) {
+			// no roles specified, so nothing to check - allow access.
+			return true;
+		}
+
+		for(String role : rolesArray) {
+            if(subject.hasRole(role)) {
+                return true;
+            }
+        }
+		 
+		 return false;
+
+	}
+	
 	 /*
      * 1、首先判断用户有没有任意角色，如果没有返回false，将到onAccessDenied进行处理；
 	 * 2、如果用户没有角色，接着判断用户有没有登录，如果没有登录先重定向到登录；
 	 * 3、如果用户没有角色且设置了未授权页面（unauthorizedUrl），那么重定向到未授权页面；否则直接返回401未授权错误码。
      */
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) throws Exception {
-        String[] roles = (String[])mappedValue;
-        if(roles == null) {
-            return true;//如果没有设置角色参数，默认成功
-        }
-        for(String role : roles) {
-            if(getSubject(request, response).hasRole(role)) {
-                return true;
-            }
-        }
-        return false;//跳到onAccessDenied处理
+    	Subject subject = getSubject(request, response);
+        return checkRoles(subject, mappedValue);
     }
     
    

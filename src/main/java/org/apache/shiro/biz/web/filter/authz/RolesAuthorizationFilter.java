@@ -27,23 +27,31 @@ import org.apache.shiro.util.CollectionUtils;
 /**
  * 
  * TODO
+ * 
  * @author <a href="https://github.com/vindell">vindell</a>
  * @see org.apache.shiro.web.filter.authz.RolesAuthorizationFilter
  */
 public class RolesAuthorizationFilter extends AbstracAuthorizationFilter {
 
-    public boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) throws IOException {
+	protected boolean checkRoles(Subject subject, Object mappedValue) {
 
-        Subject subject = getSubject(request, response);
-        String[] rolesArray = (String[]) mappedValue;
+		String[] rolesArray = (String[]) mappedValue;
+		if (rolesArray == null || rolesArray.length == 0) {
+			// no roles specified, so nothing to check - allow access.
+			return true;
+		}
 
-        if (rolesArray == null || rolesArray.length == 0) {
-            //no roles specified, so nothing to check - allow access.
-            return true;
-        }
+		Set<String> roles = CollectionUtils.asSet(rolesArray);
+		return subject.hasAllRoles(roles);
 
-        Set<String> roles = CollectionUtils.asSet(rolesArray);
-        return subject.hasAllRoles(roles);
-    }
-	
+	}
+
+	public boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue)
+			throws IOException {
+
+		Subject subject = getSubject(request, response);
+
+		return checkRoles(subject, mappedValue);
+	}
+
 }

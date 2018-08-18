@@ -15,11 +15,8 @@ import org.apache.shiro.subject.Subject;
  */
 public class PermissionsAuthorizationFilter extends AbstracAuthorizationFilter {
 
-	public boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) throws IOException {
-
-        Subject subject = getSubject(request, response);
+	protected boolean checkPerms(Subject subject, Object mappedValue){
         String[] perms = (String[]) mappedValue;
-
         boolean isPermitted = true;
         if (perms != null && perms.length > 0) {
             if (perms.length == 1) {
@@ -32,8 +29,12 @@ public class PermissionsAuthorizationFilter extends AbstracAuthorizationFilter {
                 }
             }
         }
-
         return isPermitted;
+	}
+	
+	public boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) throws IOException {
+        Subject subject = getSubject(request, response);
+        return checkPerms(subject, mappedValue);
     }
 
 }
