@@ -15,7 +15,7 @@
  */
 package org.apache.shiro.biz.utils;
 
-import org.apache.shiro.biz.principal.Principal;
+import org.apache.shiro.biz.authz.principal.ShiroPrincipal;
 import org.apache.shiro.crypto.RandomNumberGenerator;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.apache.shiro.crypto.hash.SimpleHash;
@@ -31,7 +31,7 @@ public class PasswordEncryptUtils {
     private static String algorithmName = "md5";
     private static int hashIterations = 2;
 
-    public static void encryptPassword(Principal user) {
+    public static void encryptPassword(ShiroPrincipal user) {
 
         user.setSalt(randomNumberGenerator.nextBytes().toHex());
 

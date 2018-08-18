@@ -28,8 +28,8 @@ import org.apache.shiro.authc.credential.PasswordService;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.biz.authc.DelegateAuthenticationInfo;
 import org.apache.shiro.biz.authc.token.DelegateAuthenticationToken;
-import org.apache.shiro.biz.principal.Principal;
-import org.apache.shiro.biz.principal.PrincipalRepository;
+import org.apache.shiro.biz.authz.principal.ShiroPrincipal;
+import org.apache.shiro.biz.authz.principal.ShiroPrincipalRepository;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
@@ -49,7 +49,7 @@ public abstract class InternalAuthorizingRealm extends AuthorizingRealm {
 	//realm listeners
 	protected List<PrincipalRealmListener> realmsListeners;
 	
-	protected PrincipalRepository<Principal> repository;
+	protected ShiroPrincipalRepository<ShiroPrincipal> repository;
 	
 	protected PasswordService passwordService = new DefaultPasswordService();  
     
@@ -69,8 +69,8 @@ public abstract class InternalAuthorizingRealm extends AuthorizingRealm {
     	
     	Set<String> permissionsSet, rolesSet = null;
 		if(principals.asList().size() <= 1){
-			permissionsSet = getRepository().getPermissions((Principal) principals.getPrimaryPrincipal());
-			rolesSet = getRepository().getRoles((Principal)principals.getPrimaryPrincipal());
+			permissionsSet = getRepository().getPermissions((ShiroPrincipal) principals.getPrimaryPrincipal());
+			rolesSet = getRepository().getRoles((ShiroPrincipal)principals.getPrimaryPrincipal());
 		}else{
 			permissionsSet = getRepository().getPermissions(principals.asSet());
 			rolesSet = getRepository().getRoles(principals.asSet());
@@ -159,11 +159,11 @@ public abstract class InternalAuthorizingRealm extends AuthorizingRealm {
 		clearCachedAuthorizationInfo(SecurityUtils.getSubject().getPrincipals());
 	}
 	
-	public PrincipalRepository<Principal> getRepository() {
+	public ShiroPrincipalRepository<ShiroPrincipal> getRepository() {
 		return repository;
 	}
 
-	public void setRepository(PrincipalRepository<Principal> repository) {
+	public void setRepository(ShiroPrincipalRepository<ShiroPrincipal> repository) {
 		this.repository = repository;
 	}
 
