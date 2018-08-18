@@ -29,5 +29,5 @@ public class DefaultInternalAuthorizingRealm extends InternalAuthorizingRealm {
 	protected DelegateAuthenticationToken createDelegateAuthenticationToken(AuthenticationToken token) {
 		return (DelegateAuthenticationToken) token;
 	}
-
+	
 }

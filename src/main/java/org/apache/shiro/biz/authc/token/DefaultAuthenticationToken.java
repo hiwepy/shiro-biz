@@ -23,7 +23,7 @@ import org.apache.shiro.authc.UsernamePasswordToken;
  */
 @SuppressWarnings("serial")
 public class DefaultAuthenticationToken extends UsernamePasswordToken
-		implements DelegateAuthenticationToken, CaptchaAuthenticationToken, 
+		implements CaptchaAuthenticationToken, 
 		PwdStrengthAuthenticationToken, LoginTypeAuthenticationToken {
 
 	/**
