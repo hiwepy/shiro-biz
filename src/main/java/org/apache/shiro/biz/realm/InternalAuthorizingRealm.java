@@ -153,7 +153,7 @@ public abstract class InternalAuthorizingRealm extends AuthorizingRealm {
 		return account;
 	}
 
-	protected abstract DelegateAuthenticationToken createDelegateAuthenticationToken(AuthenticationToken token);
+	protected abstract DelegateAuthenticationToken createDelegateAuthenticationToken(AuthenticationToken token) throws AuthenticationException;
 	
 	public void clearAuthorizationCache(){
 		clearCachedAuthorizationInfo(SecurityUtils.getSubject().getPrincipals());

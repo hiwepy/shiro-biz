@@ -95,7 +95,7 @@ public abstract class ExternalAuthorizingRealm extends AuthorizingRealm {
 		return info;
     }
     
-    protected abstract AuthenticationInfo doGetExternalAuthenticationInfo(AuthenticationToken token);
+    protected abstract AuthenticationInfo doGetExternalAuthenticationInfo(AuthenticationToken token) throws AuthenticationException;
 
 	public void clearAuthorizationCache(){
 		clearCachedAuthorizationInfo(SecurityUtils.getSubject().getPrincipals());
