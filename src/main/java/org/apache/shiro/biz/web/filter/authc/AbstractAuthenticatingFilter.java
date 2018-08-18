@@ -180,6 +180,10 @@ public abstract class AbstractAuthenticatingFilter extends AuthenticatingFilter 
 		request.setAttribute(getFailureKeyAttribute(), className);
 	}
 	
+	@Override
+	protected String getHost(ServletRequest request) {
+		return WebUtils.getRemoteAddr(request);
+	}
 	
 	public List<LoginListener> getLoginListeners() {
 		return loginListeners;
