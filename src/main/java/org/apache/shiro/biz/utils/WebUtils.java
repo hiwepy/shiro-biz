@@ -74,16 +74,29 @@ public class WebUtils extends org.apache.shiro.web.util.WebUtils {
 		return remoteAddr;
 	}
 	
-    public static void writeJSONString(ServletResponse response, int status, String message)  {
+	public static void writeJSONString(ServletResponse response, Map<String, Object> data)  {
     	
     	try {
-			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("status", status);
-			map.put("message", message);
 			response.setCharacterEncoding("UTF-8");
 			response.setContentType(CONTENT_TYPE_JSON);
 			PrintWriter out = response.getWriter();
-			out.write(JSONObject.toJSONString(map));
+			out.write(JSONObject.toJSONString(data));
+			out.flush();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+    public static void writeJSONString(ServletResponse response, int status, String message)  {
+    	
+    	try {
+			Map<String, Object> data = new HashMap<String, Object>();
+			data.put("status", status);
+			data.put("message", message);
+			response.setCharacterEncoding("UTF-8");
+			response.setContentType(CONTENT_TYPE_JSON);
+			PrintWriter out = response.getWriter();
+			out.write(JSONObject.toJSONString(data));
 			out.flush();
 		} catch (Exception e) {
 			e.printStackTrace();
