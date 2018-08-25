@@ -15,64 +15,67 @@
  */
 package org.apache.shiro.biz.authc.pam;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.pam.ModularRealmAuthenticator;
-import org.apache.shiro.biz.authc.token.DefaultAuthenticationToken;
-import org.apache.shiro.biz.authc.token.LoginType;
 import org.apache.shiro.realm.Realm;
-import org.apache.shiro.util.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DefaultModularRealmAuthenticator extends ModularRealmAuthenticator {
 
-	private Map<String, Object> definedRealms;
-	
-	/**
-	 * 判断登录类型执行操作
-	 */
+	private static final Logger logger = LoggerFactory.getLogger(DefaultModularRealmAuthenticator.class);
+
 	@Override
 	protected AuthenticationInfo doAuthenticate(AuthenticationToken authenticationToken)
 			throws AuthenticationException {
 		
 		this.assertRealmsConfigured();
-	
-		DefaultAuthenticationToken token = (DefaultAuthenticationToken) authenticationToken;
-		/**
-		 * 登录类型枚举；1：系统正常登录；2：外部单点登录；3：外部票据登录（通过握手秘钥等参数认证登录）
-		 */
-		LoginType loginType = token.getLoginType();
 		
-		Realm realm = (Realm) this.definedRealms.get(loginType.getRealmName());
+		Collection<Realm> realms = this.getRealms();
 		
-		if (realm == null) {
-			return null;
+		if (CollectionUtils.isEmpty(realms)) {
+			throw new IllegalStateException("Configuration error:  No realms support token type:" + authenticationToken.getClass());
 		}
-
-		return this.doSingleRealmAuthentication(realm, authenticationToken);
+		
+		if (realms.size() == 1) {
+			return this.doSingleRealmAuthentication(realms.iterator().next(), authenticationToken);
+		} else {
+			//获得匹配的Realm
+			List<Realm> supportRealms = this.filterSupportRealms(realms, authenticationToken);
+			if(CollectionUtils.isEmpty(supportRealms)) {
+				throw new IllegalStateException("Configuration error:  No realms support token type:" + authenticationToken.getClass());
+			}else if(supportRealms.size() == 1) {
+				//只有一个匹配
+				return this.doSingleRealmAuthentication(supportRealms.iterator().next(), authenticationToken);
+			}else {
+				//具有多个匹配，此时提醒开发者有可能会导致验证时的用户自定义异常丢失
+				if(logger.isWarnEnabled()) {
+					logger.warn("token类型为"+authenticationToken.getClass().getName()+"有超多一个对应的Realm处理，有可能会导致认证时用户自定义认证异常丢失，请检查核对配置文件！！！");
+				}
+				return this.doMultiRealmAuthentication(realms, authenticationToken);				
+			}
+		}
 	}
 	
-	/**
-	 * 判断realm是否为空
-	 */
-	@Override
-	protected void assertRealmsConfigured() throws IllegalStateException {
-		this.definedRealms = this.getDefinedRealms();
-		if (CollectionUtils.isEmpty(this.definedRealms)) {
-            String msg = "Configuration error:  No realms have been configured!  One or more realms must be " +
-                    "present to execute an authentication attempt.";
-            throw new IllegalStateException(msg);
-        }
+	private List<Realm> filterSupportRealms(Collection<Realm> realms, AuthenticationToken authenticationToken) {
+		List<Realm> supportRealms = new ArrayList<Realm>(realms);
+		Iterator<Realm> it = supportRealms.iterator();
+		while(it.hasNext()) {
+			Realm r = it.next();
+			if(!r.supports(authenticationToken)) {
+				it.remove();
+			}
+		}
+		return supportRealms;
 	}
-
-	public Map<String, Object> getDefinedRealms() {
-		return this.definedRealms;
-	}
-
-	public void setDefinedRealms(Map<String, Object> definedRealms) {
-		this.definedRealms = definedRealms;
-	}
+	
 
 }
