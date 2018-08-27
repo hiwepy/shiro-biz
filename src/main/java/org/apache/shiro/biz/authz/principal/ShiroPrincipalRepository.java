@@ -18,49 +18,49 @@ package org.apache.shiro.biz.authz.principal;
 import java.util.Set;
 
 import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.biz.authc.DelegateAuthenticationInfo;
-import org.apache.shiro.biz.authc.token.DelegateAuthenticationToken;
+import org.apache.shiro.authc.AuthenticationInfo;
+import org.apache.shiro.authc.AuthenticationToken;
 
 /**
  * 认证主体信息提供者接口
  * @author <a href="https://github.com/vindell">vindell</a>
  */
-public interface ShiroPrincipalRepository<T extends ShiroPrincipal> {
+public interface ShiroPrincipalRepository<T>  {
 
 	/**
 	 * 用户信息
 	 * @param token 用于认证的Token
-	 * @return 委托的认证信息对象
+	 * @return 认证信息对象
 	 * @throws AuthenticationException 认证异常
 	 */
-	DelegateAuthenticationInfo getAuthenticationInfo(DelegateAuthenticationToken token) throws AuthenticationException;
+	AuthenticationInfo getAuthenticationInfo(AuthenticationToken token) throws AuthenticationException;
     
 	/**
 	 * 用户角色列表
 	 * @param principal 认证主体对象
 	 * @return 角色列表
 	 */
-    Set<String> getRoles(T principal);
+	Set<String> getRoles(T principal);
     
     /**
      * 用户角色列表【多realm认证的情况下使用】
      * @param principals 认证主体对象集合
      * @return 角色列表
      */
-    Set<String> getRoles(Set<T> principals);
+	Set<String> getRoles(Set<T> principals);
 
     /**
      * 用户权限列表
      * @param principal 认证主体对象
      * @return 权限列表
      */
-    Set<String> getPermissions(T principal);
+	Set<String> getPermissions(T principal);
     
     /**
      * 用户权限列表【多realm认证的情况下使用】
      * @param principals 认证主体对象集合
      * @return 权限列表
      */
-    Set<String> getPermissions(Set<T> principals);
+	Set<String> getPermissions(Set<T> principals);
 	
 }

@@ -16,32 +16,64 @@
 package org.apache.shiro.biz.realm;
 
 import java.util.List;
+import java.util.Set;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.credential.DefaultPasswordService;
-import org.apache.shiro.authc.credential.PasswordService;
+import org.apache.shiro.authc.SimpleAccount;
+import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.biz.authz.principal.ShiroPrincipalRepository;
 import org.apache.shiro.realm.AuthorizingRealm;
+import org.apache.shiro.subject.PrincipalCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * <p>抽象realm，个业务系统自己实现接口中的方法</p>
+ * <b>抽象Realm</b> 
  * <p>公共需要做的事：1.记录日志；2.提高更高级api；3.封装内部处理逻辑；4.事件监听；</p>
  * @author <a href="https://github.com/vindell">vindell</a>
  */
-public abstract class ExternalAuthorizingRealm extends AuthorizingRealm {
+@SuppressWarnings("unchecked")
+public abstract class AbstractAuthorizingRealm<T>  extends AuthorizingRealm {
 	
-	private static final Logger LOG = LoggerFactory.getLogger(ExternalAuthorizingRealm.class);
-	
+	private static final Logger LOG = LoggerFactory.getLogger(AbstractAuthorizingRealm.class);
+
 	//realm listeners
 	protected List<PrincipalRealmListener> realmsListeners;
 	
-	protected PasswordService passwordService = new DefaultPasswordService();  
-    
-	
+	protected ShiroPrincipalRepository<T>  repository;
+	    
+	/**
+	 * 获取授权信息;
+	 * 
+	 * @author 		：<a href="https://github.com/vindell">vindell</a>
+	 * @param principals : PrincipalCollection是一个身份集合，因为我们现在就一个Realm，所以直接调用getPrimaryPrincipal得到之前传入的用户名即可；然后根据用户名调用UserService接口获取角色及权限信息。
+	 * @return 授权信息
+	 */
+    @Override
+    protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
+    	
+    	if(principals == null || principals.isEmpty()){
+			return null;
+		}
+    	
+    	Set<String> permissionsSet, rolesSet = null;
+		if(principals.asList().size() <= 1){
+			permissionsSet = getRepository().getPermissions((T) principals.getPrimaryPrincipal());
+			rolesSet = getRepository().getRoles((T) principals.getPrimaryPrincipal());
+		}else{
+			permissionsSet = getRepository().getPermissions(principals.asSet());
+			rolesSet = getRepository().getRoles(principals.asSet());
+		}
+		
+    	SimpleAccount account = new SimpleAccount();
+    	account.setRoles(rolesSet);
+    	account.setStringPermissions(permissionsSet);
+        return account;
+    }
+
 	/**
 	 * 
 	 *  获取身份验证相关信息
@@ -60,7 +92,7 @@ public abstract class ExternalAuthorizingRealm extends AuthorizingRealm {
 	 * 
 	 * @author ：<a href="https://github.com/vindell">vindell</a>
 	 * @param token 认证Token
-	 * @return 认证信息
+	 * @return 授权信息
 	 * @throws AuthenticationException 认证异常
 	 */
     @Override
@@ -72,7 +104,7 @@ public abstract class ExternalAuthorizingRealm extends AuthorizingRealm {
     	AuthenticationException ex = null;
     	AuthenticationInfo info = null;
     	try {
-    		info = this.doGetExternalAuthenticationInfo(token);
+    		info = getRepository().getAuthenticationInfo(token);
 		} catch (AuthenticationException e) {
 			ex = e;
 		}
@@ -94,27 +126,25 @@ public abstract class ExternalAuthorizingRealm extends AuthorizingRealm {
 		
 		return info;
     }
-    
-    protected abstract AuthenticationInfo doGetExternalAuthenticationInfo(AuthenticationToken token) throws AuthenticationException;
-
+	
 	public void clearAuthorizationCache(){
 		clearCachedAuthorizationInfo(SecurityUtils.getSubject().getPrincipals());
 	}
-	 
+	
+	public ShiroPrincipalRepository<T>  getRepository() {
+		return repository;
+	}
+
+	public void setRepository(ShiroPrincipalRepository<T> repository) {
+		this.repository = repository;
+	}
+
 	public List<PrincipalRealmListener> getRealmsListeners() {
 		return realmsListeners;
 	}
 
 	public void setRealmsListeners(List<PrincipalRealmListener> realmsListeners) {
 		this.realmsListeners = realmsListeners;
-	}
-
-	public PasswordService getPasswordService() {
-		return passwordService;
-	}
-
-	public void setPasswordService(PasswordService passwordService) {
-		this.passwordService = passwordService;
 	}
 	
 }
