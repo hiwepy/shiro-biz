@@ -392,7 +392,6 @@
 		<maven-surefire-plugin.vertsion>2.21.0</maven-surefire-plugin.vertsion>
 		<maven-source-plugin.version>3.0.1</maven-source-plugin.version>
 		<maven-nexus-staging-plugin.version>1.6.8</maven-nexus-staging-plugin.version>
-		<quartz.version>2.3.0</quartz.version>
 		<servlet-api.version>3.0.1</servlet-api.version>
 		<shiro.version>1.4.0</shiro.version>
 		<slf4j.version>1.7.21</slf4j.version>
@@ -477,18 +476,10 @@
 			<!-- ###################### Shiro ###################### -->
 
 			<dependency>
-				<groupId>org.apache.shiro</groupId>
-				<artifactId>shiro-all</artifactId>
-				<type>pom</type>
-				<version>${shiro.version}</version>
-			</dependency>
-			
-			<!-- https://mvnrepository.com/artifact/org.quartz-scheduler/quartz -->
-			<dependency>
-				<groupId>org.quartz-scheduler</groupId>
-				<artifactId>quartz</artifactId>
-				<version>${quartz.version}</version>
-			</dependency>
+	            <groupId>org.apache.shiro</groupId>
+	            <artifactId>shiro-spring</artifactId>
+	            <version>${shiro.version}</version>
+	        </dependency>
 			
 			<dependency>
 				<groupId>org.springframework</groupId>
@@ -518,84 +509,43 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<scope>provided</scope>
 		</dependency>
-
-		<dependency>
-			<groupId>commons-codec</groupId>
-			<artifactId>commons-codec</artifactId>
-		</dependency>
+		
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-		</dependency>
 
 		<!-- ###################### Shiro ###################### -->
 
-		<!-- https://mvnrepository.com/artifact/org.apache.shiro/shiro-all -->
 		<dependency>
-			<groupId>org.apache.shiro</groupId>
-			<artifactId>shiro-all</artifactId>
-			<type>pom</type>
-			<exclusions>
-				<exclusion>
-					<groupId>org.apache.shiro</groupId>
-					<artifactId>shiro-guice</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.opensymphony.quartz</groupId>
-					<artifactId>quartz</artifactId>
-				</exclusion>
-			</exclusions>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-spring</artifactId>
+        </dependency>
+        <dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.quartz-scheduler/quartz -->
-		<dependency>
-			<groupId>org.quartz-scheduler</groupId>
-			<artifactId>quartz</artifactId>
-			<optional>true</optional>
-			<exclusions>
-				<exclusion>
-					<groupId>com.mchange</groupId>
-					<artifactId>c3p0</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>com.zaxxer</groupId>
-					<artifactId>HikariCP-java6</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>com.mchange</groupId>
-					<artifactId>mchange-commons-java</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
+		
 		<dependency>
 			<groupId>redis.clients</groupId>
 			<artifactId>jedis</artifactId>
-			<optional>true</optional>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.thoughtworks.xstream</groupId>
 			<artifactId>xstream</artifactId>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>fastjson</artifactId>
-			<optional>true</optional>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.flexjson</groupId>
 			<artifactId>flexjson</artifactId>
-			<optional>true</optional>
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
