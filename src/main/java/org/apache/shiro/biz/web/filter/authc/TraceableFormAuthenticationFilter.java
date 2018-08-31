@@ -19,15 +19,15 @@ import java.util.List;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.biz.web.filter.authc.listener.LoginListener;
 import org.apache.shiro.subject.Subject;
-import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.apache.shiro.web.util.WebUtils;
 
-public class TraceableFormAuthenticationFilter extends FormAuthenticationFilter {
+public class TraceableFormAuthenticationFilter extends TrustableFormAuthenticationFilter {
 
 	/**
 	 * 登录回调监听
@@ -37,6 +37,11 @@ public class TraceableFormAuthenticationFilter extends FormAuthenticationFilter 
 	 * 是否重定向到前一个访问地址
 	 */
 	private boolean redirectToSavedRequest;
+	
+	@Override
+	protected boolean isLoginSubmission(ServletRequest request, ServletResponse response) {
+		return (request instanceof HttpServletRequest) ;
+	}
 	
 	@Override
 	protected boolean onLoginFailure(AuthenticationToken token, AuthenticationException e, ServletRequest request,

@@ -21,6 +21,7 @@ import java.util.Map;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -49,6 +50,11 @@ public class TrustableFormAuthenticationFilter extends FormAuthenticationFilter 
 
 	public TrustableFormAuthenticationFilter() {
 		setLoginUrl(DEFAULT_LOGIN_URL);
+	}
+	
+	@Override
+	protected boolean isLoginSubmission(ServletRequest request, ServletResponse response) {
+		return (request instanceof HttpServletRequest) ;
 	}
 
 	@Override
