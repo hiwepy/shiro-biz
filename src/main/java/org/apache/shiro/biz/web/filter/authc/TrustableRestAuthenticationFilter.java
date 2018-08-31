@@ -105,7 +105,7 @@ public class TrustableRestAuthenticationFilter extends FormAuthenticationFilter 
      */
     @Override
     protected boolean isLoginSubmission(ServletRequest request, ServletResponse response) {
-        return (request instanceof HttpServletRequest) && WebUtils.isAjaxRequest(request);
+        return (request instanceof HttpServletRequest) && WebUtils.toHttp(request).getMethod().equalsIgnoreCase(POST_METHOD) && WebUtils.isAjaxRequest(request);
     }
 
     /**

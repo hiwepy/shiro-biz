@@ -19,7 +19,6 @@ import java.util.List;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
 
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -37,11 +36,6 @@ public class TraceableFormAuthenticationFilter extends TrustableFormAuthenticati
 	 * 是否重定向到前一个访问地址
 	 */
 	private boolean redirectToSavedRequest;
-	
-	@Override
-	protected boolean isLoginSubmission(ServletRequest request, ServletResponse response) {
-		return (request instanceof HttpServletRequest) ;
-	}
 	
 	@Override
 	protected boolean onLoginFailure(AuthenticationToken token, AuthenticationException e, ServletRequest request,
