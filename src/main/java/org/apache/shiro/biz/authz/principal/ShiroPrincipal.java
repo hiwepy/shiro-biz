@@ -16,6 +16,7 @@
 package org.apache.shiro.biz.authz.principal;
 
 import java.io.Serializable;
+import java.util.Set;
 
 /**
  * @author <a href="https://github.com/vindell">vindell</a>
@@ -39,9 +40,30 @@ public class ShiroPrincipal implements Cloneable, Serializable {
 	 * 用户密码
 	 */
 	protected String password;
+	/**
+	 * 用户密码盐：用于密码加解密
+	 */
     protected String salt;
-    protected Boolean disabled = Boolean.FALSE;
-    protected Boolean locked = Boolean.FALSE;
+    /**
+	 * 用户秘钥：用于用户JWT加解密
+	 */
+	private String secret;
+	/**
+	 * 用户拥有角色列表
+	 */
+	private Set<String> roles;
+	/**
+	 * 用户权限标记列表
+	 */
+	private Set<String> perms;
+	/**
+	 * 用户是否可用
+	 */
+    protected boolean disabled = Boolean.FALSE;
+    /**
+	 * 用户是否锁定
+	 */
+    protected boolean locked = Boolean.FALSE;
     
     public ShiroPrincipal() {
     }
@@ -95,20 +117,44 @@ public class ShiroPrincipal implements Cloneable, Serializable {
         return username + salt;
     }
 
-    public Boolean getLocked() {
-        return locked;
-    }
+	public String getSecret() {
+		return secret;
+	}
 
-    public void setLocked(Boolean locked) {
-        this.locked = locked;
-    }
+	public void setSecret(String secret) {
+		this.secret = secret;
+	}
+	
+	public Set<String> getRoles() {
+		return roles;
+	}
 
-    public Boolean getDisabled() {
+	public void setRoles(Set<String> roles) {
+		this.roles = roles;
+	}
+
+	public Set<String> getPerms() {
+		return perms;
+	}
+
+	public void setPerms(Set<String> perms) {
+		this.perms = perms;
+	}
+
+	public boolean isDisabled() {
 		return disabled;
 	}
 
-	public void setDisabled(Boolean disabled) {
+	public void setDisabled(boolean disabled) {
 		this.disabled = disabled;
+	}
+
+	public boolean isLocked() {
+		return locked;
+	}
+
+	public void setLocked(boolean locked) {
+		this.locked = locked;
 	}
 
 	@Override
