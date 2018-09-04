@@ -217,9 +217,9 @@ public class TrustableRestAuthenticationFilter extends FormAuthenticationFilter 
 		Session session = getSubject(request, response).getSession(true);
 		Object count = session.getAttribute(getRetryTimesKeyAttribute());
 		if (null != count && Long.parseLong(String.valueOf(count)) > getRetryTimesWhenAccessDenied()) {
-			return false;
+			return true;
 		}
-		return true;
+		return false;
 	}
 
 	public boolean isCaptchaEnabled() {
