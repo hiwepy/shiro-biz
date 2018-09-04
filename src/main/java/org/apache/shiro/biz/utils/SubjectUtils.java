@@ -15,6 +15,10 @@
  */
 package org.apache.shiro.biz.utils;
 
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
@@ -65,6 +69,32 @@ public class SubjectUtils {
 	
 	public static Session getSession(boolean create){
 		return getSubject().getSession(create);
+	}
+	
+	/**
+	 * 登陆成功后重新生成session【基于安全考虑】
+	 * @param oldSession
+	 */
+	public static Session copySession(Subject subject, Session oldSession) {
+		// retain Session attributes to put in the new session after login:
+		Map<Object, Object> attributes = new LinkedHashMap<Object, Object>();
+
+		Collection<Object> keys = oldSession.getAttributeKeys();
+
+		for (Object key : keys) {
+			Object value = oldSession.getAttribute(key);
+			if (value != null) {
+				attributes.put(key, value);
+			}
+		}
+		oldSession.stop();
+		// restore the attributes:
+		Session newSession = subject.getSession();
+
+		for (Object key : attributes.keySet()) {
+			newSession.setAttribute(key, attributes.get(key));
+		}
+		return newSession;
 	}
 
 }

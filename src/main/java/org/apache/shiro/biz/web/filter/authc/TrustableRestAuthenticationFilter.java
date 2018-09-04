@@ -15,10 +15,6 @@
  */
 package org.apache.shiro.biz.web.filter.authc;
 
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
@@ -42,8 +38,13 @@ public class TrustableRestAuthenticationFilter extends FormAuthenticationFilter 
 
 	private static final Logger LOG = LoggerFactory.getLogger(TrustableRestAuthenticationFilter.class);
 	public static final String DEFAULT_CAPTCHA_PARAM = "captcha";
+	public static final String DEFAULT_RETRY_TIMES_KEY_ATTRIBUTE_NAME = "shiroLoginFailureRetries";
+	
 	private boolean captchaEnabled = false;
 	private String captchaParam = DEFAULT_CAPTCHA_PARAM;
+    private String retryTimesKeyAttribute = DEFAULT_RETRY_TIMES_KEY_ATTRIBUTE_NAME;
+    /** Maximum number of retry to login . */
+	private int retryTimesWhenAccessDenied = 3;
 	private CaptchaResolver captchaResolver;
 	
 	public TrustableRestAuthenticationFilter() {
@@ -103,8 +104,8 @@ public class TrustableRestAuthenticationFilter extends FormAuthenticationFilter 
 						+ "must be created in order to execute a login attempt.";
 				throw new AuthenticationException(msg);
 			}
-
-			if (isCaptchaEnabled() && token instanceof CaptchaAuthenticationToken) {
+			
+			if (token instanceof CaptchaAuthenticationToken && isOverRetryTimes(request, response)) {
 				boolean validation = captchaResolver.validCaptcha(request, (CaptchaAuthenticationToken) token);
 				if (!validation) {
 					throw new IncorrectCaptchaException("Captcha validation failed!");
@@ -121,19 +122,25 @@ public class TrustableRestAuthenticationFilter extends FormAuthenticationFilter 
 	@Override
 	protected AuthenticationToken createToken(String username, String password, ServletRequest request,
 			ServletResponse response) {
-		
-		DefaultAuthenticationToken token = new DefaultAuthenticationToken(username, password);
-		
-		token.setHost(WebUtils.getRemoteAddr(request));
-		token.setRememberMe(isRememberMe(request));
-		token.setCaptcha(getCaptcha(request));
-		
-		return token;
+
+		boolean rememberMe = isRememberMe(request);
+		String host = getHost(request);
+		// 判断是否需要进行验证码检查
+		if (isCaptchaEnabled()) {
+
+			DefaultAuthenticationToken token = new DefaultAuthenticationToken(username, password);
+
+			token.setHost(host);
+			token.setRememberMe(rememberMe);
+			token.setCaptcha(getCaptcha(request));
+
+			return token;
+		}
+		return super.createToken(username, password, rememberMe, host);
+
 	}
 
-	protected String getCaptcha(ServletRequest request) {
-		return WebUtils.getCleanParam(request, getCaptchaParam());
-	}
+	
 
     /**
      * 重写成功登录后的响应逻辑：实现JSON信息回写
@@ -144,13 +151,12 @@ public class TrustableRestAuthenticationFilter extends FormAuthenticationFilter 
         // 响应成功状态信息
         WebUtils.writeJSONString(response, HttpServletResponse.SC_OK, "Authentication Success.");
         
-        
         //we handled the success , prevent the chain from continuing:
         return false;
     }
     
     /**
-     * 重写成功失败后的响应逻辑：实现JSON信息回写
+     * 重写成功失败后的响应逻辑：增加失败次数记录和实现JSON信息回写
      */
     @Override
     protected boolean onLoginFailure(AuthenticationToken token, AuthenticationException e,
@@ -159,44 +165,42 @@ public class TrustableRestAuthenticationFilter extends FormAuthenticationFilter 
         	LOG.debug( "Authentication exception", e );
         }
         setFailureAttribute(request, e);
+        setFailureCountAttribute(request, response, e);
+        
         // 响应异常状态信息
         WebUtils.writeJSONString(response, HttpStatus.SC_INTERNAL_SERVER_ERROR, "Authentication Exception.");
         return false;
     }
-	
-    /**
-	 * 登陆成功后重新生成session【基于安全考虑】
-	 * @param oldSession
-	 */
-	protected Session newSession(Subject subject, Session oldSession) {
-		// retain Session attributes to put in the new session after login:
-		Map<Object, Object> attributes = new LinkedHashMap<Object, Object>();
+    
+    protected void setFailureCountAttribute(ServletRequest request, ServletResponse response,
+			AuthenticationException ae) {
 
-		Collection<Object> keys = oldSession.getAttributeKeys();
-
-		for (Object key : keys) {
-			Object value = oldSession.getAttribute(key);
-			if (value != null) {
-				attributes.put(key, value);
-			}
+		Session session = getSubject(request, response).getSession(true);
+		Object count = session.getAttribute(getRetryTimesKeyAttribute());
+		if (null == count) {
+			session.setAttribute(getRetryTimesKeyAttribute(), 1);
+		} else {
+			session.setAttribute(getRetryTimesKeyAttribute(), Long.parseLong(String.valueOf(count)) + 1);
 		}
-		oldSession.stop();
-		// restore the attributes:
-		Session newSession = subject.getSession();
-
-		for (Object key : attributes.keySet()) {
-			newSession.setAttribute(key, attributes.get(key));
-		}
-		return newSession;
+		
 	}
 	
-	
-	public CaptchaResolver getCaptchaResolver() {
-		return captchaResolver;
+    protected String getCaptcha(ServletRequest request) {
+		return WebUtils.getCleanParam(request, getCaptchaParam());
 	}
-
-	public void setCaptchaResolver(CaptchaResolver captchaResolver) {
-		this.captchaResolver = captchaResolver;
+	
+	@Override
+	protected String getHost(ServletRequest request) {
+		return WebUtils.getRemoteAddr(request);
+	}
+	
+	protected boolean isOverRetryTimes(ServletRequest request, ServletResponse response) {
+		Session session = getSubject(request, response).getSession(true);
+		Object count = session.getAttribute(getRetryTimesKeyAttribute());
+		if (null != count && Long.parseLong(String.valueOf(count)) > getRetryTimesWhenAccessDenied()) {
+			return false;
+		}
+		return true;
 	}
 
 	public boolean isCaptchaEnabled() {
@@ -213,6 +217,30 @@ public class TrustableRestAuthenticationFilter extends FormAuthenticationFilter 
 
 	public void setCaptchaParam(String captchaParam) {
 		this.captchaParam = captchaParam;
+	}
+
+	public String getRetryTimesKeyAttribute() {
+		return retryTimesKeyAttribute;
+	}
+
+	public void setRetryTimesKeyAttribute(String retryTimesKeyAttribute) {
+		this.retryTimesKeyAttribute = retryTimesKeyAttribute;
+	}
+
+	public int getRetryTimesWhenAccessDenied() {
+		return retryTimesWhenAccessDenied;
+	}
+
+	public void setRetryTimesWhenAccessDenied(int retryTimesWhenAccessDenied) {
+		this.retryTimesWhenAccessDenied = retryTimesWhenAccessDenied;
+	}
+	
+	public CaptchaResolver getCaptchaResolver() {
+		return captchaResolver;
+	}
+
+	public void setCaptchaResolver(CaptchaResolver captchaResolver) {
+		this.captchaResolver = captchaResolver;
 	}
 	
 }

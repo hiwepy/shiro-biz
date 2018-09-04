@@ -15,10 +15,6 @@
  */
 package org.apache.shiro.biz.web.filter.authc;
 
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
@@ -39,14 +35,17 @@ public class TrustableFormAuthenticationFilter extends FormAuthenticationFilter 
 
 	private static final Logger LOG = LoggerFactory.getLogger(TrustableFormAuthenticationFilter.class);
     public static final String DEFAULT_CAPTCHA_PARAM = "captcha";
+	public static final String DEFAULT_RETRY_TIMES_KEY_ATTRIBUTE_NAME = "shiroLoginFailureRetries";
+
 	private boolean captchaEnabled = false;
 	private String captchaParam = DEFAULT_CAPTCHA_PARAM;
-	private CaptchaResolver captchaResolver;
-	/**
-	 * 是否重定向到前一个访问地址
-	 */
+	private String retryTimesKeyAttribute = DEFAULT_RETRY_TIMES_KEY_ATTRIBUTE_NAME;
+    /** Maximum number of retry to login . */
+	private int retryTimesWhenAccessDenied = 3;
+	/** 是否重定向到前一个访问地址 */
 	private boolean redirectToSavedRequest;
-
+	private CaptchaResolver captchaResolver;
+	
 	public TrustableFormAuthenticationFilter() {
 		setLoginUrl(DEFAULT_LOGIN_URL);
 	}
@@ -66,7 +65,7 @@ public class TrustableFormAuthenticationFilter extends FormAuthenticationFilter 
 				throw new AuthenticationException(msg);
 			}
 
-			if (isCaptchaEnabled() && token instanceof CaptchaAuthenticationToken) {
+			if (token instanceof CaptchaAuthenticationToken && isOverRetryTimes(request, response)) {
 				boolean validation = captchaResolver.validCaptcha(request, (CaptchaAuthenticationToken) token);
 				if (!validation) {
 					throw new IncorrectCaptchaException("Captcha validation failed!");
@@ -78,51 +77,28 @@ public class TrustableFormAuthenticationFilter extends FormAuthenticationFilter 
 			return onLoginFailure(token, e, request, response);
 		}
 	}
-
+	
 	@Override
 	protected AuthenticationToken createToken(String username, String password, ServletRequest request,
 			ServletResponse response) {
-		
-		DefaultAuthenticationToken token = new DefaultAuthenticationToken(username, password);
-		
-		token.setHost(WebUtils.getRemoteAddr(request));
-		token.setRememberMe(isRememberMe(request));
-		token.setCaptcha(getCaptcha(request));
-		
-		return token;
-	}
 
-	protected String getCaptcha(ServletRequest request) {
-		return WebUtils.getCleanParam(request, getCaptchaParam());
-	}
+		boolean rememberMe = isRememberMe(request);
+		String host = getHost(request);
+		// 判断是否需要进行验证码检查
+		if (isCaptchaEnabled()) {
 
-	/**
-	 * 登陆成功后重新生成session【基于安全考虑】
-	 * 
-	 * @param oldSession
-	 */
-	protected Session newSession(Subject subject, Session oldSession) {
-		// retain Session attributes to put in the new session after login:
-		Map<Object, Object> attributes = new LinkedHashMap<Object, Object>();
+			DefaultAuthenticationToken token = new DefaultAuthenticationToken(username, password);
 
-		Collection<Object> keys = oldSession.getAttributeKeys();
+			token.setHost(host);
+			token.setRememberMe(rememberMe);
+			token.setCaptcha(getCaptcha(request));
 
-		for (Object key : keys) {
-			Object value = oldSession.getAttribute(key);
-			if (value != null) {
-				attributes.put(key, value);
-			}
+			return token;
 		}
-		oldSession.stop();
-		// restore the attributes:
-		Session newSession = subject.getSession();
+		return super.createToken(username, password, rememberMe, host);
 
-		for (Object key : attributes.keySet()) {
-			newSession.setAttribute(key, attributes.get(key));
-		}
-		return newSession;
 	}
-	
+
 	@Override
 	protected boolean onLoginSuccess(AuthenticationToken token, Subject subject, ServletRequest request,
 			ServletResponse response) throws Exception {
@@ -136,15 +112,57 @@ public class TrustableFormAuthenticationFilter extends FormAuthenticationFilter 
         return false;
 	}
 	
+	/**
+     * 重写成功失败后的响应逻辑：增加失败次数记录
+     */
+    @Override
+    protected boolean onLoginFailure(AuthenticationToken token, AuthenticationException e,
+                                     ServletRequest request, ServletResponse response) {
+        if (LOG.isDebugEnabled()) {
+        	LOG.debug( "Authentication exception", e );
+        }
+        setFailureAttribute(request, e);
+        setFailureCountAttribute(request, response, e);
+        //login failed, let request continue back to the login page:
+        return true;
+    }
 	
-	public CaptchaResolver getCaptchaResolver() {
-		return captchaResolver;
+	protected void setFailureAttribute(ServletRequest request, AuthenticationException ae) {
+        String className = ae.getClass().getName();
+        request.setAttribute(getFailureKeyAttribute(), className);
+    }
+
+	protected void setFailureCountAttribute(ServletRequest request, ServletResponse response,
+			AuthenticationException ae) {
+
+		Session session = getSubject(request, response).getSession(true);
+		Object count = session.getAttribute(getRetryTimesKeyAttribute());
+		if (null == count) {
+			session.setAttribute(getRetryTimesKeyAttribute(), 1);
+		} else {
+			session.setAttribute(getRetryTimesKeyAttribute(), Long.parseLong(String.valueOf(count)) + 1);
+		}
+		
 	}
 
-	public void setCaptchaResolver(CaptchaResolver captchaResolver) {
-		this.captchaResolver = captchaResolver;
+	@Override
+	protected String getHost(ServletRequest request) {
+		return WebUtils.getRemoteAddr(request);
 	}
-
+	
+	protected String getCaptcha(ServletRequest request) {
+		return WebUtils.getCleanParam(request, getCaptchaParam());
+	}
+	
+	protected boolean isOverRetryTimes(ServletRequest request, ServletResponse response) {
+		Session session = getSubject(request, response).getSession(true);
+		Object count = session.getAttribute(getRetryTimesKeyAttribute());
+		if (null != count && Long.parseLong(String.valueOf(count)) > getRetryTimesWhenAccessDenied()) {
+			return false;
+		}
+		return true;
+	}
+	
 	public boolean isCaptchaEnabled() {
 		return captchaEnabled && captchaResolver != null;
 	}
@@ -161,6 +179,22 @@ public class TrustableFormAuthenticationFilter extends FormAuthenticationFilter 
 		this.captchaParam = captchaParam;
 	}
 
+	public String getRetryTimesKeyAttribute() {
+		return retryTimesKeyAttribute;
+	}
+
+	public void setRetryTimesKeyAttribute(String retryTimesKeyAttribute) {
+		this.retryTimesKeyAttribute = retryTimesKeyAttribute;
+	}
+
+	public int getRetryTimesWhenAccessDenied() {
+		return retryTimesWhenAccessDenied;
+	}
+
+	public void setRetryTimesWhenAccessDenied(int retryTimesWhenAccessDenied) {
+		this.retryTimesWhenAccessDenied = retryTimesWhenAccessDenied;
+	}
+
 	public boolean isRedirectToSavedRequest() {
 		return redirectToSavedRequest;
 	}
@@ -168,5 +202,13 @@ public class TrustableFormAuthenticationFilter extends FormAuthenticationFilter 
 	public void setRedirectToSavedRequest(boolean redirectToSavedRequest) {
 		this.redirectToSavedRequest = redirectToSavedRequest;
 	}
+	
+	public CaptchaResolver getCaptchaResolver() {
+		return captchaResolver;
+	}
 
+	public void setCaptchaResolver(CaptchaResolver captchaResolver) {
+		this.captchaResolver = captchaResolver;
+	}
+	
 }
