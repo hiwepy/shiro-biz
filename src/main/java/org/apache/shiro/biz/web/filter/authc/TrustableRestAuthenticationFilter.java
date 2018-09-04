@@ -51,6 +51,45 @@ public class TrustableRestAuthenticationFilter extends FormAuthenticationFilter 
 	}
 	
 	@Override
+	protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
+		if (isLoginRequest(request, response)) {
+			if (isLoginSubmission(request, response)) {
+				if (LOG.isTraceEnabled()) {
+					LOG.trace("Login submission detected.  Attempting to execute login.");
+				}
+				return executeLogin(request, response);
+			} else {
+				if (LOG.isTraceEnabled()) {
+					LOG.trace("Login page view.");
+				}
+				// allow them to see the login page ;)
+				return true;
+			}
+		} else {
+			String mString = "Attempting to access a path which requires authentication.  Forwarding to the "
+					+ "Authentication url [" + getLoginUrl() + "]";
+			if (LOG.isTraceEnabled()) {
+				LOG.trace(mString);
+			}
+			WebUtils.writeJSONString(response, HttpServletResponse.SC_UNAUTHORIZED, mString);
+			return false;
+		}
+	}
+	
+    /**
+     * This default implementation merely returns <code>true</code> if the request is an HTTP <code>POST</code>,
+     * <code>false</code> otherwise. Can be overridden by subclasses for custom login submission detection behavior.
+     * 重写是否登录请求判断逻辑，增加Ajax请求判断
+     * @param request  the incoming ServletRequest
+     * @param response the outgoing ServletResponse.
+     * @return <code>true</code> if the request is an HTTP <code>POST</code>, <code>false</code> otherwise.
+     */
+    @Override
+    protected boolean isLoginSubmission(ServletRequest request, ServletResponse response) {
+        return (request instanceof HttpServletRequest) && WebUtils.toHttp(request).getMethod().equalsIgnoreCase(POST_METHOD) && WebUtils.isAjaxRequest(request);
+    }
+	
+	@Override
 	protected boolean executeLogin(ServletRequest request, ServletResponse response) throws Exception {
 		Subject subject = getSubject(request, response);
 		AuthenticationToken token = createToken(request, response);
@@ -78,6 +117,7 @@ public class TrustableRestAuthenticationFilter extends FormAuthenticationFilter 
 		}
 	}
 	
+	
 	@Override
 	protected AuthenticationToken createToken(String username, String password, ServletRequest request,
 			ServletResponse response) {
@@ -94,19 +134,6 @@ public class TrustableRestAuthenticationFilter extends FormAuthenticationFilter 
 	protected String getCaptcha(ServletRequest request) {
 		return WebUtils.getCleanParam(request, getCaptchaParam());
 	}
-
-    /**
-     * This default implementation merely returns <code>true</code> if the request is an HTTP <code>POST</code>,
-     * <code>false</code> otherwise. Can be overridden by subclasses for custom login submission detection behavior.
-     * 重写是否登录请求判断逻辑，增加Ajax请求判断
-     * @param request  the incoming ServletRequest
-     * @param response the outgoing ServletResponse.
-     * @return <code>true</code> if the request is an HTTP <code>POST</code>, <code>false</code> otherwise.
-     */
-    @Override
-    protected boolean isLoginSubmission(ServletRequest request, ServletResponse response) {
-        return (request instanceof HttpServletRequest) && WebUtils.toHttp(request).getMethod().equalsIgnoreCase(POST_METHOD) && WebUtils.isAjaxRequest(request);
-    }
 
     /**
      * 重写成功登录后的响应逻辑：实现JSON信息回写
