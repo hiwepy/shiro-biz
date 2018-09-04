@@ -15,6 +15,9 @@
  */
 package org.apache.shiro.biz.web.filter.authc;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
@@ -27,7 +30,6 @@ import org.apache.shiro.biz.authc.token.CaptchaAuthenticationToken;
 import org.apache.shiro.biz.authc.token.DefaultAuthenticationToken;
 import org.apache.shiro.biz.utils.WebUtils;
 import org.apache.shiro.biz.web.filter.authc.captcha.CaptchaResolver;
-import org.apache.shiro.biz.web.servlet.http.HttpStatus;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
@@ -60,11 +62,12 @@ public class TrustableRestAuthenticationFilter extends FormAuthenticationFilter 
 				}
 				return executeLogin(request, response);
 			} else {
+				String mString = "Authentication url [" + getLoginUrl() + "] Not Http Post request.";
 				if (LOG.isTraceEnabled()) {
-					LOG.trace("Login page view.");
+					LOG.trace(mString);
 				}
-				// allow them to see the login page ;)
-				return true;
+				WebUtils.writeJSONString(response, HttpServletResponse.SC_BAD_REQUEST, mString);
+				return false;
 			}
 		} else {
 			String mString = "Attempting to access a path which requires authentication.  Forwarding to the "
@@ -167,8 +170,18 @@ public class TrustableRestAuthenticationFilter extends FormAuthenticationFilter 
         setFailureAttribute(request, e);
         setFailureCountAttribute(request, response, e);
         
-        // 响应异常状态信息
-        WebUtils.writeJSONString(response, HttpStatus.SC_INTERNAL_SERVER_ERROR, "Authentication Exception.");
+        // 已经超出了重试限制，需要进行提醒
+        if(isOverRetryTimes(request, response)) {
+        	// 响应异常状态信息
+        	Map<String, Object> data = new HashMap<String, Object>();
+        	data.put("status", HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			data.put("message", "Over Maximum number of retry to login.");
+			data.put("captcha", "1");
+            WebUtils.writeJSONString(response, data);
+        } else {
+        	// 响应异常状态信息
+            WebUtils.writeJSONString(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Authentication Exception.");
+        }
         return false;
     }
     

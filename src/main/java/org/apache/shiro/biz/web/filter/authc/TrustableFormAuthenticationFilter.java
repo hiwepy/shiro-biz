@@ -123,6 +123,11 @@ public class TrustableFormAuthenticationFilter extends FormAuthenticationFilter 
         }
         setFailureAttribute(request, e);
         setFailureCountAttribute(request, response, e);
+        // 已经超出了重试限制，需要进行提醒
+        if(isOverRetryTimes(request, response)) {
+        	WebUtils.getHttpRequest(request).setAttribute("captcha", "1");
+        }
+        
         //login failed, let request continue back to the login page:
         return true;
     }
