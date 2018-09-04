@@ -34,16 +34,17 @@ public abstract class AbstracAuthorizationFilter extends AuthorizationFilter {
 
 	@Override
 	protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws IOException {
-
 		Subject subject = getSubject(request, response);
 		// 未认证
 		if (null == subject.getPrincipal()) {
+			// Ajax 请求：响应json数据对象
 			if (WebUtils.isAjaxRequest(request)) {
 				WebUtils.writeJSONString(response, HttpServletResponse.SC_UNAUTHORIZED, "Unauthentication.");
 				return false;
 			}
+			// 普通请求：重定向到登录页
 			saveRequestAndRedirectToLogin(request, response);
-			// 未授权
+			return false;
 		} else {
 			if (WebUtils.isAjaxRequest(request)) {
 				WebUtils.writeJSONString(response, HttpServletResponse.SC_FORBIDDEN, "Forbidden.");
