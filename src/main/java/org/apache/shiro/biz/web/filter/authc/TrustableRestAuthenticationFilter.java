@@ -170,18 +170,24 @@ public class TrustableRestAuthenticationFilter extends FormAuthenticationFilter 
         setFailureAttribute(request, e);
         setFailureCountAttribute(request, response, e);
         
+        // 响应异常状态信息
+    	Map<String, Object> data = new HashMap<String, Object>();
+    	data.put("status", HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         // 已经超出了重试限制，需要进行提醒
         if(isOverRetryTimes(request, response)) {
-        	// 响应异常状态信息
-        	Map<String, Object> data = new HashMap<String, Object>();
-        	data.put("status", HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			data.put("message", "Over Maximum number of retry to login.");
-			data.put("captcha", "1");
-            WebUtils.writeJSONString(response, data);
-        } else {
-        	// 响应异常状态信息
-            WebUtils.writeJSONString(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Authentication Exception.");
+			data.put("captcha", "required");
         }
+        // 验证码错误
+    	else if(e instanceof IncorrectCaptchaException) {
+        	data.put("message", "Over Maximum number of retry to login.");
+			data.put("captcha", "error");
+        } else {
+        	data.put("message", "Authentication Exception.");
+        }
+        // 导致异常的类型
+        data.put(getFailureKeyAttribute(), e.getClass().getName());
+        WebUtils.writeJSONString(response, data);
         return false;
     }
     
