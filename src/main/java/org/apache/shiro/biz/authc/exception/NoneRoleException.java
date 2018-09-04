@@ -15,14 +15,32 @@
  */
 package org.apache.shiro.biz.authc.exception;
 
-import org.apache.shiro.ShiroException;
+import org.apache.shiro.authc.AccountException;
 
 /**
  * 登录用户未分配角色异常
  * @author <a href="https://github.com/vindell">vindell</a>
  */
-public class NoneRoleException extends ShiroException {
+public class NoneRoleException extends AccountException {
 
 	private static final long serialVersionUID = 2504403015710425321L;
+	public NoneRoleException() {
+		super();
 
+	}
+
+	public NoneRoleException(String message, Throwable cause) {
+		super(message, cause);
+
+	}
+
+	public NoneRoleException(String message) {
+		super(message);
+
+	}
+
+	public NoneRoleException(Throwable cause) {
+		super(cause);
+
+	}
 }
