@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFilter {
 
-	private static final Logger LOG = LoggerFactory.getLogger(TrustableRestAuthenticatingFilter.class);
+	private static final Logger LOG = LoggerFactory.getLogger(AbstractAuthenticatingFilter.class);
 	public static final String DEFAULT_CAPTCHA_PARAM = "captcha";
 	public static final String DEFAULT_RETRY_TIMES_KEY_ATTRIBUTE_NAME = "shiroLoginFailureRetries";
 	

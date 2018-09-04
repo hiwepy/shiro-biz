@@ -22,7 +22,6 @@ import org.apache.shiro.subject.Subject;
 
 public class AnyRolesAuthorizationFilter extends AbstracAuthorizationFilter {
 
-	
 	protected boolean checkRoles(Subject subject, Object mappedValue) {
 
 		String[] rolesArray = (String[]) mappedValue;

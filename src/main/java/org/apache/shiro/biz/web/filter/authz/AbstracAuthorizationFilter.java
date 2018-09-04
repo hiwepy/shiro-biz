@@ -27,7 +27,8 @@ import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authz.AuthorizationFilter;
 
 /**
- * 抽象的授权 (authorization)过滤器 
+ * 抽象的授权 (authorization)过滤器
+ * 
  * @author <a href="https://github.com/vindell">vindell</a>
  */
 public abstract class AbstracAuthorizationFilter extends AuthorizationFilter {
@@ -65,6 +66,20 @@ public abstract class AbstracAuthorizationFilter extends AuthorizationFilter {
 			}
 		}
 		return false;
+	}
+	
+	protected boolean onAccessSuccess(Object mappedValue, Subject subject, ServletRequest request,
+			ServletResponse response) throws Exception {
+		return true;
+	}
+
+	protected boolean onAccessFailure(Object mappedValue, Exception e, ServletRequest request,
+			ServletResponse response) {
+		return false;
+	}
+	
+	protected String getHost(ServletRequest request) {
+		return WebUtils.getRemoteAddr(request);
 	}
 
 }

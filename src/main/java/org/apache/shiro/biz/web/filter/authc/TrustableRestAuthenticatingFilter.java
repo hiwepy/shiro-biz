@@ -115,8 +115,15 @@ public class TrustableRestAuthenticatingFilter extends AbstractAuthenticatingFil
         }
         setFailureAttribute(request, e);
         setFailureCountAttribute(request, response, e);
+        setFailureRespone(token, e, request, response);
         
-        // 响应异常状态信息
+        return false;
+    }
+
+    protected void setFailureRespone(AuthenticationToken token, AuthenticationException e,
+            ServletRequest request, ServletResponse response) {
+
+    	 // 响应异常状态信息
     	Map<String, Object> data = new HashMap<String, Object>();
     	data.put("status", HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         // 已经超出了重试限制，需要进行提醒
@@ -151,9 +158,10 @@ public class TrustableRestAuthenticatingFilter extends AbstractAuthenticatingFil
         // 导致异常的类型
         data.put(getFailureKeyAttribute(), e.getClass().getName());
         WebUtils.writeJSONString(response, data);
-        return false;
-    }
+		
+	}
 
+    
 	public List<LoginListener> getLoginListeners() {
 		return loginListeners;
 	}
