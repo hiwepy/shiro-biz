@@ -148,6 +148,17 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 		return false;
 	}
 	
+	protected boolean onAccessSuccess(AuthenticationToken token, Subject subject, ServletRequest request,
+			ServletResponse response) throws Exception {
+		return true;
+	}
+
+	protected boolean onAccessFailure(AuthenticationToken token, Exception e, ServletRequest request,
+			ServletResponse response) {
+		
+		return false;
+	}
+	
 	public boolean isCaptchaEnabled() {
 		return captchaEnabled;
 	}
