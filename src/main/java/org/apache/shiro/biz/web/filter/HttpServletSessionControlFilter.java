@@ -45,7 +45,7 @@ public abstract class HttpServletSessionControlFilter extends AccessControlFilte
 	protected boolean onAccessDenied(ServletRequest request,
 			ServletResponse response) throws Exception {
 		if(cacheManager == null){
-			throw new AuthenticationException("cacheManage must be set for this filter");
+			throw new AuthenticationException("cacheManager must be set for this filter");
 		}
 		if(this.sessionControlCache == null){
 			sessionControlCache = cacheManager.getCache(getSessionControlCacheName());
