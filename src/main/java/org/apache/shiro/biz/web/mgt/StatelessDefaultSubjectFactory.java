@@ -15,16 +15,38 @@
  */
 package org.apache.shiro.biz.web.mgt;
 
+import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.subject.SubjectContext;
 import org.apache.shiro.web.mgt.DefaultWebSubjectFactory;
 
 public class StatelessDefaultSubjectFactory extends DefaultWebSubjectFactory {
 	
-	public Subject createSubject(SubjectContext context) {
-		// 不创建session
-		context.setSessionCreationEnabled(false);
-		return super.createSubject(context);
+	private final DefaultSessionStorageEvaluator storageEvaluator;
+	/**
+	 * If Session Stateless
+	 */
+	private boolean stateless = false;
+	
+	/**
+	 * DefaultSessionStorageEvaluator是否持久化SESSION的开关 
+	 */
+	public StatelessDefaultSubjectFactory(DefaultSessionStorageEvaluator storageEvaluator,  boolean stateless){
+		this.storageEvaluator = storageEvaluator;
+		this.stateless = stateless;
 	}
 	
+	
+   public Subject createSubject(SubjectContext context) { 
+   	storageEvaluator.setSessionStorageEnabled(Boolean.TRUE);
+   	context.setSessionCreationEnabled(true);
+   	if(stateless){
+           // 不创建 session 
+           context.setSessionCreationEnabled(Boolean.FALSE);
+           // 不持久化session
+           storageEvaluator.setSessionStorageEnabled(Boolean.FALSE);
+   	}
+       return super.createSubject(context); 
+   }
+   
 }
