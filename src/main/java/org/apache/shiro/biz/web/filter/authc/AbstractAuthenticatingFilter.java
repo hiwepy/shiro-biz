@@ -87,7 +87,7 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 		boolean rememberMe = isRememberMe(request);
 		String host = getHost(request);
 		// 判断是否需要进行验证码检查
-		if (isCaptchaEnabled()) {
+		if (isCaptchaEnabled() || isOverRetryTimes(request, response)) {
 
 			DefaultAuthenticationToken token = new DefaultAuthenticationToken(username, password);
 
@@ -142,7 +142,7 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 	protected boolean isOverRetryTimes(ServletRequest request, ServletResponse response) {
 		Session session = getSubject(request, response).getSession(true);
 		Object count = session.getAttribute(getRetryTimesKeyAttribute());
-		if (null != count && Long.parseLong(String.valueOf(count)) > getRetryTimesWhenAccessDenied()) {
+		if (null != count && Long.parseLong(String.valueOf(count)) >= getRetryTimesWhenAccessDenied()) {
 			return true;
 		}
 		return false;
