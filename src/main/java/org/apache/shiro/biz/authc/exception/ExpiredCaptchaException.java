@@ -13,20 +13,34 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.apache.shiro.biz.web.filter.authc.captcha;
-
-import javax.servlet.ServletRequest;
+package org.apache.shiro.biz.authc.exception;
 
 import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.biz.authc.token.CaptchaAuthenticationToken;
 
-public interface CaptchaResolver {
+/**
+ * 验证码过期异常
+ * @author <a href="https://github.com/vindell">vindell</a>
+ */
+public class ExpiredCaptchaException extends AuthenticationException {
 
 	/**
-	 * Valid the current captcha via the given request.
-	 * @param request request to be used for resolution
-	 * @return the result
+	 * 
 	 */
-	boolean validCaptcha(ServletRequest request, CaptchaAuthenticationToken token) throws AuthenticationException;
-	
+	private static final long serialVersionUID = 5804347841925337928L;
+
+	public ExpiredCaptchaException() {
+		super();
+	}
+
+	public ExpiredCaptchaException(String message, Throwable cause) {
+		super(message, cause);
+	}
+
+	public ExpiredCaptchaException(String message) {
+		super(message);
+	}
+
+	public ExpiredCaptchaException(Throwable cause) {
+		super(cause);
+	}
 }
