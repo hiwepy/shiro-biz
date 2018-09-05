@@ -33,11 +33,11 @@ public class TrustableFormAuthenticatingFilter extends AbstractAuthenticatingFil
 	private static final Logger LOG = LoggerFactory.getLogger(TrustableFormAuthenticatingFilter.class);
 	
 	/**
-	 * 是否重定向到前一个访问地址
+	 * Whether to redirect to the previous access address
 	 */
 	private boolean redirectToSavedRequest;
 	/**
-	 * 登录回调监听
+	 * Login callback listener
 	 */
 	private List<LoginListener> loginListeners;
 	
@@ -49,7 +49,7 @@ public class TrustableFormAuthenticatingFilter extends AbstractAuthenticatingFil
 	protected boolean onLoginSuccess(AuthenticationToken token, Subject subject, ServletRequest request,
 			ServletResponse response) throws Exception {
 		
-		//调用事件监听器
+		// Call event listener
 		if(getLoginListeners() != null && getLoginListeners().size() > 0){
 			for (LoginListener loginListener : getLoginListeners()) {
 				loginListener.onLoginSuccess(token, subject, request, response);
@@ -62,27 +62,35 @@ public class TrustableFormAuthenticatingFilter extends AbstractAuthenticatingFil
 			 WebUtils.issueRedirect(request, response, getSuccessUrl());
 		}
 		
-		//we handled the success redirect directly, prevent the chain from continuing:
+		// we handled the success redirect directly, prevent the chain from continuing:
         return false;
 	}
 	
 	/**
-     * 重写成功失败后的响应逻辑：增加失败次数记录
+     * Response logic after rewriting failed successfully: increase the number of failed records
      */
     @Override
     protected boolean onLoginFailure(AuthenticationToken token, AuthenticationException e,
                                      ServletRequest request, ServletResponse response) {
+    	
+    	// Call event listener
+		if(getLoginListeners() != null && getLoginListeners().size() > 0){
+			for (LoginListener loginListener : getLoginListeners()) {
+				loginListener.onLoginFailure(token, e, request, response);
+			}
+		}
+		
         if (LOG.isDebugEnabled()) {
         	LOG.debug( "Authentication exception", e );
         }
         setFailureAttribute(request, e);
         setFailureCountAttribute(request, response, e);
-        // 已经超出了重试限制，需要进行提醒
+        // The retry limit has been exceeded and a reminder is required
         if(isOverRetryTimes(request, response)) {
         	WebUtils.getHttpRequest(request).setAttribute("captcha", "required");
         }
         
-        //login failed, let request continue back to the login page:
+        // Login failed, let the request continue to process the response message in the specific business logic
         return true;
     }
     

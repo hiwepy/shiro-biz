@@ -25,7 +25,6 @@ import org.apache.shiro.biz.authc.token.CaptchaAuthenticationToken;
 import org.apache.shiro.biz.authc.token.DefaultAuthenticationToken;
 import org.apache.shiro.biz.utils.WebUtils;
 import org.apache.shiro.biz.web.filter.authc.captcha.CaptchaResolver;
-import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.slf4j.Logger;
@@ -47,6 +46,7 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
     /** Maximum number of retry to login . */
 	private int retryTimesWhenAccessDenied = 3;
 	private CaptchaResolver captchaResolver;
+	private AuthenticatingFailureCounter failureCounter;
 	
 	public AbstractAuthenticatingFilter() {
 		setLoginUrl(DEFAULT_LOGIN_URL);
@@ -67,7 +67,7 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 				throw new AuthenticationException(msg);
 			}
 			
-			if (token instanceof CaptchaAuthenticationToken && isOverRetryTimes(request, response)) {
+			if (token instanceof CaptchaAuthenticationToken) {
 				boolean validation = captchaResolver.validCaptcha(request, (CaptchaAuthenticationToken) token);
 				if (!validation) {
 					throw new IncorrectCaptchaException("Captcha validation failed!");
@@ -86,9 +86,12 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 
 		boolean rememberMe = isRememberMe(request);
 		String host = getHost(request);
-		// 判断是否需要进行验证码检查
-		if (isCaptchaEnabled() || isOverRetryTimes(request, response)) {
-
+		// Determine if a verification code check is required
+		// 1、启用验证码、不进行失败次数计数
+		// 2、启动验证码、进行失败次数计数判断
+		if ((isCaptchaEnabled() && null == getFailureCounter()) 
+			|| (isCaptchaEnabled() &&  null != getFailureCounter() &&  isOverRetryTimes(request, response))) {
+			
 			DefaultAuthenticationToken token = new DefaultAuthenticationToken(username, password);
 
 			token.setHost(host);
@@ -103,7 +106,7 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 	}
 	
 	/**
-     * 重写成功失败后的响应逻辑：增加失败次数记录
+     * Response logic after rewriting failed successfully: increase the number of failed records
      */
     @Override
     protected boolean onLoginFailure(AuthenticationToken token, AuthenticationException e,
@@ -113,21 +116,15 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
         }
         setFailureAttribute(request, e);
         setFailureCountAttribute(request, response, e);
-        //login failed, let request continue back to the login page:
+        // Login failed, let the request continue to process the response message in the specific business logic
         return true;
     }
 	
 	protected void setFailureCountAttribute(ServletRequest request, ServletResponse response,
 				AuthenticationException ae) {
-
-		Session session = getSubject(request, response).getSession(true);
-		Object count = session.getAttribute(getRetryTimesKeyAttribute());
-		if (null == count) {
-			session.setAttribute(getRetryTimesKeyAttribute(), 1);
-		} else {
-			session.setAttribute(getRetryTimesKeyAttribute(), Long.parseLong(String.valueOf(count)) + 1);
+		if(null != getFailureCounter()) {
+			getFailureCounter().increment(request, response, getRetryTimesKeyAttribute());
 		}
-		
 	}
 	
     protected String getCaptcha(ServletRequest request) {
@@ -140,9 +137,7 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 	}
 	
 	protected boolean isOverRetryTimes(ServletRequest request, ServletResponse response) {
-		Session session = getSubject(request, response).getSession(true);
-		Object count = session.getAttribute(getRetryTimesKeyAttribute());
-		if (null != count && Long.parseLong(String.valueOf(count)) >= getRetryTimesWhenAccessDenied()) {
+		if (null != getFailureCounter() && getFailureCounter().get(request, response, getRetryTimesKeyAttribute()) >= getRetryTimesWhenAccessDenied()) {
 			return true;
 		}
 		return false;
@@ -150,7 +145,8 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 	
 	protected boolean onAccessSuccess(AuthenticationToken token, Subject subject, ServletRequest request,
 			ServletResponse response) throws Exception {
-		return true;
+		// Successful authentication, continue the original access request
+        return true;
 	}
 
 	protected boolean onAccessFailure(AuthenticationToken token, Exception e, ServletRequest request,
@@ -160,7 +156,7 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 	}
 	
 	public boolean isCaptchaEnabled() {
-		return captchaEnabled;
+		return captchaEnabled && null != captchaResolver;
 	}
 
 	public void setCaptchaEnabled(boolean captchaEnabled) {
@@ -197,6 +193,14 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 
 	public void setCaptchaResolver(CaptchaResolver captchaResolver) {
 		this.captchaResolver = captchaResolver;
+	}
+
+	public AuthenticatingFailureCounter getFailureCounter() {
+		return failureCounter;
+	}
+
+	public void setFailureCounter(AuthenticatingFailureCounter failureCounter) {
+		this.failureCounter = failureCounter;
 	}
 	
 }

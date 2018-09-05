@@ -25,11 +25,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.DisabledAccountException;
-import org.apache.shiro.authc.UnknownAccountException;
-import org.apache.shiro.biz.authc.exception.IncorrectCaptchaException;
-import org.apache.shiro.biz.authc.exception.InvalidAccountException;
-import org.apache.shiro.biz.authc.exception.NoneRoleException;
 import org.apache.shiro.biz.utils.WebUtils;
 import org.apache.shiro.biz.web.filter.authc.listener.LoginListener;
 import org.apache.shiro.subject.Subject;
@@ -40,7 +35,7 @@ public class TrustableRestAuthenticatingFilter extends AbstractAuthenticatingFil
 
 	private static final Logger LOG = LoggerFactory.getLogger(TrustableRestAuthenticatingFilter.class);
 	/**
-	 * 登录回调监听
+	 * Login callback listener
 	 */
 	private List<LoginListener> loginListeners;
 	
@@ -76,34 +71,38 @@ public class TrustableRestAuthenticatingFilter extends AbstractAuthenticatingFil
 	}
 	
     /**
-     * 重写成功登录后的响应逻辑：实现JSON信息回写
+     * Rewrite the response logic after successful login: JSON information write back
      */
     @Override
     protected boolean onLoginSuccess(AuthenticationToken token, Subject subject,
                                      ServletRequest request, ServletResponse response) throws Exception {
     	
-    	//调用事件监听器
+    	// Call event listener
 		if(getLoginListeners() != null && getLoginListeners().size() > 0){
 			for (LoginListener loginListener : getLoginListeners()) {
 				loginListener.onLoginSuccess(token, subject, request, response);
 			}
 		}
 		
-        // 响应成功状态信息
-        WebUtils.writeJSONString(response, HttpServletResponse.SC_OK, "Authentication Success.");
+        // Response success status information
+		Map<String, Object> data = new HashMap<String, Object>();
+		data.put("status", "success");
+		data.put("message", "Authentication Success.");
+		// 响应
+		WebUtils.writeJSONString(response, data);
         
         //we handled the success , prevent the chain from continuing:
         return false;
     }
     
     /**
-     * 重写成功失败后的响应逻辑：增加失败次数记录和实现JSON信息回写
+     * Response logic after rewriting failed successfully: increase the number of failed records
      */
     @Override
     protected boolean onLoginFailure(AuthenticationToken token, AuthenticationException e,
                                      ServletRequest request, ServletResponse response) {
     	
-    	//调用事件监听器
+    	// Call event listener
 		if(getLoginListeners() != null && getLoginListeners().size() > 0){
 			for (LoginListener loginListener : getLoginListeners()) {
 				loginListener.onLoginFailure(token, e, request, response);
@@ -115,52 +114,10 @@ public class TrustableRestAuthenticatingFilter extends AbstractAuthenticatingFil
         }
         setFailureAttribute(request, e);
         setFailureCountAttribute(request, response, e);
-        setFailureRespone(token, e, request, response);
         
-        return false;
+        // Login failed, let the request continue to process the response message in the specific business logic
+        return true;
     }
-
-    protected void setFailureRespone(AuthenticationToken token, AuthenticationException e,
-            ServletRequest request, ServletResponse response) {
-
-    	 // 响应异常状态信息
-    	Map<String, Object> data = new HashMap<String, Object>();
-    	data.put("status", HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        // 验证码错误
-    	if(e instanceof IncorrectCaptchaException) {
-    		data.put("message", "Invalid captcha value, please re-enter.");
-			data.put("captcha", "error");
-    	}
-		// 账号或密码为空
-		else if (e instanceof UnknownAccountException) {
-			data.put("message", "Username or password is required.");
-		}
-		// 账户或密码错误
-		else if (e instanceof InvalidAccountException) {
-			data.put("message", "Username or password is incorrect, please re-enter.");
-		}
-		// 账户没有启用
-		else if (e instanceof DisabledAccountException) {
-			data.put("message", "Account is disabled.");
-		}
-		// 该用户无所属角色，禁止登录
-		else if (e instanceof NoneRoleException) {
-			data.put("message", "Username or password is incorrect, please re-enter");
-		}
-    	// 已经超出了重试限制，需要进行提醒
-		else if(isOverRetryTimes(request, response)) {
-			data.put("message", "Over Maximum number of retry to login, username、 password、captcha is required.");
-			data.put("messageCN", "超出登陆重试次数限制！Over Maximum number of retry to login, username、 password、captcha is required.");
-			data.put("captcha", "required");
-        }
-		else {
-        	data.put("message", "Authentication Exception : " + e.getMessage() + ".");
-        }
-        // 导致异常的类型
-        data.put(getFailureKeyAttribute(), e.getClass().getName());
-        WebUtils.writeJSONString(response, data);
-		
-	}
 
     
 	public List<LoginListener> getLoginListeners() {
