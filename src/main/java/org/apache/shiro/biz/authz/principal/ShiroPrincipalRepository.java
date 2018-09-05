@@ -63,4 +63,11 @@ public interface ShiroPrincipalRepository<T>  {
      */
 	Set<String> getPermissions(Set<T> principals);
 	
+	/**
+	 * 用户锁定操作
+     * @param principal 认证主体对象
+	 */
+	void doLock(T principal);
+	
+	
 }

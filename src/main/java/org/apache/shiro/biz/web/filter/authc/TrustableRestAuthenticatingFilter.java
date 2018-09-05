@@ -128,7 +128,7 @@ public class TrustableRestAuthenticatingFilter extends AbstractAuthenticatingFil
     	data.put("status", HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         // 验证码错误
     	if(e instanceof IncorrectCaptchaException) {
-    		data.put("message", "Invalid captcha value.");
+    		data.put("message", "Invalid captcha value, please re-enter.");
 			data.put("captcha", "error");
     	}
 		// 账号或密码为空
@@ -150,6 +150,7 @@ public class TrustableRestAuthenticatingFilter extends AbstractAuthenticatingFil
     	// 已经超出了重试限制，需要进行提醒
 		else if(isOverRetryTimes(request, response)) {
 			data.put("message", "Over Maximum number of retry to login, username、 password、captcha is required.");
+			data.put("messageCN", "超出登陆重试次数限制！Over Maximum number of retry to login, username、 password、captcha is required.");
 			data.put("captcha", "required");
         }
 		else {
