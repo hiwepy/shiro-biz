@@ -126,13 +126,8 @@ public class TrustableRestAuthenticatingFilter extends AbstractAuthenticatingFil
     	 // 响应异常状态信息
     	Map<String, Object> data = new HashMap<String, Object>();
     	data.put("status", HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        // 已经超出了重试限制，需要进行提醒
-        if(isOverRetryTimes(request, response)) {
-			data.put("message", "Over Maximum number of retry to login.");
-			data.put("captcha", "required");
-        }
         // 验证码错误
-    	else if(e instanceof IncorrectCaptchaException) {
+    	if(e instanceof IncorrectCaptchaException) {
     		data.put("message", "Invalid captcha value.");
 			data.put("captcha", "error");
     	}
@@ -152,8 +147,13 @@ public class TrustableRestAuthenticatingFilter extends AbstractAuthenticatingFil
 		else if (e instanceof NoneRoleException) {
 			data.put("message", "Username or password is incorrect, please re-enter");
 		}
+    	// 已经超出了重试限制，需要进行提醒
+		else if(isOverRetryTimes(request, response)) {
+			data.put("message", "Over Maximum number of retry to login, username、 password、captcha is required.");
+			data.put("captcha", "required");
+        }
 		else {
-        	data.put("message", "Authentication Exception.");
+        	data.put("message", "Authentication Exception : " + e.getMessage() + ".");
         }
         // 导致异常的类型
         data.put(getFailureKeyAttribute(), e.getClass().getName());
