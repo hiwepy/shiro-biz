@@ -144,7 +144,7 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 	}
 	
 	protected boolean onAccessSuccess(AuthenticationToken token, Subject subject, ServletRequest request,
-			ServletResponse response) throws Exception {
+			ServletResponse response)  {
 		// Successful authentication, continue the original access request
         return true;
 	}
