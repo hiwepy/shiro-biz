@@ -32,18 +32,18 @@ public class StatelessDefaultSubjectFactory extends DefaultWebSubjectFactory {
 	/**
 	 * If Session Stateless
 	 */
-	private final boolean stateless;
+	private final boolean sessionStateless;
 
 	/**
 	 * DefaultSessionStorageEvaluator是否持久化SESSION的开关
 	 */
-	public StatelessDefaultSubjectFactory(boolean stateless) {
-		this.stateless = stateless;
+	public StatelessDefaultSubjectFactory(boolean sessionStateless) {
+		this.sessionStateless = sessionStateless;
 	}
 
 	public Subject createSubject(SubjectContext context) {
 		
-		if (stateless) {
+		if (sessionStateless) {
 			// 不创建 session
 			context.setSessionCreationEnabled(Boolean.FALSE);
 		}
@@ -58,7 +58,7 @@ public class StatelessDefaultSubjectFactory extends DefaultWebSubjectFactory {
         boolean sessionEnabled = wsc.isSessionCreationEnabled();
         
         PrincipalCollection principals = wsc.resolvePrincipals();
-        boolean authenticated =  stateless ? false : wsc.resolveAuthenticated();
+        boolean authenticated =  sessionStateless ? false : wsc.resolveAuthenticated();
         String host = wsc.resolveHost();
         ServletRequest request = wsc.resolveServletRequest();
         ServletResponse response = wsc.resolveServletResponse();
@@ -68,8 +68,8 @@ public class StatelessDefaultSubjectFactory extends DefaultWebSubjectFactory {
         
 	}
 
-	public boolean isStateless() {
-		return stateless;
+	public boolean isSessionStateless() {
+		return sessionStateless;
 	}
 	
 }
