@@ -15,16 +15,20 @@
  */
 package org.apache.shiro.biz.web.filter.authc;
 
+import java.util.List;
+
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.biz.authc.exception.IncorrectCaptchaException;
+import org.apache.shiro.biz.authc.exception.NoneCaptchaException;
 import org.apache.shiro.biz.authc.token.CaptchaAuthenticationToken;
 import org.apache.shiro.biz.authc.token.DefaultAuthenticationToken;
 import org.apache.shiro.biz.utils.WebUtils;
 import org.apache.shiro.biz.web.filter.authc.captcha.CaptchaResolver;
+import org.apache.shiro.biz.web.filter.authc.listener.LoginListener;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.slf4j.Logger;
@@ -47,6 +51,10 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 	private int retryTimesWhenAccessDenied = 3;
 	private CaptchaResolver captchaResolver;
 	private AuthenticatingFailureCounter failureCounter;
+	/**
+	 * Login callback listener
+	 */
+	private List<LoginListener> loginListeners;
 	
 	public AbstractAuthenticatingFilter() {
 		setLoginUrl(DEFAULT_LOGIN_URL);
@@ -105,21 +113,33 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 		
 	}
 	
-	/**
+    /**
      * Response logic after rewriting failed successfully: increase the number of failed records
      */
     @Override
     protected boolean onLoginFailure(AuthenticationToken token, AuthenticationException e,
                                      ServletRequest request, ServletResponse response) {
+    	
+    	// Call event listener
+		if(getLoginListeners() != null && getLoginListeners().size() > 0){
+			for (LoginListener loginListener : getLoginListeners()) {
+				loginListener.onLoginFailure(token, e, request, response);
+			}
+		}
+    			
         if (LOG.isDebugEnabled()) {
         	LOG.debug( "Authentication exception", e );
         }
         setFailureAttribute(request, e);
         setFailureCountAttribute(request, response, e);
+        // The retry limit has been exceeded and a reminder is required
+        if(isOverRetryTimes(request, response)) {
+        	setFailureAttribute(request, new NoneCaptchaException("Over Maximum number of retry to login, username、 password、captcha is required."));
+        }
         // Login failed, let the request continue to process the response message in the specific business logic
         return true;
     }
-	
+    
 	protected void setFailureCountAttribute(ServletRequest request, ServletResponse response,
 				AuthenticationException ae) {
 		if(null != getFailureCounter()) {
@@ -201,6 +221,14 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 
 	public void setFailureCounter(AuthenticatingFailureCounter failureCounter) {
 		this.failureCounter = failureCounter;
+	}
+	
+	public List<LoginListener> getLoginListeners() {
+		return loginListeners;
+	}
+
+	public void setLoginListeners(List<LoginListener> loginListeners) {
+		this.loginListeners = loginListeners;
 	}
 	
 }

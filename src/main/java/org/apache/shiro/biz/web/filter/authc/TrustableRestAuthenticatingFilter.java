@@ -16,14 +16,12 @@
 package org.apache.shiro.biz.web.filter.authc;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.biz.utils.WebUtils;
 import org.apache.shiro.biz.web.filter.authc.listener.LoginListener;
@@ -34,10 +32,7 @@ import org.slf4j.LoggerFactory;
 public class TrustableRestAuthenticatingFilter extends AbstractAuthenticatingFilter {
 
 	private static final Logger LOG = LoggerFactory.getLogger(TrustableRestAuthenticatingFilter.class);
-	/**
-	 * Login callback listener
-	 */
-	private List<LoginListener> loginListeners;
+	
 	
 	public TrustableRestAuthenticatingFilter() {
 		super();
@@ -60,12 +55,20 @@ public class TrustableRestAuthenticatingFilter extends AbstractAuthenticatingFil
 				return false;
 			}
 		} else {
-			String mString = "Attempting to access a path which requires authentication.  Forwarding to the "
+			
+			String mString = "Attempting to access a path which requires authentication.  Request the "
 					+ "Authentication url [" + getLoginUrl() + "]";
 			if (LOG.isTraceEnabled()) {
 				LOG.trace(mString);
 			}
-			WebUtils.writeJSONString(response, HttpServletResponse.SC_UNAUTHORIZED, mString);
+			
+			// 响应成功状态信息
+			Map<String, Object> data = new HashMap<String, Object>();
+			data.put("status", "fail");
+			data.put("message", mString);
+			// 响应
+			WebUtils.writeJSONString(response, data);
+			
 			return false;
 		}
 	}
@@ -94,38 +97,8 @@ public class TrustableRestAuthenticatingFilter extends AbstractAuthenticatingFil
         //we handled the success , prevent the chain from continuing:
         return false;
     }
-    
-    /**
-     * Response logic after rewriting failed successfully: increase the number of failed records
-     */
-    @Override
-    protected boolean onLoginFailure(AuthenticationToken token, AuthenticationException e,
-                                     ServletRequest request, ServletResponse response) {
-    	
-    	// Call event listener
-		if(getLoginListeners() != null && getLoginListeners().size() > 0){
-			for (LoginListener loginListener : getLoginListeners()) {
-				loginListener.onLoginFailure(token, e, request, response);
-			}
-		}
-    			
-        if (LOG.isDebugEnabled()) {
-        	LOG.debug( "Authentication exception", e );
-        }
-        setFailureAttribute(request, e);
-        setFailureCountAttribute(request, response, e);
-        
-        // Login failed, let the request continue to process the response message in the specific business logic
-        return true;
-    }
+  
 
-    
-	public List<LoginListener> getLoginListeners() {
-		return loginListeners;
-	}
-
-	public void setLoginListeners(List<LoginListener> loginListeners) {
-		this.loginListeners = loginListeners;
-	}
+   
     
 }

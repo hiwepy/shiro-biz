@@ -15,32 +15,34 @@
  */
 package org.apache.shiro.biz.authc.exception;
 
-import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.AccountException;
 
 /**
- * 验证码过期异常
+ * 验证码必须异常
  * @author <a href="https://github.com/vindell">vindell</a>
  */
-public class ExpiredCaptchaException extends AuthenticationException {
+public class NoneCaptchaException extends AccountException {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 5804347841925337928L;
+	private static final long serialVersionUID = 2110512266031697524L;
 
-	public ExpiredCaptchaException() {
+	public NoneCaptchaException() {
 		super();
 	}
 
-	public ExpiredCaptchaException(String message, Throwable cause) {
+	public NoneCaptchaException(String message, Throwable cause) {
 		super(message, cause);
 	}
 
-	public ExpiredCaptchaException(String message) {
+	public NoneCaptchaException(String message) {
 		super(message);
 	}
 
-	public ExpiredCaptchaException(Throwable cause) {
+	public NoneCaptchaException(Throwable cause) {
 		super(cause);
 	}
+
+	
 }
