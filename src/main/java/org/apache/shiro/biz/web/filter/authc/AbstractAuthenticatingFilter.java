@@ -75,7 +75,7 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 				throw new AuthenticationException(msg);
 			}
 			
-			if (token instanceof CaptchaAuthenticationToken) {
+			if (token instanceof CaptchaAuthenticationToken  &&  isOverRetryTimes(request, response)) {
 				boolean validation = captchaResolver.validCaptcha(request, (CaptchaAuthenticationToken) token);
 				if (!validation) {
 					throw new IncorrectCaptchaException("Captcha validation failed!");
@@ -95,10 +95,7 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 		boolean rememberMe = isRememberMe(request);
 		String host = getHost(request);
 		// Determine if a verification code check is required
-		// 1、启用验证码、不进行失败次数计数
-		// 2、启动验证码、进行失败次数计数判断
-		if ((isCaptchaEnabled() && null == getFailureCounter()) 
-			|| (isCaptchaEnabled() &&  null != getFailureCounter() &&  isOverRetryTimes(request, response))) {
+		if (isCaptchaEnabled()) {
 			
 			DefaultAuthenticationToken token = new DefaultAuthenticationToken(username, password);
 
@@ -133,8 +130,8 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
         setFailureAttribute(request, e);
         setFailureCountAttribute(request, response, e);
         // The retry limit has been exceeded and a reminder is required
-        if(isOverRetryTimes(request, response)) {
-        	setFailureAttribute(request, new NoneCaptchaException("Over Maximum number of retry to login, username、 password、captcha is required."));
+        if(isCaptchaEnabled() && isOverRetryRemind(request, response)) {
+        	setFailureAttribute(request, new NoneCaptchaException("The number of login errors exceeds the maximum retry limit and a verification code is required."));
         }
         // Login failed, let the request continue to process the response message in the specific business logic
         return true;
@@ -154,6 +151,13 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 	@Override
 	protected String getHost(ServletRequest request) {
 		return WebUtils.getRemoteAddr(request);
+	}
+	
+	protected boolean isOverRetryRemind(ServletRequest request, ServletResponse response) {
+		if (null != getFailureCounter() && getFailureCounter().get(request, response, getRetryTimesKeyAttribute()) == getRetryTimesWhenAccessDenied()) {
+			return true;
+		}
+		return false;
 	}
 	
 	protected boolean isOverRetryTimes(ServletRequest request, ServletResponse response) {
