@@ -17,15 +17,15 @@ package org.apache.shiro.biz.web.filter.authc;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpSession;
 
-import org.apache.shiro.biz.utils.SubjectUtils;
-import org.apache.shiro.session.Session;
+import org.apache.shiro.biz.utils.WebUtils;
 
 public class AuthenticatingFailureSessionCounter implements AuthenticatingFailureCounter {
 
 	@Override
 	public int get(ServletRequest request, ServletResponse response, String retryTimesKeyAttribute) {
-		Session session = SubjectUtils.getSession(true);
+		HttpSession session = WebUtils.toHttp(request).getSession();
 		Object count = session.getAttribute(retryTimesKeyAttribute);
 		if (null != count) {
 			return Integer.parseInt(String.valueOf(count));
@@ -35,7 +35,7 @@ public class AuthenticatingFailureSessionCounter implements AuthenticatingFailur
 
 	@Override
 	public void increment(ServletRequest request, ServletResponse response, String retryTimesKeyAttribute) {
-		Session session = SubjectUtils.getSession(true);
+		HttpSession session = WebUtils.toHttp(request).getSession();
 		Object count = session.getAttribute(retryTimesKeyAttribute);
 		if (null == count) {
 			session.setAttribute(retryTimesKeyAttribute, 1);

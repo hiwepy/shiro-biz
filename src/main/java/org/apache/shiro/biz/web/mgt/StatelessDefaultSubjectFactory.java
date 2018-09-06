@@ -15,14 +15,20 @@
  */
 package org.apache.shiro.biz.web.mgt;
 
-import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+
+import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.session.Session;
+import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.subject.SubjectContext;
 import org.apache.shiro.web.mgt.DefaultWebSubjectFactory;
+import org.apache.shiro.web.subject.WebSubjectContext;
+import org.apache.shiro.web.subject.support.WebDelegatingSubject;
 
 public class StatelessDefaultSubjectFactory extends DefaultWebSubjectFactory {
 
-	private final DefaultSessionStorageEvaluator storageEvaluator;
 	/**
 	 * If Session Stateless
 	 */
@@ -31,25 +37,35 @@ public class StatelessDefaultSubjectFactory extends DefaultWebSubjectFactory {
 	/**
 	 * DefaultSessionStorageEvaluator是否持久化SESSION的开关
 	 */
-	public StatelessDefaultSubjectFactory(DefaultSessionStorageEvaluator storageEvaluator, boolean stateless) {
-		this.storageEvaluator = storageEvaluator;
+	public StatelessDefaultSubjectFactory(boolean stateless) {
 		this.stateless = stateless;
 	}
 
 	public Subject createSubject(SubjectContext context) {
-		storageEvaluator.setSessionStorageEnabled(Boolean.TRUE);
-		context.setSessionCreationEnabled(true);
+		
 		if (stateless) {
 			// 不创建 session
 			context.setSessionCreationEnabled(Boolean.FALSE);
-			// 不持久化session
-			storageEvaluator.setSessionStorageEnabled(Boolean.FALSE);
 		}
-		return super.createSubject(context);
-	}
-
-	public DefaultSessionStorageEvaluator getStorageEvaluator() {
-		return storageEvaluator;
+		
+		if (!(context instanceof WebSubjectContext)) {
+            return super.createSubject(context);
+        }
+		
+        WebSubjectContext wsc = (WebSubjectContext) context;
+        SecurityManager securityManager = wsc.resolveSecurityManager();
+        Session session = wsc.resolveSession();
+        boolean sessionEnabled = wsc.isSessionCreationEnabled();
+        
+        PrincipalCollection principals = wsc.resolvePrincipals();
+        boolean authenticated =  stateless ? false : wsc.resolveAuthenticated();
+        String host = wsc.resolveHost();
+        ServletRequest request = wsc.resolveServletRequest();
+        ServletResponse response = wsc.resolveServletResponse();
+        
+        return new WebDelegatingSubject(principals, authenticated, host, session, sessionEnabled,
+                request, response, securityManager);
+        
 	}
 
 	public boolean isStateless() {
