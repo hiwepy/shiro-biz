@@ -13,10 +13,12 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.apache.shiro.biz.session.status;
+package org.apache.shiro.biz.session.mgt;
 
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.shiro.biz.utils.WebUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.SessionContext;
 import org.apache.shiro.session.mgt.SessionFactory;
@@ -25,18 +27,18 @@ import org.apache.shiro.web.session.mgt.WebSessionContext;
 /**
  * @author <a href="https://github.com/vindell">vindell</a>
  */
-public class OnlineSessionFactory implements SessionFactory {  
+public class SimpleOnlineSessionFactory implements SessionFactory {  
 	  
     @Override  
     public Session createSession(SessionContext initData) {  
-        OnlineSession session = new OnlineSession();  
+        SimpleOnlineSession session = new SimpleOnlineSession();  
         if (initData != null && initData instanceof WebSessionContext) {  
             WebSessionContext sessionContext = (WebSessionContext) initData;  
-            HttpServletRequest request = (HttpServletRequest) sessionContext.getServletRequest();  
-            if (request != null) {
+            ServletRequest request = sessionContext.getServletRequest();  
+            if ( request != null && request instanceof HttpServletRequest) {
                 //session.setHost(IpUtils.getIpAddr(request));  
-                session.setUserAgent(request.getHeader("User-Agent"));  
-                session.setSystemHost(request.getLocalAddr() + ":" + request.getLocalPort());  
+                session.setUserAgent(WebUtils.toHttp(request).getHeader("User-Agent"));  
+                session.setSystemHost(WebUtils.getRemoteAddr(request) + ":" + request.getLocalPort());  
             }  
         }  
         return session;  

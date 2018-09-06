@@ -13,12 +13,12 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.apache.shiro.biz.session.status;
+package org.apache.shiro.biz.session.mgt;
 
 import org.apache.shiro.session.mgt.SimpleSession;
 
 @SuppressWarnings("serial")
-public class OnlineSession extends SimpleSession {
+public class SimpleOnlineSession extends SimpleSession {
 	
 	protected String userAgent; 	//用户浏览器类型
 	protected OnlineStatus status = OnlineStatus.on_line; //在线状态
@@ -38,7 +38,15 @@ public class OnlineSession extends SimpleSession {
             return info;
         }
     }
+    
+    public SimpleOnlineSession() {
+    	super();
+    }
 
+    public SimpleOnlineSession(String host) {
+       super(host);
+    }
+    
 	public String getUserAgent() {
 		return userAgent;
 	}

@@ -17,22 +17,38 @@ package org.apache.shiro.biz.session;
 
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.SessionListenerAdapter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author <a href="https://github.com/vindell">vindell</a>
  */
-public class SessionEventListener extends SessionListenerAdapter {
+public class DefaultSessionListener extends SessionListenerAdapter {
 
-    public void onStart(Session session) {
-    	
-    }
+	private static final Logger LOGGER = LoggerFactory.getLogger(DefaultSessionListener.class);
 
-    public void onStop(Session session) {
-    	
-    }
+	/**
+	 * 会话开始
+	 */
+	@Override
+	public void onStart(Session session) {
+		LOGGER.info("创建session:(" + session.getId() + "," + session.getHost() + ")");
+	}
 
-    public void onExpiration(Session session) {
-        
-    }
-	
+	/**
+	 * 会话结束
+	 */
+	@Override
+	public void onStop(Session session) {
+		LOGGER.info("结束session:(" + session.getId() + "," + session.getHost() + ")");
+	}
+
+	/**
+	 * 会话过期
+	 */
+	@Override
+	public void onExpiration(Session session) {
+		LOGGER.info("过期session:(" + session.getId() + "," + session.getHost() + ")");
+	}
+
 }

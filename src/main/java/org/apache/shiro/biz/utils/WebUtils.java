@@ -22,6 +22,10 @@ import java.util.Map;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.shiro.web.util.RequestPairSource;
 
 import com.alibaba.fastjson.JSONObject;
 
@@ -45,6 +49,19 @@ public class WebUtils extends org.apache.shiro.web.util.WebUtils {
     public static boolean isContentTypeJson(ServletRequest request) {
         return toHttp(request).getHeader(CONTENT_TYPE).contains(CONTENT_TYPE_JSON);
     }
+    
+    public static boolean isWebRequest(RequestPairSource source) {
+        ServletRequest request = source.getServletRequest();
+        ServletResponse response = source.getServletResponse();
+        return request != null && response != null;
+    }
+
+    public static boolean isHttpRequest(RequestPairSource source) {
+        ServletRequest request = source.getServletRequest();
+        ServletResponse response = source.getServletResponse();
+        return request instanceof HttpServletRequest && response instanceof HttpServletResponse;
+    }
+    
     
     /**
 	 * 获取请求客户端IP地址，支持代理服务器
