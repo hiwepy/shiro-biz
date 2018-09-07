@@ -19,6 +19,8 @@ import java.util.List;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -26,6 +28,7 @@ import org.apache.shiro.biz.authc.exception.IncorrectCaptchaException;
 import org.apache.shiro.biz.authc.exception.NoneCaptchaException;
 import org.apache.shiro.biz.authc.token.CaptchaAuthenticationToken;
 import org.apache.shiro.biz.authc.token.DefaultAuthenticationToken;
+import org.apache.shiro.biz.utils.StringUtils;
 import org.apache.shiro.biz.utils.WebUtils;
 import org.apache.shiro.biz.web.filter.authc.captcha.CaptchaResolver;
 import org.apache.shiro.biz.web.filter.authc.listener.LoginListener;
@@ -34,6 +37,7 @@ import org.apache.shiro.util.ThreadContext;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * 抽象的认证 (authentication)过滤器
@@ -61,8 +65,28 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 	 */
 	private boolean sessionStateless = false;
 	
+	private String accessControlAllowOrigin = "*";
+	private String accessControlAllowMethods = "PUT,POST,GET,DELETE,OPTIONS";
+	private String accessControlAllowHeaders = "*";
+	
 	public AbstractAuthenticatingFilter() {
 		setLoginUrl(DEFAULT_LOGIN_URL);
+	}
+	
+	/** 对跨域提供支持 */ 
+	@Override
+	protected boolean preHandle(ServletRequest request, ServletResponse response) throws Exception {
+		HttpServletRequest httpServletRequest = WebUtils.toHttp(request);
+		HttpServletResponse httpServletResponse = WebUtils.toHttp(response);
+		httpServletResponse.setHeader("Access-Control-Allow-Origin", StringUtils.getSafeStr(getAccessControlAllowOrigin(), httpServletRequest.getHeader("Origin")));
+		httpServletResponse.setHeader("Access-Control-Allow-Methods", StringUtils.getSafeStr(getAccessControlAllowMethods(), httpServletRequest.getHeader("Access-Control-Request-Headers")));
+		httpServletResponse.setHeader("Access-Control-Allow-Headers", StringUtils.getSafeStr(getAccessControlAllowHeaders(), httpServletRequest.getHeader("Access-Control-Request-Headers")) );
+		// 跨域时会首先发送一个option请求，这里我们给option请求直接返回正常状态
+		if (httpServletRequest.getMethod().equals(RequestMethod.OPTIONS.name())) {
+			httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+			return false;
+		}
+		return super.preHandle(request, response);
 	}
 	
 	@Override
@@ -257,6 +281,30 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 
 	public void setSessionStateless(boolean sessionStateless) {
 		this.sessionStateless = sessionStateless;
+	}
+
+	public String getAccessControlAllowOrigin() {
+		return accessControlAllowOrigin;
+	}
+
+	public void setAccessControlAllowOrigin(String accessControlAllowOrigin) {
+		this.accessControlAllowOrigin = accessControlAllowOrigin;
+	}
+
+	public String getAccessControlAllowMethods() {
+		return accessControlAllowMethods;
+	}
+
+	public void setAccessControlAllowMethods(String accessControlAllowMethods) {
+		this.accessControlAllowMethods = accessControlAllowMethods;
+	}
+
+	public String getAccessControlAllowHeaders() {
+		return accessControlAllowHeaders;
+	}
+
+	public void setAccessControlAllowHeaders(String accessControlAllowHeaders) {
+		this.accessControlAllowHeaders = accessControlAllowHeaders;
 	}
 	
 }
