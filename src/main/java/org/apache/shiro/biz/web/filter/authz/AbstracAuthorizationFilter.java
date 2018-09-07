@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.shiro.biz.utils.StringUtils;
 import org.apache.shiro.biz.utils.WebUtils;
 import org.apache.shiro.subject.Subject;
+import org.apache.shiro.util.ThreadContext;
 import org.apache.shiro.web.filter.authz.AuthorizationFilter;
 
 /**
@@ -33,6 +34,11 @@ import org.apache.shiro.web.filter.authz.AuthorizationFilter;
  */
 public abstract class AbstracAuthorizationFilter extends AuthorizationFilter {
 
+	/**
+	 * If Session Stateless
+	 */
+	private boolean sessionStateless = false;
+	
 	@Override
 	protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws IOException {
 		Subject subject = getSubject(request, response);
@@ -68,6 +74,17 @@ public abstract class AbstracAuthorizationFilter extends AuthorizationFilter {
 		return false;
 	}
 	
+	@Override
+	protected Subject getSubject(ServletRequest request, ServletResponse response) {
+		if(isSessionStateless()) {
+			// 重写Subject对象获取逻辑,解决认证信息缓存问题，达到每次认证都是一次新的认证
+			Subject subject = (new Subject.Builder()).buildSubject();
+	        ThreadContext.bind(subject);
+	        return subject;
+		}
+		return super.getSubject(request, response);
+	}
+	
 	protected boolean onAccessSuccess(Object mappedValue, Subject subject, ServletRequest request,
 			ServletResponse response) throws Exception {
 		return true;
@@ -80,6 +97,14 @@ public abstract class AbstracAuthorizationFilter extends AuthorizationFilter {
 	
 	protected String getHost(ServletRequest request) {
 		return WebUtils.getRemoteAddr(request);
+	}
+
+	public boolean isSessionStateless() {
+		return sessionStateless;
+	}
+
+	public void setSessionStateless(boolean sessionStateless) {
+		this.sessionStateless = sessionStateless;
 	}
 
 }

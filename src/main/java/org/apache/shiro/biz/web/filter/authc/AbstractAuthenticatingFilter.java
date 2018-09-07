@@ -30,6 +30,7 @@ import org.apache.shiro.biz.utils.WebUtils;
 import org.apache.shiro.biz.web.filter.authc.captcha.CaptchaResolver;
 import org.apache.shiro.biz.web.filter.authc.listener.LoginListener;
 import org.apache.shiro.subject.Subject;
+import org.apache.shiro.util.ThreadContext;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,9 +56,24 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 	 * Login callback listener
 	 */
 	private List<LoginListener> loginListeners;
+	/**
+	 * If Session Stateless
+	 */
+	private boolean sessionStateless = false;
 	
 	public AbstractAuthenticatingFilter() {
 		setLoginUrl(DEFAULT_LOGIN_URL);
+	}
+	
+	@Override
+	protected Subject getSubject(ServletRequest request, ServletResponse response) {
+		if(isSessionStateless()) {
+			// 重写Subject对象获取逻辑,解决认证信息缓存问题，达到每次认证都是一次新的认证
+			Subject subject = (new Subject.Builder()).buildSubject();
+	        ThreadContext.bind(subject);
+	        return subject;
+		}
+		return super.getSubject(request, response);
 	}
 	
 	@Override
@@ -233,6 +249,14 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 
 	public void setLoginListeners(List<LoginListener> loginListeners) {
 		this.loginListeners = loginListeners;
+	}
+
+	public boolean isSessionStateless() {
+		return sessionStateless;
+	}
+
+	public void setSessionStateless(boolean sessionStateless) {
+		this.sessionStateless = sessionStateless;
 	}
 	
 }
