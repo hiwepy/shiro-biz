@@ -100,7 +100,6 @@ public class WebUtils extends org.apache.shiro.web.util.WebUtils {
 			out.write(JSONObject.toJSONString(data));
 			out.flush();
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 	
@@ -116,7 +115,6 @@ public class WebUtils extends org.apache.shiro.web.util.WebUtils {
 			out.write(JSONObject.toJSONString(data));
 			out.flush();
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
     
