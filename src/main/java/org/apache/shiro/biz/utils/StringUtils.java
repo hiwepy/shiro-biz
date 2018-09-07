@@ -23,38 +23,6 @@ public abstract class StringUtils extends org.apache.shiro.util.StringUtils {
 	 */
 	public static String CONFIG_LOCATION_DELIMITERS = ",; \t\n";
 	
-	public static String getSafeObj(Object str) {
-		return (isEmpty(str) || !(str instanceof String)) ? null : str.toString();
-	}
-
-	public static String getSafeStr(Object str) {
-		return (isEmpty(str) || !(str instanceof String)) ? "" : str .toString();
-	}
-
-	public static String getSafeStr(String str) {
-		return isEmpty(str) ? "" : str;
-	}
-
-	public static String getSafeStr(Object str, String defaultStr) {
-		return isEmpty(str) || isEmpty(str.toString()) ? defaultStr : str.toString();
-	}
-
-	public static int getSafeInt(String str, String defaultStr) {
-		return Integer.parseInt(isEmpty(str) ? defaultStr : str);
-	}
-
-	public static float getSafeFloat(String str, String defaultStr) {
-		return Float.parseFloat(isEmpty(str) ? defaultStr : str);
-	}
-
-	public static long getSafeLong(Object str, String defaultStr) {
-		return Long.parseLong(isEmpty(str) ? defaultStr : str .toString());
-	}
-
-	public static boolean getSafeBoolean(Object str, String defaultStr) {
-		return Boolean.parseBoolean(isEmpty(str) ? defaultStr : str .toString());
-	}
-
 	//---------------------------------------------------------------------
 	// General convenience methods for working with Strings
 	//---------------------------------------------------------------------

@@ -17,31 +17,37 @@ package org.apache.shiro.biz.web.filter.authc;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
 
-import org.apache.shiro.biz.utils.SubjectUtils;
-import org.apache.shiro.session.Session;
+import org.apache.shiro.biz.utils.WebUtils;
 
-public class AuthenticatingFailureSessionCounter implements AuthenticatingFailureCounter {
+public class AuthenticatingFailureRequestCounter implements AuthenticatingFailureCounter {
 
+	public static final String DEFAULT_RETRY_TIMES_KEY_PARAM_NAME = "failureRetries";
+
+    private String retryTimesKeyParameter = DEFAULT_RETRY_TIMES_KEY_PARAM_NAME;
+    
 	@Override
 	public int get(ServletRequest request, ServletResponse response, String retryTimesKeyAttribute) {
-		Session session = SubjectUtils.getSession(true);
-		Object count = session.getAttribute(retryTimesKeyAttribute);
+		HttpServletRequest httpRequest = WebUtils.toHttp(request);
+		String count = httpRequest.getParameter(getRetryTimesKeyParameter());
 		if (null != count) {
-			return Integer.parseInt(String.valueOf(count));
+			return Integer.parseInt(count);
 		}
 		return 0;
 	}
 
 	@Override
 	public void increment(ServletRequest request, ServletResponse response, String retryTimesKeyAttribute) {
-		Session session = SubjectUtils.getSession(true);
-		Object count = session.getAttribute(retryTimesKeyAttribute);
-		if (null == count) {
-			session.setAttribute(retryTimesKeyAttribute, 1);
-		} else {
-			session.setAttribute(retryTimesKeyAttribute, Long.parseLong(String.valueOf(count)) + 1);
-		}
+		// 参数方式传递错误次数,后端不进行计数累加
 	}
 
+	public String getRetryTimesKeyParameter() {
+		return retryTimesKeyParameter;
+	}
+
+	public void setRetryTimesKeyParameter(String retryTimesKeyParameter) {
+		this.retryTimesKeyParameter = retryTimesKeyParameter;
+	}
+	
 }
