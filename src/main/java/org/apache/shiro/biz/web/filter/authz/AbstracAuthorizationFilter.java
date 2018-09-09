@@ -120,7 +120,7 @@ public abstract class AbstracAuthorizationFilter extends AuthorizationFilter {
 	}
 
 	protected boolean onAccessFailure(Object mappedValue, Exception e, ServletRequest request,
-			ServletResponse response) {
+			ServletResponse response) throws IOException {
 		return false;
 	}
 	
