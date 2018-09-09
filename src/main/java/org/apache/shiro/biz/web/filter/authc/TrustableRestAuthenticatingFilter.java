@@ -29,7 +29,7 @@ import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class TrustableRestAuthenticatingFilter extends AbstractAuthenticatingFilter {
+public class TrustableRestAuthenticatingFilter extends AbstractTrustableAuthenticatingFilter {
 
 	private static final Logger LOG = LoggerFactory.getLogger(TrustableRestAuthenticatingFilter.class);
 	
@@ -97,8 +97,6 @@ public class TrustableRestAuthenticatingFilter extends AbstractAuthenticatingFil
         //we handled the success , prevent the chain from continuing:
         return false;
     }
-  
-
    
     
 }

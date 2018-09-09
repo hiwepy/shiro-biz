@@ -23,7 +23,7 @@ import org.apache.shiro.biz.utils.WebUtils;
 import org.apache.shiro.biz.web.filter.authc.listener.LoginListener;
 import org.apache.shiro.subject.Subject;
 
-public class TrustableFormAuthenticatingFilter extends AbstractAuthenticatingFilter {
+public class TrustableFormAuthenticatingFilter extends AbstractTrustableAuthenticatingFilter {
 
 	/**
 	 * Whether to redirect to the previous access address
