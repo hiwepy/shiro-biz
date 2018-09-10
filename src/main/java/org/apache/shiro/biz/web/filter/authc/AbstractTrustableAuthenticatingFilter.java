@@ -56,18 +56,13 @@ public abstract class AbstractTrustableAuthenticatingFilter extends AbstractAuth
 	
 	@Override
 	protected boolean executeLogin(ServletRequest request, ServletResponse response) throws Exception {
-		Subject subject = getSubject(request, response);
 		AuthenticationToken token = createToken(request, response);
-		if (subject.isAuthenticated()) {
-			LOG.info("User has already been Authenticated!");
-			return onLoginSuccess(token, subject, request, response);
+		if (token == null) {
+			String msg = "createToken method implementation returned null. A valid non-null AuthenticationToken "
+					+ "must be created in order to execute a login attempt.";
+			throw new AuthenticationException(msg);
 		}
 		try {
-			if (token == null) {
-				String msg = "createToken method implementation returned null. A valid non-null AuthenticationToken "
-						+ "must be created in order to execute a login attempt.";
-				throw new AuthenticationException(msg);
-			}
 			
 			if (token instanceof CaptchaAuthenticationToken  &&  isOverRetryTimes(request, response)) {
 				boolean validation = captchaResolver.validCaptcha(request, (CaptchaAuthenticationToken) token);
@@ -75,6 +70,7 @@ public abstract class AbstractTrustableAuthenticatingFilter extends AbstractAuth
 					throw new IncorrectCaptchaException("Captcha validation failed!");
 				}
 			}
+			Subject subject = getSubject(request, response);
 			subject.login(token);
 			return onLoginSuccess(token, subject, request, response);
 		} catch (AuthenticationException e) {
