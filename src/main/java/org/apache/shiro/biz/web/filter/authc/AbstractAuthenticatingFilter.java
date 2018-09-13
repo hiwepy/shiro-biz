@@ -21,12 +21,10 @@ import java.util.Map;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.biz.utils.StringUtils;
 import org.apache.shiro.biz.utils.WebUtils;
 import org.apache.shiro.biz.web.filter.authc.listener.LoginListener;
 import org.apache.shiro.subject.Subject;
@@ -34,7 +32,6 @@ import org.apache.shiro.util.ThreadContext;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * 抽象的认证 (authentication)过滤器
@@ -43,7 +40,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFilter {
 
 	private static final Logger LOG = LoggerFactory.getLogger(AbstractAuthenticatingFilter.class);
-	public static final String DEFAULT_ACCESS_CONTROL_ALLOW_METHODS = "PUT,POST,GET,DELETE,OPTIONS";
 	
 	/**
 	 * Login callback listener
@@ -53,11 +49,7 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 	 * If Session Stateless
 	 */
 	private boolean sessionStateless = false;
-	
-	private String accessControlAllowOrigin = "*";
-	private String accessControlAllowMethods = DEFAULT_ACCESS_CONTROL_ALLOW_METHODS;
-	private String accessControlAllowHeaders = "";
-	 /**
+	/**
      * The URL to which users should be redirected if they are denied access to an underlying path or resource,
      * {@code null} by default which will issue a raw {@link HttpServletResponse#SC_UNAUTHORIZED} response
      * (401 Unauthorized).
@@ -66,28 +58,6 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
     
 	public AbstractAuthenticatingFilter() {
 		setLoginUrl(DEFAULT_LOGIN_URL);
-	}
-	
-	/** 对跨域提供支持 */ 
-	@Override
-	protected boolean preHandle(ServletRequest request, ServletResponse response) throws Exception {
-		HttpServletRequest httpRequest = WebUtils.toHttp(request);
-		HttpServletResponse httpResponse = WebUtils.toHttp(response);
-		
-		String allowOrigin = StringUtils.hasText(getAccessControlAllowOrigin()) ?  getAccessControlAllowOrigin() :  httpRequest.getHeader("Origin");
-		String allowMethods =  StringUtils.hasText(getAccessControlAllowMethods()) ? getAccessControlAllowMethods() : DEFAULT_ACCESS_CONTROL_ALLOW_METHODS;
-		String allowHeaders = StringUtils.hasText(getAccessControlAllowHeaders()) ?  getAccessControlAllowHeaders() :  httpRequest.getHeader("Access-Control-Request-Headers");
-		
-		httpResponse.setHeader("Access-Control-Allow-Origin", allowOrigin);
-		httpResponse.setHeader("Access-Control-Allow-Methods", allowMethods);
-		httpResponse.setHeader("Access-Control-Allow-Headers", allowHeaders);
-		
-		// 跨域时会首先发送一个option请求，这里我们给option请求直接返回正常状态
-		if (httpRequest.getMethod().equals(RequestMethod.OPTIONS.name())) {
-			httpResponse.setStatus(HttpServletResponse.SC_OK);
-			return false;
-		}
-		return super.preHandle(request, response);
 	}
 	
 	@Override
@@ -188,31 +158,6 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 		this.sessionStateless = sessionStateless;
 	}
 
-	public String getAccessControlAllowOrigin() {
-		return accessControlAllowOrigin;
-	}
-
-	public void setAccessControlAllowOrigin(String accessControlAllowOrigin) {
-		this.accessControlAllowOrigin = accessControlAllowOrigin;
-	}
-
-	public String getAccessControlAllowMethods() {
-		return accessControlAllowMethods;
-	}
-
-	public void setAccessControlAllowMethods(String accessControlAllowMethods) {
-		this.accessControlAllowMethods = accessControlAllowMethods;
-	}
-
-	public String getAccessControlAllowHeaders() {
-		return accessControlAllowHeaders;
-	}
-
-	public void setAccessControlAllowHeaders(String accessControlAllowHeaders) {
-		this.accessControlAllowHeaders = accessControlAllowHeaders;
-	}
-	
-	 
     /**
      * Returns the URL to which users should be redirected if they are denied access to an underlying path or resource,
      * or {@code null} if a raw {@link HttpServletResponse#SC_UNAUTHORIZED} response should be issued (401 Unauthorized).

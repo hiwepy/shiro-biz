@@ -19,7 +19,6 @@ import java.io.IOException;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.biz.utils.StringUtils;
@@ -27,7 +26,6 @@ import org.apache.shiro.biz.utils.WebUtils;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.ThreadContext;
 import org.apache.shiro.web.filter.authz.AuthorizationFilter;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * 抽象的授权 (authorization)过滤器
@@ -36,37 +34,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 public abstract class AbstracAuthorizationFilter extends AuthorizationFilter {
 
-	public static final String DEFAULT_ACCESS_CONTROL_ALLOW_METHODS = "PUT,POST,GET,DELETE,OPTIONS";
-	
 	/**
 	 * If Session Stateless
 	 */
 	private boolean sessionStateless = false;
-	private String accessControlAllowOrigin = "*";
-	private String accessControlAllowMethods = DEFAULT_ACCESS_CONTROL_ALLOW_METHODS;
-	private String accessControlAllowHeaders = "";
-	
-	/** 对跨域提供支持 */ 
-	@Override
-	protected boolean preHandle(ServletRequest request, ServletResponse response) throws Exception {
-		HttpServletRequest httpRequest = WebUtils.toHttp(request);
-		HttpServletResponse httpResponse = WebUtils.toHttp(response);
-		
-		String allowOrigin = StringUtils.hasText(getAccessControlAllowOrigin()) ?  getAccessControlAllowOrigin() :  httpRequest.getHeader("Origin");
-		String allowMethods =  StringUtils.hasText(getAccessControlAllowMethods()) ? getAccessControlAllowMethods() : DEFAULT_ACCESS_CONTROL_ALLOW_METHODS;
-		String allowHeaders = StringUtils.hasText(getAccessControlAllowHeaders()) ?  getAccessControlAllowHeaders() :  httpRequest.getHeader("Access-Control-Request-Headers");
-		
-		httpResponse.setHeader("Access-Control-Allow-Origin", allowOrigin);
-		httpResponse.setHeader("Access-Control-Allow-Methods", allowMethods);
-		httpResponse.setHeader("Access-Control-Allow-Headers", allowHeaders);
-		
-		// 跨域时会首先发送一个option请求，这里我们给option请求直接返回正常状态
-		if (httpRequest.getMethod().equals(RequestMethod.OPTIONS.name())) {
-			httpResponse.setStatus(HttpServletResponse.SC_OK);
-			return false;
-		}
-		return super.preHandle(request, response);
-	}
 	
 	@Override
 	protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws IOException {
@@ -134,30 +105,6 @@ public abstract class AbstracAuthorizationFilter extends AuthorizationFilter {
 
 	public void setSessionStateless(boolean sessionStateless) {
 		this.sessionStateless = sessionStateless;
-	}
-
-	public String getAccessControlAllowOrigin() {
-		return accessControlAllowOrigin;
-	}
-
-	public void setAccessControlAllowOrigin(String accessControlAllowOrigin) {
-		this.accessControlAllowOrigin = accessControlAllowOrigin;
-	}
-
-	public String getAccessControlAllowMethods() {
-		return accessControlAllowMethods;
-	}
-
-	public void setAccessControlAllowMethods(String accessControlAllowMethods) {
-		this.accessControlAllowMethods = accessControlAllowMethods;
-	}
-
-	public String getAccessControlAllowHeaders() {
-		return accessControlAllowHeaders;
-	}
-
-	public void setAccessControlAllowHeaders(String accessControlAllowHeaders) {
-		this.accessControlAllowHeaders = accessControlAllowHeaders;
 	}
 
 }
