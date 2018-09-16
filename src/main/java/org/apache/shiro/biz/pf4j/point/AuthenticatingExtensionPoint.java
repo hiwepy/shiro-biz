@@ -21,6 +21,9 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.subject.Subject;
 import org.pf4j.ExtensionPoint;
 
 public interface AuthenticatingExtensionPoint extends ExtensionPoint {
@@ -79,6 +82,16 @@ public interface AuthenticatingExtensionPoint extends ExtensionPoint {
      * @return <code>true</code> if the incoming request is a login request, <code>false</code> otherwise.
      */
     boolean isLoginRequest(ServletRequest request, ServletResponse response);
+
+    /**
+     * This default implementation merely returns <code>true</code> if the request is an HTTP <code>POST</code>,
+     * <code>false</code> otherwise. Can be overridden by subclasses for custom login submission detection behavior.
+     *
+     * @param request  the incoming ServletRequest
+     * @param response the outgoing ServletResponse.
+     * @return <code>true</code> if the request is an HTTP <code>POST</code>, <code>false</code> otherwise.
+     */
+	boolean isLoginSubmission(ServletRequest request, ServletResponse response);
     
     /**
      * Processes requests where the subject was denied access as determined by the
@@ -97,14 +110,37 @@ public interface AuthenticatingExtensionPoint extends ExtensionPoint {
      */
     boolean onAccessDenied(ServletRequest request, ServletResponse response, Object mappedValue) throws Exception;
    
-    /**
-     * This default implementation merely returns <code>true</code> if the request is an HTTP <code>POST</code>,
-     * <code>false</code> otherwise. Can be overridden by subclasses for custom login submission detection behavior.
-     *
-     * @param request  the incoming ServletRequest
-     * @param response the outgoing ServletResponse.
-     * @return <code>true</code> if the request is an HTTP <code>POST</code>, <code>false</code> otherwise.
-     */
-	boolean isLoginSubmission(ServletRequest request, ServletResponse response);
+	AuthenticationToken createToken(ServletRequest request, ServletResponse response);
+
+	boolean onLoginSuccess(AuthenticationToken token, Subject subject, ServletRequest request, ServletResponse response)
+			throws Exception;
+
+	boolean onLoginFailure(AuthenticationToken token, AuthenticationException e, ServletRequest request,
+			ServletResponse response);
+
+	boolean onAccessSuccess(AuthenticationToken token, Subject subject, ServletRequest request,
+			ServletResponse response);
+
+	boolean onAccessFailure(AuthenticationToken token, Exception e, ServletRequest request,
+			ServletResponse response);
     
+	 /**
+     * Executes cleanup logic in the {@code finally} code block in the
+     * {@link #doFilterInternal(javax.servlet.ServletRequest, javax.servlet.ServletResponse, javax.servlet.FilterChain) doFilterInternal}
+     * implementation.
+     * <p/>
+     * This implementation specifically calls
+     * {@link #afterCompletion(javax.servlet.ServletRequest, javax.servlet.ServletResponse, Exception) afterCompletion}
+     * as well as handles any exceptions properly.
+     *
+     * @param request  the incoming {@code ServletRequest}
+     * @param response the outgoing {@code ServletResponse}
+     * @param existing any exception that might have occurred while executing the {@code FilterChain} or
+     *                 pre or post advice, or {@code null} if the pre/chain/post execution did not throw an {@code Exception}.
+     * @throws ServletException if any exception other than an {@code IOException} is thrown.
+     * @throws IOException      if the pre/chain/post execution throw an {@code IOException}
+     */
+    void cleanup(ServletRequest request, ServletResponse response, Exception existing)
+            throws ServletException, IOException;
+            
 }

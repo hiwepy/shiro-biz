@@ -22,12 +22,15 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.biz.authc.exception.AuthcPluginNotFoundException;
 import org.apache.shiro.biz.authc.exception.AuthcPointNotFoundException;
 import org.apache.shiro.biz.pf4j.annotation.AuthzMapping;
 import org.apache.shiro.biz.pf4j.point.AuthenticatingExtensionPoint;
 import org.apache.shiro.biz.utils.StringUtils;
 import org.apache.shiro.biz.web.filter.authz.AbstracAuthorizationPointFilter;
+import org.apache.shiro.subject.Subject;
 import org.pf4j.ExtensionPoint;
 import org.pf4j.PluginManager;
 import org.pf4j.PluginWrapper;
@@ -71,6 +74,45 @@ public abstract class AbstractAuthenticatingPointFilter extends AbstractAuthenti
 			return getAuthcPoint(request, response).onAccessDenied(request, response, mappedValue);	
 		}
 		return super.onAccessDenied(request, response, mappedValue);
+	}
+	
+	@Override
+	protected AuthenticationToken createToken(ServletRequest request, ServletResponse response) {
+		return getAuthcPoint(request, response).createToken(request, response);
+	}
+	
+	@Override
+	protected void cleanup(ServletRequest request, ServletResponse response, Exception existing)
+			throws ServletException, IOException {
+		try {
+			getAuthcPoint(request, response).cleanup(request, response, existing);
+		} catch (Exception e) {
+			super.cleanup(request, response, existing);
+		}
+	}
+	
+	@Override
+	protected boolean onLoginSuccess(AuthenticationToken token, Subject subject, ServletRequest request,
+			ServletResponse response) throws Exception{
+		return getAuthcPoint(request, response).onLoginSuccess(token, subject, request, response);
+	}
+	
+	@Override
+	protected boolean onLoginFailure(AuthenticationToken token, AuthenticationException e, ServletRequest request,
+			ServletResponse response) {
+		return getAuthcPoint(request, response).onLoginFailure(token, e, request, response);
+	}
+	
+	@Override
+	protected boolean onAccessSuccess(AuthenticationToken token, Subject subject, ServletRequest request,
+			ServletResponse response) {
+		return getAuthcPoint(request, response).onAccessSuccess(token, subject, request, response);
+	}
+	
+	@Override
+	protected boolean onAccessFailure(AuthenticationToken token, Exception e, ServletRequest request,
+			ServletResponse response) {
+		return getAuthcPoint(request, response).onAccessFailure(token, e, request, response);
 	}
 	
 	protected AuthenticatingExtensionPoint getAuthcPoint(ServletRequest request, ServletResponse response) {
@@ -117,6 +159,5 @@ public abstract class AbstractAuthenticatingPointFilter extends AbstractAuthenti
 	public void setPluginManager(PluginManager pluginManager) {
 		this.pluginManager = pluginManager;
 	}
-	
 	
 }
