@@ -142,5 +142,7 @@ public interface AuthenticatingExtensionPoint extends ExtensionPoint {
      */
     void cleanup(ServletRequest request, ServletResponse response, Exception existing)
             throws ServletException, IOException;
+    
+    void logout(ServletRequest request, ServletResponse response, Subject subject);
             
 }

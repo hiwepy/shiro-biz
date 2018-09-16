@@ -13,21 +13,12 @@ import org.apache.shiro.web.filter.authc.LogoutFilter;
  * 扩展Shiro登出逻辑，增加监听回调接口
  * @author 		： <a href="https://github.com/vindell">vindell</a>
  */
-public class AbstractLogoutFilter extends LogoutFilter {
+public abstract class AbstractLogoutFilter extends LogoutFilter {
 
 	/**
 	 * 注销回调监听
 	 */
 	protected List<LogoutListener> logoutListeners;
-	/**
-	 * 是否单点登录
-	 */
-	protected boolean casLogin = false;
-	
-	
-	public String getCasRedirectUrl(ServletRequest request, ServletResponse response) {
-		return super.getRedirectUrl();
-	}
 	
 	@Override
 	protected boolean preHandle(ServletRequest request, ServletResponse response)
@@ -42,18 +33,11 @@ public class AbstractLogoutFilter extends LogoutFilter {
 			}
 		}
 		
-		// 如果是单点登录，需要重新构造登出的重定向地址
-		if(this.isCasLogin()){
-			// 重定向到单点登出地址
-			issueRedirect(request, response, getCasRedirectUrl(request, response));
-			return false;
-		}
-		
 		Exception ex = null;
 		boolean result = false;
 		try {
 			// do real thing
-			result = super.preHandle(request, response);
+			result = this.logout(request, response, subject);
 		} catch (Exception e) {
 			ex = e;
 		}
@@ -76,6 +60,11 @@ public class AbstractLogoutFilter extends LogoutFilter {
 		return result;
 	}
 	
+	protected boolean logout(ServletRequest request, ServletResponse response, Subject subject) throws Exception{
+		// do real thing
+		return super.preHandle(request, response);
+	}
+	
 	public List<LogoutListener> getLogoutListeners() {
 		return logoutListeners;
 	}
@@ -83,14 +72,5 @@ public class AbstractLogoutFilter extends LogoutFilter {
 	public void setLogoutListeners(List<LogoutListener> logoutListeners) {
 		this.logoutListeners = logoutListeners;
 	}
-
-	public boolean isCasLogin() {
-		return casLogin;
-	}
-
-	public void setCasLogin(boolean casLogin) {
-		this.casLogin = casLogin;
-	}
-	
 	
 }
