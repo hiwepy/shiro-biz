@@ -49,7 +49,8 @@ public class SubjectUtils {
 	@SuppressWarnings("unchecked")
 	public static <T> T getPrincipal(Class<T> clazz){
 		Object principal = getSubject().getPrincipal();
-		if(principal.getClass().isAssignableFrom(clazz) ){
+		// 自身类.class.isAssignableFrom(自身类或子类.class) 
+		if( clazz.isAssignableFrom(principal.getClass()) ) {
 			return (T)principal;
 		}
 		return null;
