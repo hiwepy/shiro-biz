@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.apache.shiro.biz.web.filter.authc;
+package org.apache.shiro.biz.web.filter;
 
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
@@ -44,23 +44,10 @@ import org.apache.shiro.web.util.WebUtils;
  *  部分资料来自：http://jinnianshilongnian.iteye.com/blog/2039760 
  * @author 		： <a href="https://github.com/vindell">vindell</a>
  */
-public abstract class KickoutSessionControlFilter extends AccessControlFilter {
+public abstract class HttpServletSessionKickoutFilter extends AccessControlFilter {
 
-    
+    public static final String DEFAULT_SESSION_KICKEDOUT_ATTR_NAME = "kickout";
     public static final String DEFAULT_SESSION_CONTROL_CACHE_NAME = "shiro-kickout-session";
-    private String sessionControlCacheName = DEFAULT_SESSION_CONTROL_CACHE_NAME;
-    
-    /**
-  	 * 用户登录状态缓存
-  	 */
-    private Cache<String, Deque<Serializable>> cache;
-    private CacheManager cacheManager;
-	private SessionManager sessionManager;
-	
-	private String kickoutAttr; //Session中的踢出标记
-    private boolean kickoutAfter = false; //踢出之前登录的/之后登录的用户 默认踢出之前登录的用户
-    private int maxSession = 1; //同一个帐号最大会话数 默认1
-	
     /**
      * The default redirect URL to where the user will be redirected after kickout.  The value is {@code "/"}, Shiro's
      * representation of the web application's context root.
@@ -68,8 +55,20 @@ public abstract class KickoutSessionControlFilter extends AccessControlFilter {
     public static final String DEFAULT_REDIRECT_URL = "/";
 
     /**
-     * The URL to where the user will be redirected after kickout.
-     */
+  	 * 用户登录状态缓存
+  	 */
+    private Cache<String, Deque<Serializable>> cache;
+    private CacheManager cacheManager;
+	private SessionManager sessionManager;
+	
+	/** The tag that the session has been kicked out. */
+	private String kickoutAttr = DEFAULT_SESSION_KICKEDOUT_ATTR_NAME;
+	/** Whether to kickout the first login session. */
+    private boolean kickoutFirst = false;
+    /** Maximum number of sessions for the same account . */
+	private int sessionMultiplexKickout = 1;
+	private String sessionControlCacheName = DEFAULT_SESSION_CONTROL_CACHE_NAME;
+    /** he URL to where the user will be redirected after kickout. */
     private String redirectUrl = DEFAULT_REDIRECT_URL;
     
     @Override
@@ -115,13 +114,13 @@ public abstract class KickoutSessionControlFilter extends AccessControlFilter {
         }
 
         //如果队列里的sessionId数超出最大会话数，开始强制下线
-        while(deque.size() > getMaxSession()) {
+        while(deque.size() > getSessionMultiplexKickout()) {
             Serializable kickoutSessionId = null;
-            //踢出最早登录的会话
-            if(isKickoutAfter()) { 
+            // 踢出最早登录的会话
+            if(isKickoutFirst()) { 
                 kickoutSessionId = deque.removeFirst();
             }
-            //踢出最后登录的会话
+            // 踢出最后登录的会话
             else { 
                 kickoutSessionId = deque.removeLast();
             }
@@ -183,20 +182,20 @@ public abstract class KickoutSessionControlFilter extends AccessControlFilter {
 		this.kickoutAttr = kickoutAttr;
 	}
 
-	public boolean isKickoutAfter() {
-		return kickoutAfter;
+	public boolean isKickoutFirst() {
+		return kickoutFirst;
 	}
 
-	public void setKickoutAfter(boolean kickoutAfter) {
-		this.kickoutAfter = kickoutAfter;
+	public void setKickoutFirst(boolean kickoutFirst) {
+		this.kickoutFirst = kickoutFirst;
 	}
 
-	public int getMaxSession() {
-		return maxSession;
+	public int getSessionMultiplexKickout() {
+		return sessionMultiplexKickout;
 	}
 
-	public void setMaxSession(int maxSession) {
-		this.maxSession = maxSession;
+	public void setSessionMultiplexKickout(int sessionMultiplexKickout) {
+		this.sessionMultiplexKickout = sessionMultiplexKickout;
 	}
 
 	/**

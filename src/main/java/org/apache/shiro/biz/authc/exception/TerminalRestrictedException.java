@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 (https://github.com/vindell).
+ * Copyright (c) 2018, vindell (https://github.com/vindell).
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -13,22 +13,27 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.apache.shiro.biz.cache.redis.io;
+package org.apache.shiro.biz.authc.exception;
 
-import java.io.Serializable;
+import org.apache.shiro.authz.UnauthenticatedException;
 
-import org.apache.commons.lang3.SerializationUtils;
+@SuppressWarnings("serial")
+public class TerminalRestrictedException extends UnauthenticatedException {
 
-public class InternalSessionSerializer<T> implements SessionSerializer<T> {
-
-	@Override
-	public String serialize(T source) {
-		return new String(SerializationUtils.serialize((Serializable) source));
+	public TerminalRestrictedException() {
+		super();
 	}
 
-	@Override
-	public T deserialize(String source) {
-		return SerializationUtils.deserialize(source.getBytes());
+	public TerminalRestrictedException(String message, Throwable cause) {
+		super(message, cause);
 	}
 
+	public TerminalRestrictedException(String message) {
+		super(message);
+	}
+
+	public TerminalRestrictedException(Throwable cause) {
+		super(cause);
+	}
+	
 }

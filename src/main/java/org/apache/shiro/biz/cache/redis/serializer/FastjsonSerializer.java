@@ -13,23 +13,25 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.apache.shiro.biz.cache.redis.io;
+package org.apache.shiro.biz.cache.redis.serializer;
 
-import com.thoughtworks.xstream.XStream;
+import org.apache.shiro.biz.utils.GenericsUtils;
+import org.crazycake.shiro.exception.SerializationException;
+import org.crazycake.shiro.serializer.RedisSerializer;
 
-public class XstreamSessionSerializer<T> implements SessionSerializer<T> {
+import com.alibaba.fastjson.JSONObject;
 
-	protected  XStream xStream = new XStream();;
+@SuppressWarnings("unchecked")
+public class FastjsonSerializer<T> implements RedisSerializer<T> {
 	
 	@Override
-	public String serialize(T source) {
-		return xStream.toXML(source);
+	public byte[] serialize(T source) throws SerializationException {
+		return JSONObject.toJSONString(source).getBytes();
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
-	public T deserialize(String source) {
-		return (T) xStream.fromXML(source);
+	public T deserialize(byte[] bytes) throws SerializationException {
+		return (T) JSONObject.parseObject(new String(bytes), GenericsUtils.getSuperClassGenricType(getClass()));
 	}
 	
 }

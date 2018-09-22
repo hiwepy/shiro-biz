@@ -13,17 +13,24 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.apache.shiro.biz.cache;
+package org.apache.shiro.biz.cache.redis.serializer;
 
-import org.apache.shiro.cache.Cache;
-import org.apache.shiro.cache.CacheException;
+import java.io.Serializable;
 
-public interface ShiroCacheManager {
+import org.apache.commons.lang3.SerializationUtils;
+import org.crazycake.shiro.exception.SerializationException;
+import org.crazycake.shiro.serializer.RedisSerializer;
 
-	public void init();
+public class InternalSerializer<T> implements RedisSerializer<T> {
 	
-	public <K, V> Cache<K, V> getCache(String name) throws CacheException;
+	@Override
+	public byte[] serialize(T source) throws SerializationException {
+		return SerializationUtils.serialize((Serializable) source);
+	}
 
-	public void destroy();
-	
+	@Override
+	public T deserialize(byte[] bytes) throws SerializationException {
+		return SerializationUtils.deserialize(bytes);
+	}
+
 }

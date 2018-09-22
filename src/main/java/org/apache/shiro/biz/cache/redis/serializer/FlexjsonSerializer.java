@@ -13,26 +13,28 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.apache.shiro.biz.cache.redis.io;
+package org.apache.shiro.biz.cache.redis.serializer;
 
 import org.apache.shiro.biz.utils.GenericsUtils;
+import org.crazycake.shiro.exception.SerializationException;
+import org.crazycake.shiro.serializer.RedisSerializer;
 
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 
-public class FlexjsonSessionSerializer<T> implements SessionSerializer<T> {
+public class FlexjsonSerializer<T> implements RedisSerializer<T> {
 
 	protected JSONSerializer serializer = new JSONSerializer();
 	protected JSONDeserializer<T> deserializer = new JSONDeserializer<T>();
 	
 	@Override
-	public String serialize(T source) {
-		return serializer.deepSerialize(source);
+	public byte[] serialize(T target) throws SerializationException {
+		return serializer.deepSerialize(target).getBytes();
 	}
-
+	
 	@Override
-	public T deserialize(String source) {
-		return deserializer.deserialize(source, GenericsUtils.getSuperClassGenricType(getClass()));
+	public T deserialize(byte[] bytes) throws SerializationException {
+		return deserializer.deserialize(new String(bytes), GenericsUtils.getSuperClassGenricType(getClass()));
 	}
 	
 }
