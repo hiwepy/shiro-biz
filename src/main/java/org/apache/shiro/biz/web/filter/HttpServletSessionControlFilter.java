@@ -23,7 +23,7 @@ import org.apache.shiro.web.util.WebUtils;
  */
 public abstract class HttpServletSessionControlFilter extends AccessControlFilter {
 
-	private static final String DEFAULT_SESSION_CONTROL_CACHE_NAME = "SHIRO_SESSION_CONTROL_CACHE";
+	public static final String DEFAULT_SESSION_CONTROL_CACHE_NAME = "SHIRO_SESSION_CONTROL_CACHE";
 	
 	/**
 	 * 用户sessionControl的缓存
