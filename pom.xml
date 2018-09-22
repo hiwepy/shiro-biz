@@ -372,6 +372,7 @@
 		<commons-codec.version>1.11</commons-codec.version>
 		<commons-lang3.version>3.5</commons-lang3.version>
 		<commons-io.version>2.6</commons-io.version>
+		<ehcache3.version>3.6.0</ehcache3.version>
 		<fastjson.version>1.2.49</fastjson.version>
 		<flexjson.version>3.3</flexjson.version>
 		<junit.version>4.12</junit.version>
@@ -559,6 +560,13 @@
 		    <groupId>org.ehcache.integrations.shiro</groupId>
 		    <artifactId>shiro-ehcache3</artifactId>
 		    <version>${shiro-ehcache3.version}</version>
+		    <scope>provided</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.ehcache/ehcache -->
+		<dependency>
+		    <groupId>org.ehcache</groupId>
+		    <artifactId>ehcache</artifactId>
+		    <version>${ehcache3.version}</version>
 		    <scope>provided</scope>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.apache.shiro/shiro-hazelcast -->
