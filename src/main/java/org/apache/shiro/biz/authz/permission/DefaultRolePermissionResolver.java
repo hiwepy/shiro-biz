@@ -17,22 +17,43 @@ package org.apache.shiro.biz.authz.permission;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
+import org.apache.commons.collections.MapUtils;
 import org.apache.shiro.authz.Permission;
 import org.apache.shiro.authz.permission.RolePermissionResolver;
 import org.apache.shiro.authz.permission.WildcardPermission;
+import org.apache.shiro.biz.utils.StringUtils;
 
 /**
  * @author <a href="https://github.com/vindell">vindell</a>
  */
-public class AdminRolePermissionResolver implements RolePermissionResolver {
+public class DefaultRolePermissionResolver implements RolePermissionResolver {
 
+	/**
+	 * The default permissions for authenticated role
+	 */
+	private Map<String /* role */, String /* permissions */> defaultRolePermissions = new LinkedHashMap<String, String>();;
+	
 	@Override
     public Collection<Permission> resolvePermissionsInRole(String role) {
         if("admin".equals(role)) {
-            return Arrays.asList((Permission) new WildcardPermission("menu:*"));
+            return Arrays.asList((Permission) new WildcardPermission("*:*"));
+        }
+        if( MapUtils.isNotEmpty(defaultRolePermissions)) {
+        	String permissions = defaultRolePermissions.get(role);
+        	return StringUtils.hasText(permissions) ? Arrays.asList((Permission) new WildcardPermission(permissions)) : null;
         }
         return null;
     }
+
+	public Map<String, String> getDefaultRolePermissions() {
+		return defaultRolePermissions;
+	}
+
+	public void setDefaultRolePermissions(Map<String, String> defaultRolePermissions) {
+		this.defaultRolePermissions = defaultRolePermissions;
+	}
 	
 }
