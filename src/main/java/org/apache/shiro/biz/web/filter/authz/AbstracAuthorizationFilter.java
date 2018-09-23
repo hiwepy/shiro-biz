@@ -40,6 +40,12 @@ public abstract class AbstracAuthorizationFilter extends AuthorizationFilter {
 	private boolean sessionStateless = false;
 	
 	@Override
+	protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue)
+			throws Exception {
+		return !isSessionStateless();
+	}
+	
+	@Override
 	protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws IOException {
 		Subject subject = getSubject(request, response);
 		// 未认证

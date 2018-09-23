@@ -74,6 +74,11 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 	}
 	
 	@Override
+	protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
+		return isSessionStateless() ? false : super.isAccessAllowed(request, response, mappedValue);
+	}
+	
+	@Override
 	protected Subject getSubject(ServletRequest request, ServletResponse response) {
 		if(isSessionStateless()) {
 			/*

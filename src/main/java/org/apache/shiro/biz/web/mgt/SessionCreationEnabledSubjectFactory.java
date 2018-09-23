@@ -19,7 +19,7 @@ import org.apache.shiro.subject.Subject;
 import org.apache.shiro.subject.SubjectContext;
 import org.apache.shiro.web.mgt.DefaultWebSubjectFactory;
 
-public class SessionDisableSubjectFactory extends DefaultWebSubjectFactory {
+public class SessionCreationEnabledSubjectFactory extends DefaultWebSubjectFactory {
 	
 	/**
 	 * Whether or not the constructed {@code Subject} instance should be allowed to create a session,
@@ -30,7 +30,7 @@ public class SessionDisableSubjectFactory extends DefaultWebSubjectFactory {
 	/**
 	 * 是否创建SESSION的开关
 	 */
-	public SessionDisableSubjectFactory(boolean sessionCreationEnabled) {
+	public SessionCreationEnabledSubjectFactory(boolean sessionCreationEnabled) {
 		this.sessionCreationEnabled = sessionCreationEnabled;
 	}
 

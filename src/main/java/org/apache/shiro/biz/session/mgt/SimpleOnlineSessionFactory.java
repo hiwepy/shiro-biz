@@ -22,6 +22,7 @@ import org.apache.shiro.biz.utils.WebUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.SessionContext;
 import org.apache.shiro.session.mgt.SessionFactory;
+import org.apache.shiro.session.mgt.SimpleOnlineSession;
 import org.apache.shiro.web.session.mgt.WebSessionContext;
 
 /**
@@ -36,7 +37,7 @@ public class SimpleOnlineSessionFactory implements SessionFactory {
             WebSessionContext sessionContext = (WebSessionContext) initData;  
             ServletRequest request = sessionContext.getServletRequest();  
             if ( request != null && request instanceof HttpServletRequest) {
-                //session.setHost(IpUtils.getIpAddr(request));  
+                session.setHost(WebUtils.getRemoteAddr(request));  
                 session.setUserAgent(WebUtils.toHttp(request).getHeader("User-Agent"));  
                 session.setSystemHost(WebUtils.getRemoteAddr(request) + ":" + request.getLocalPort());  
             }  
