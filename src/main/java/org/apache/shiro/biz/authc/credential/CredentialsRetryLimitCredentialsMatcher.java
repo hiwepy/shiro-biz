@@ -35,7 +35,7 @@ public class CredentialsRetryLimitCredentialsMatcher extends HashedCredentialsMa
      */
     public static final String CREDENTIALS_RETRY_CACHE_NAME = "shiro-credentialsRetryCache";
 
-	private static final int CREDENTIALS_RETRY_TIMES_LIMIT = 5;
+    public static final int CREDENTIALS_RETRY_TIMES_LIMIT = 5;
 	
     /**
      * The CacheManager to use to acquire the retry times.
