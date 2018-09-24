@@ -1,10 +1,10 @@
 package org.apache.shiro.biz.web.filter;
 
-import java.io.IOException;
-
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletResponse;
 
+import org.apache.shiro.biz.utils.StringUtils;
 import org.apache.shiro.biz.utils.WebUtils;
 import org.apache.shiro.biz.web.Constants;
 import org.apache.shiro.session.Session;
@@ -16,23 +16,11 @@ import org.apache.shiro.web.filter.AccessControlFilter;
 /**
  * 在线状态会话过滤器
  * @author <a href="https://github.com/vindell">vindell</a>
+ * http://jinnianshilongnian.iteye.com/blog/2047643
  */
 public class HttpServletSessionOnlineFilter extends AccessControlFilter {
 
-	/**
-     * 强制退出后重定向的地址
-     */
-    private String forceLogoutUrl;
-
     private SessionDAO sessionDAO;
-
-    public String getForceLogoutUrl() {
-        return forceLogoutUrl;
-    }
-
-    public void setForceLogoutUrl(String forceLogoutUrl) {
-        this.forceLogoutUrl = forceLogoutUrl;
-    }
 
     public void setSessionDAO(SessionDAO sessionDAO) {
         this.sessionDAO = sessionDAO;
@@ -52,21 +40,30 @@ public class HttpServletSessionOnlineFilter extends AccessControlFilter {
                 return false;
             }
         }
-        return true;
+        return session.getAttribute(Constants.SESSION_FORCE_LOGOUT_KEY) == null;
     }
 
     @Override
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
-        Subject subject = getSubject(request, response);
-        if (subject != null) {
-            subject.logout();
-        }
-        saveRequestAndRedirectToLogin(request, response);
-        return true;
-    }
-
-    protected void redirectToLogin(ServletRequest request, ServletResponse response) throws IOException {
-        WebUtils.issueRedirect(request, response, getForceLogoutUrl());
+    	try {
+			// Forced Logout
+			getSubject(request, response).logout();
+		} catch (Exception e) {
+			/* ignore exception */
+		}
+    	String mString = "Request Denied! Session is Force Logout.";
+    	if (WebUtils.isAjaxRequest(request)) {
+			WebUtils.writeJSONString(response, HttpServletResponse.SC_UNAUTHORIZED, mString);
+		} else {
+			String loginUrl = getLoginUrl() + (getLoginUrl().contains("?") ? "&" : "?") + "forceLogout=1";
+			if (StringUtils.hasText(loginUrl)) {
+				WebUtils.issueRedirect(request, response, loginUrl);
+			} else {
+				WebUtils.toHttp(response).sendError(HttpServletResponse.SC_UNAUTHORIZED, mString);
+			}
+		}
+		// The request has been processed, no longer enter the next filter
+		return false;
     }
 
 }

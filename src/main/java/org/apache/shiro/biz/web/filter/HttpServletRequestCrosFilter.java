@@ -18,11 +18,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class HttpServletRequestCrosFilter extends AccessControlFilter {
 
 	public static final String DEFAULT_ACCESS_CONTROL_ALLOW_METHODS = "PUT,POST,GET,DELETE,OPTIONS";
+	public static final String DEFAULT_ACCESS_CONTROL_ALLOW_HEADERS = "Origin, X-Requested-With, Content-Type, Accept";
 
 	private boolean accessControlAllowCredentials = false;
 	private String accessControlAllowOrigin = "*";
 	private String accessControlAllowMethods = DEFAULT_ACCESS_CONTROL_ALLOW_METHODS;
-	private String accessControlAllowHeaders = "Origin, X-Requested-With, Content-Type, Accept";
+	private String accessControlAllowHeaders = DEFAULT_ACCESS_CONTROL_ALLOW_HEADERS;
 	
 	/** 对跨域提供支持 */
 	@Override
