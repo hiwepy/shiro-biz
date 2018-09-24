@@ -13,14 +13,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 /**
  * <p>Request Cros Filter, 对跨域提供支持</p>
  * @author <a href="https://github.com/vindell">vindell</a>
+ * https://blog.csdn.net/guodengh/article/details/73187908?locationNum=7&fps=1
  */
 public class HttpServletRequestCrosFilter extends AccessControlFilter {
 
 	public static final String DEFAULT_ACCESS_CONTROL_ALLOW_METHODS = "PUT,POST,GET,DELETE,OPTIONS";
-	
+
+	private boolean accessControlAllowCredentials = false;
 	private String accessControlAllowOrigin = "*";
 	private String accessControlAllowMethods = DEFAULT_ACCESS_CONTROL_ALLOW_METHODS;
-	private String accessControlAllowHeaders = "";
+	private String accessControlAllowHeaders = "Origin, X-Requested-With, Content-Type, Accept";
 	
 	/** 对跨域提供支持 */
 	@Override
@@ -34,6 +36,8 @@ public class HttpServletRequestCrosFilter extends AccessControlFilter {
 		String allowMethods =  StringUtils.hasText(getAccessControlAllowMethods()) ? getAccessControlAllowMethods() : DEFAULT_ACCESS_CONTROL_ALLOW_METHODS;
 		String allowHeaders = StringUtils.hasText(getAccessControlAllowHeaders()) ?  getAccessControlAllowHeaders() :  httpRequest.getHeader("Access-Control-Request-Headers");
 		
+		// 服务器端 Access-Control-Allow-Credentials = true时，参数Access-Control-Allow-Origin 的值不能为 '*' 
+		httpResponse.setHeader("Access-Control-Allow-Credentials", Boolean.toString(isAccessControlAllowCredentials()));
 		httpResponse.setHeader("Access-Control-Allow-Origin", allowOrigin);
 		httpResponse.setHeader("Access-Control-Allow-Methods", allowMethods);
 		httpResponse.setHeader("Access-Control-Allow-Headers", allowHeaders);
@@ -52,6 +56,14 @@ public class HttpServletRequestCrosFilter extends AccessControlFilter {
 		return true;
 	}
 	
+	public boolean isAccessControlAllowCredentials() {
+		return accessControlAllowCredentials;
+	}
+
+	public void setAccessControlAllowCredentials(boolean accessControlAllowCredentials) {
+		this.accessControlAllowCredentials = accessControlAllowCredentials;
+	}
+
 	public String getAccessControlAllowOrigin() {
 		return accessControlAllowOrigin;
 	}
