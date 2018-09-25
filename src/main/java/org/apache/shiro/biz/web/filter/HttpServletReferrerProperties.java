@@ -15,12 +15,8 @@
  */
 package org.apache.shiro.biz.web.filter;
 
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Set;
-
-import org.springframework.util.StringUtils;
 
 /**
  * referer 安全 配置
@@ -33,13 +29,9 @@ public class HttpServletReferrerProperties {
 	 */
 	private String refererHeaderName = "Referer";
 	/**
-	 * Allowed access referrer of the application
-	 */
-	protected Set<String> allowedReferers = Collections.emptySet();
-	/**
 	 * Allowed access URI for each referrer
 	 */
-	private Map<String /* URI Pattern */, String /* Referer */> allowedAccessPatternMap = new LinkedHashMap<String, String>();
+	private Map<String /* URI Pattern */, String /* Referer */> allowedRefererPatterns = new LinkedHashMap<String, String>();
 
 	public String getRefererHeaderName() {
 		return refererHeaderName;
@@ -49,27 +41,12 @@ public class HttpServletReferrerProperties {
 		this.refererHeaderName = refererHeaderName;
 	}
 
-	public Set<String> getAllowedReferers() {
-		return allowedReferers;
-	}
-	/**
-     * Sets the allowed Referer
-     * @param allowedReferers A comma-delimited list of Referers
-     */
-    public void setAllowedReferers(String allowedReferers) {
-    	this.allowedReferers = StringUtils.commaDelimitedListToSet(allowedReferers);
-    }
-
-	public void setAllowedReferers(Set<String> allowedReferers) {
-		this.allowedReferers = allowedReferers;
+	public Map<String, String> getAllowedRefererPatterns() {
+		return allowedRefererPatterns;
 	}
 
-	public Map<String, String> getAllowedAccessPatternMap() {
-		return allowedAccessPatternMap;
-	}
-
-	public void setAllowedAccessPatternMap(Map<String, String> allowedAccessPatternMap) {
-		this.allowedAccessPatternMap = allowedAccessPatternMap;
+	public void setAllowedRefererPatterns(Map<String, String> allowedRefererPatterns) {
+		this.allowedRefererPatterns = allowedRefererPatterns;
 	}
 
 }

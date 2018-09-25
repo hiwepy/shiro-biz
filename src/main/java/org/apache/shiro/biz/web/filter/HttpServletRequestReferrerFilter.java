@@ -1,15 +1,14 @@
 package org.apache.shiro.biz.web.filter;
 
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.shiro.biz.utils.WebUtils;
 import org.apache.shiro.web.filter.AccessControlFilter;
@@ -45,17 +44,19 @@ public class HttpServletRequestReferrerFilter extends AccessControlFilter {
 		if(StringUtils.isEmpty(referer)){
 			return false;
 		}
-		if ( CollectionUtils.isNotEmpty(properties.getAllowedReferers()) && containsItem(properties.getAllowedReferers(), referer )) {
-			return true;
-		}
 		
-		if ( MapUtils.isNotEmpty(properties.getAllowedAccessPatternMap())) {
-			Iterator<Entry<String, String>> ite = properties.getAllowedAccessPatternMap().entrySet().iterator();
+		if ( MapUtils.isNotEmpty(properties.getAllowedRefererPatterns())) {
+			Iterator<Entry<String, String>> ite = properties.getAllowedRefererPatterns().entrySet().iterator();
 			while (ite.hasNext()) {
 				Entry<String, String> entry = ite.next();
-				if(matcher.match(entry.getKey(), httpRequest.getRequestURI()) &&
-					matcher.match(entry.getValue(), referer)) {
-					return true;
+				if(!matcher.match(entry.getKey(), httpRequest.getRequestURI())) {
+					continue;
+				}
+				Set<String> allowedReferers = StringUtils.commaDelimitedListToSet(entry.getValue());
+		    	for (String allowedReferer : allowedReferers) {
+		    		if(matcher.match(allowedReferer, referer)) {
+						return true;
+					}
 				}
 			}
 		}
@@ -78,19 +79,5 @@ public class HttpServletRequestReferrerFilter extends AccessControlFilter {
 		// The request has been processed, no longer enter the next filter
 		return false;
 	}
-
-	/**
-     * @param itemCollection - Collection of string items (all lowercase).
-     * @param item           - Item to search for.
-     * @return true if itemCollection contains the item, false otherwise.
-     */
-    private boolean containsItem(Collection<String> itemCollection, String item) {
-        for (String pattern : itemCollection) {
-            if (matcher.match(pattern, item)){
-                return true;
-            }
-        }
-        return false;
-    }
 	
 }
