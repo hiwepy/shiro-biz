@@ -10,6 +10,12 @@ import org.apache.shiro.web.filter.AccessControlFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * 
+ * @author <a href="https://github.com/vindell">vindell</a>
+ * https://developer.mozilla.org/zh-CN/docs/Web/HTTP/X-Frame-Options <br/>
+ * https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/X-Content-Type-Options
+ */
 public class HttpServletRequestOptionsFilter extends AccessControlFilter {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(HttpServletRequestOptionsFilter.class);
