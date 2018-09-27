@@ -11,6 +11,6 @@ public interface LogoutListener {
 
 	void onLogoutFail(Subject subject, Exception ex);
 
-	void onLogoutSuccess(ServletRequest request, ServletResponse response);
+	void onLogoutSuccess(Subject subject, ServletRequest request, ServletResponse response);
 
 }

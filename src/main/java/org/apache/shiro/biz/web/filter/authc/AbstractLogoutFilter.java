@@ -48,7 +48,7 @@ public abstract class AbstractLogoutFilter extends LogoutFilter {
 				if(ex != null){
 					logoutListener.onLogoutFail(subject, ex);
 				}else{
-					logoutListener.onLogoutSuccess(request, response);
+					logoutListener.onLogoutSuccess(subject, request, response);
 				}
 			}
 		}
