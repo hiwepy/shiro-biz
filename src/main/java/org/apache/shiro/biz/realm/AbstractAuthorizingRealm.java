@@ -41,7 +41,7 @@ public abstract class AbstractAuthorizingRealm<T>  extends AuthorizingRealm {
 	private static final Logger LOG = LoggerFactory.getLogger(AbstractAuthorizingRealm.class);
 
 	//realm listeners
-	protected List<PrincipalRealmListener> realmsListeners;
+	protected List<AuthorizingRealmListener> realmsListeners;
 	
 	protected ShiroPrincipalRepository<T>  repository;
 	    
@@ -111,11 +111,11 @@ public abstract class AbstractAuthorizingRealm<T>  extends AuthorizingRealm {
 		
 		//调用事件监听器
 		if(getRealmsListeners() != null && getRealmsListeners().size() > 0){
-			for (PrincipalRealmListener realmListener : getRealmsListeners()) {
+			for (AuthorizingRealmListener realmListener : getRealmsListeners()) {
 				if(ex != null || null == info){
-					realmListener.onAuthenticationFail(token);
+					realmListener.onAuthenticationFail(this, token, ex);
 				}else{
-					realmListener.onAuthenticationSuccess(info, SecurityUtils.getSubject().getSession());
+					realmListener.onAuthenticationSuccess(this, info, SecurityUtils.getSubject().getSession());
 				}
 			}
 		}
@@ -139,11 +139,11 @@ public abstract class AbstractAuthorizingRealm<T>  extends AuthorizingRealm {
 		this.repository = repository;
 	}
 
-	public List<PrincipalRealmListener> getRealmsListeners() {
+	public List<AuthorizingRealmListener> getRealmsListeners() {
 		return realmsListeners;
 	}
 
-	public void setRealmsListeners(List<PrincipalRealmListener> realmsListeners) {
+	public void setRealmsListeners(List<AuthorizingRealmListener> realmsListeners) {
 		this.realmsListeners = realmsListeners;
 	}
 	

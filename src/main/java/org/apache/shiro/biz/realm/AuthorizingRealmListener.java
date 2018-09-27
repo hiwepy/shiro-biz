@@ -15,23 +15,25 @@
  */
 package org.apache.shiro.biz.realm;
 
+import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.session.Session;
 
-public interface PrincipalRealmListener {
+public interface AuthorizingRealmListener {
 
 	/**
 	 * 当认证失败时调用【报异常或则是查询不到认证信息认为是失败】
 	 * @param token 认证Token
 	 */
-	void onAuthenticationFail(AuthenticationToken token);
+	void onAuthenticationFail(AuthorizingRealm realm, AuthenticationToken token, AuthenticationException ex);
 	
 	/**
 	 * 当认证成功时调用
 	 * @param info 当前认证信息
 	 * @param session {@link Session}对象
 	 */
-	void onAuthenticationSuccess(AuthenticationInfo info, Session session);
+	void onAuthenticationSuccess(AuthorizingRealm realm, AuthenticationInfo info, Session session);
 	
 }
