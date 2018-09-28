@@ -26,7 +26,7 @@ import org.apache.shiro.biz.authc.token.CaptchaAuthenticationToken;
 import org.apache.shiro.biz.authc.token.DefaultAuthenticationToken;
 import org.apache.shiro.biz.utils.WebUtils;
 import org.apache.shiro.biz.web.filter.authc.captcha.CaptchaResolver;
-import org.apache.shiro.biz.web.filter.authc.listener.LoginListener;
+import org.apache.shiro.biz.web.filter.authc.listener.AuthenticatingListener;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -107,10 +107,10 @@ public abstract class AbstractTrustableAuthenticatingFilter extends AbstractAuth
     protected boolean onLoginFailure(AuthenticationToken token, AuthenticationException e,
                                      ServletRequest request, ServletResponse response) {
     	
-    	// Call event listener
-		if(getLoginListeners() != null && getLoginListeners().size() > 0){
-			for (LoginListener loginListener : getLoginListeners()) {
-				loginListener.onLoginFailure(token, e, request, response);
+    	// Authenticating Listener
+		if(getAuthenticatingListeners() != null && getAuthenticatingListeners().size() > 0){
+			for (AuthenticatingListener authcListener : getAuthenticatingListeners()) {
+				authcListener.onFailure(token, e, request, response);
 			}
 		}
     			
