@@ -29,7 +29,7 @@ import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.biz.authc.exception.SessionRestrictedException;
 import org.apache.shiro.biz.authc.exception.TerminalRestrictedException;
 import org.apache.shiro.biz.utils.WebUtils;
-import org.apache.shiro.biz.web.filter.authc.listener.AuthenticatingListener;
+import org.apache.shiro.biz.web.filter.authc.listener.LoginListener;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.eis.SessionDAO;
 import org.apache.shiro.subject.Subject;
@@ -46,10 +46,8 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 
 	private static final Logger LOG = LoggerFactory.getLogger(AbstractAuthenticatingFilter.class);
 	private static final String DEFAULT_SESSION_RESTRICTED_ATTR_NAME = "session-restricted";
-	/**
-	 * Authenticating Listener
-	 */
-	private List<AuthenticatingListener> authenticatingListeners;
+	/** Login Listener */
+	private List<LoginListener> loginListeners;
 	/** SessionDAO */
 	private SessionDAO sessionDao; 
 	/** If Session Stateless */
@@ -146,10 +144,10 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
     protected boolean onLoginSuccess(AuthenticationToken token, Subject subject,
                                      ServletRequest request, ServletResponse response) throws Exception {
     	
-    	// Authenticating Listener
-		if(getAuthenticatingListeners() != null && getAuthenticatingListeners().size() > 0){
-			for (AuthenticatingListener authcListener : getAuthenticatingListeners()) {
-				authcListener.onSuccess(token, subject, request, response);
+    	// Login Listener
+		if(getLoginListeners() != null && getLoginListeners().size() > 0){
+			for (LoginListener loginListener : getLoginListeners()) {
+				loginListener.onLoginSuccess(token, subject, request, response);
 			}
 		}
 		
@@ -177,10 +175,10 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
     protected boolean onLoginFailure(AuthenticationToken token, AuthenticationException e,
                                      ServletRequest request, ServletResponse response) {
     	
-    	// Authenticating Listener
-		if(getAuthenticatingListeners() != null && getAuthenticatingListeners().size() > 0){
-			for (AuthenticatingListener authcListener : getAuthenticatingListeners()) {
-				authcListener.onFailure(token, e, request, response);
+    	// Login Listener
+		if(getLoginListeners() != null && getLoginListeners().size() > 0){
+			for (LoginListener loginListener : getLoginListeners()) {
+				loginListener.onLoginFailure(token, e, request, response);
 			}
 		}
     			
@@ -210,12 +208,12 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 		return false;
 	}
 	
-    public List<AuthenticatingListener> getAuthenticatingListeners() {
-		return authenticatingListeners;
+	public List<LoginListener> getLoginListeners() {
+		return loginListeners;
 	}
 
-	public void setAuthenticatingListeners(List<AuthenticatingListener> authenticatingListeners) {
-		this.authenticatingListeners = authenticatingListeners;
+	public void setLoginListeners(List<LoginListener> loginListeners) {
+		this.loginListeners = loginListeners;
 	}
 
 	public SessionDAO getSessionDao() {

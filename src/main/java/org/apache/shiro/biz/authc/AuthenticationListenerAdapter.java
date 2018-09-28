@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 (https://github.com/vindell).
+ * Copyright (c) 2018, vindell (https://github.com/vindell).
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -13,27 +13,33 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.apache.shiro.biz.realm;
+package org.apache.shiro.biz.authc;
 
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
+import org.apache.shiro.authc.AuthenticationListener;
 import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.realm.AuthorizingRealm;
-import org.apache.shiro.session.Session;
+import org.apache.shiro.subject.PrincipalCollection;
 
-public interface AuthorizingRealmListener {
+/**
+ * Simple adapter implementation of the {@link AuthenticationListener} interface, effectively providing
+ * no-op implementations of all methods.
+ */
+public class AuthenticationListenerAdapter implements AuthenticationListener {
 
-	/**
-	 * 当认证失败时调用【报异常或则是查询不到认证信息认为是失败】
-	 * @param token 认证Token
-	 */
-	void onFailure(AuthorizingRealm realm, AuthenticationToken token, AuthenticationException ex);
-	
-	/**
-	 * 当认证成功时调用
-	 * @param info 当前认证信息
-	 * @param session {@link Session}对象
-	 */
-	void onSuccess(AuthorizingRealm realm, AuthenticationInfo info, Session session);
-	
+	@Override
+	public void onSuccess(AuthenticationToken token, AuthenticationInfo info) {
+		
+	}
+
+	@Override
+	public void onFailure(AuthenticationToken token, AuthenticationException ae) {
+		
+	}
+
+	@Override
+	public void onLogout(PrincipalCollection principals) {
+		
+	}
+
 }

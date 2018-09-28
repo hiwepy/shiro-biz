@@ -113,9 +113,9 @@ public abstract class AbstractAuthorizingRealm<T>  extends AuthorizingRealm {
 		if(getRealmsListeners() != null && getRealmsListeners().size() > 0){
 			for (AuthorizingRealmListener realmListener : getRealmsListeners()) {
 				if(ex != null || null == info){
-					realmListener.onAuthenticationFail(this, token, ex);
+					realmListener.onFailure(this, token, ex);
 				}else{
-					realmListener.onAuthenticationSuccess(this, info, SecurityUtils.getSubject().getSession());
+					realmListener.onSuccess(this, info, SecurityUtils.getSubject().getSession());
 				}
 			}
 		}
