@@ -21,7 +21,7 @@ import org.apache.shiro.web.filter.AccessControlFilter;
  * @author <a href="https://github.com/vindell">vindell</a>
  * http://jinnianshilongnian.iteye.com/blog/2047643
  */
-public class HttpServletSessionOnlineFilter extends AccessControlFilter {
+public class HttpServletSessionStatusFilter extends AccessControlFilter {
 
     private SessionDAO sessionDAO;
 
