@@ -25,11 +25,13 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
 import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.biz.web.Constants;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.DefaultSessionKey;
 import org.apache.shiro.session.mgt.SessionManager;
+import org.apache.shiro.session.mgt.SimpleOnlineSession;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.AccessControlFilter;
 import org.apache.shiro.web.util.WebUtils;
@@ -44,30 +46,27 @@ import org.apache.shiro.web.util.WebUtils;
  *  部分资料来自：http://jinnianshilongnian.iteye.com/blog/2039760 
  * @author 		： <a href="https://github.com/vindell">vindell</a>
  */
-public abstract class HttpServletSessionKickoutFilter extends AccessControlFilter {
+public abstract class HttpServletSessionDequeFilter extends AccessControlFilter {
 
-    public static final String DEFAULT_SESSION_KICKEDOUT_ATTR_NAME = "kickout";
-    public static final String DEFAULT_SESSION_CONTROL_CACHE_NAME = "shiro-kickout-session";
     /**
      * The default redirect URL to where the user will be redirected after kickout.  The value is {@code "/"}, Shiro's
      * representation of the web application's context root.
      */
     public static final String DEFAULT_REDIRECT_URL = "/";
-
+    public static final String DEFAULT_SESSION_DEQUE_CACHE_NAME = "shiro-sessionDequeCache";
+    
     /**
   	 * 用户登录状态缓存
   	 */
-    private Cache<String, Deque<Serializable>> cache;
+    private Cache<String, Deque<Serializable>> sessionDequeCache;
     private CacheManager cacheManager;
 	private SessionManager sessionManager;
 	
-	/** The tag that the session has been kicked out. */
-	private String kickoutAttr = DEFAULT_SESSION_KICKEDOUT_ATTR_NAME;
 	/** Whether to kickout the first login session. */
     private boolean kickoutFirst = false;
     /** Maximum number of sessions for the same account . */
-	private int sessionMultiplexKickout = 1;
-	private String sessionControlCacheName = DEFAULT_SESSION_CONTROL_CACHE_NAME;
+	private int sessionMaximumKickout = 1;
+	private String sessionDequeCacheName = DEFAULT_SESSION_DEQUE_CACHE_NAME;
     /** he URL to where the user will be redirected after kickout. */
     private String redirectUrl = DEFAULT_REDIRECT_URL;
     
@@ -83,7 +82,7 @@ public abstract class HttpServletSessionKickoutFilter extends AccessControlFilte
 		return false;
 	}
     
-	protected abstract String getSessionControlCacheKey(Object principal);
+	protected abstract String getSessionDequeCacheKey(Object principal);
     
     @Override
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
@@ -92,8 +91,8 @@ public abstract class HttpServletSessionKickoutFilter extends AccessControlFilte
 			throw new AuthenticationException("cacheManager must be set for this filter");
 		}
     	
-    	if(this.cache == null){
-    		this.cache = cacheManager.getCache(getSessionControlCacheName());
+    	if(this.sessionDequeCache == null){
+    		this.sessionDequeCache = getCacheManager().getCache(getSessionDequeCacheName());
 		}
     	
     	Subject subject = getSubject(request, response);
@@ -101,20 +100,20 @@ public abstract class HttpServletSessionKickoutFilter extends AccessControlFilte
         Serializable sessionId = session.getId();
 
         // 同步控制
-        String username = (String) subject.getPrincipal();
-        Deque<Serializable> deque = cache.get(username);
+        String cacheKey = getSessionDequeCacheKey(subject.getPrincipal());
+        Deque<Serializable> deque = sessionDequeCache.get(cacheKey);
         if(deque == null) {
             deque = new LinkedList<Serializable>();
-            cache.put(username, deque);
+            sessionDequeCache.put(cacheKey, deque);
         }
 
         //如果队列里没有此sessionId，且用户没有被踢出；放入队列
-        if(!deque.contains(sessionId) && session.getAttribute(getKickoutAttr()) == null) {
+        if(!deque.contains(sessionId) && session.getAttribute(Constants.SESSION_KICKOUT_KEY) == null) {
             deque.push(sessionId);
         }
 
-        //如果队列里的sessionId数超出最大会话数，开始强制下线
-        while(deque.size() > getSessionMultiplexKickout()) {
+        // 如果队列里的sessionId数超出最大会话数，开始强制下线
+        while(deque.size() > getSessionMaximumKickout()) {
             Serializable kickoutSessionId = null;
             // 踢出最早登录的会话
             if(isKickoutFirst()) { 
@@ -125,10 +124,15 @@ public abstract class HttpServletSessionKickoutFilter extends AccessControlFilte
                 kickoutSessionId = deque.removeLast();
             }
             try {
-                Session kickoutSession = sessionManager.getSession(new DefaultSessionKey(kickoutSessionId));
-                if(kickoutSession != null) {
-                	//设置会话的kickout属性表示踢出了
-                    kickoutSession.setAttribute(getKickoutAttr(), true);
+            	// 可能为空或失效
+                Session kickoutSession = getSessionManager().getSession(new DefaultSessionKey(kickoutSessionId));
+                if (kickoutSession != null) {
+                	//设置会话的kickout属性标记
+                    kickoutSession.setAttribute(Constants.SESSION_KICKOUT_KEY, true);
+                	if(kickoutSession instanceof SimpleOnlineSession) {
+                		SimpleOnlineSession onlineSession = (SimpleOnlineSession) session;
+                		onlineSession.setStatus(SimpleOnlineSession.OnlineStatus.force_logout);
+                	}
                 }
             } catch (Exception e) {
             	//ignore exception
@@ -136,7 +140,7 @@ public abstract class HttpServletSessionKickoutFilter extends AccessControlFilte
         }
 
         //如果被踢出了，直接退出，重定向到踢出后的地址
-        if (session.getAttribute(getKickoutAttr()) != null) {
+        if (session.getAttribute(Constants.SESSION_KICKOUT_KEY) != null) {
             try {
             	//会话被踢出：注销登录状态
                 subject.logout();
@@ -155,6 +159,7 @@ public abstract class HttpServletSessionKickoutFilter extends AccessControlFilte
         return true;
     }
     
+
     public String escapeURL(String url) {
         String ret = "";
         try {
@@ -174,14 +179,6 @@ public abstract class HttpServletSessionKickoutFilter extends AccessControlFilte
 		this.sessionManager = sessionManager;
 	}
 
-	public String getKickoutAttr() {
-		return kickoutAttr;
-	}
-
-	public void setKickoutAttr(String kickoutAttr) {
-		this.kickoutAttr = kickoutAttr;
-	}
-
 	public boolean isKickoutFirst() {
 		return kickoutFirst;
 	}
@@ -190,12 +187,12 @@ public abstract class HttpServletSessionKickoutFilter extends AccessControlFilte
 		this.kickoutFirst = kickoutFirst;
 	}
 
-	public int getSessionMultiplexKickout() {
-		return sessionMultiplexKickout;
+	public int getSessionMaximumKickout() {
+		return sessionMaximumKickout;
 	}
 
-	public void setSessionMultiplexKickout(int sessionMultiplexKickout) {
-		this.sessionMultiplexKickout = sessionMultiplexKickout;
+	public void setSessionMaximumKickout(int sessionMaximumKickout) {
+		this.sessionMaximumKickout = sessionMaximumKickout;
 	}
 
 	/**
@@ -210,12 +207,12 @@ public abstract class HttpServletSessionKickoutFilter extends AccessControlFilte
 		return cacheManager;
 	}
 
-	public String getSessionControlCacheName() {
-		return sessionControlCacheName;
+	public String getSessionDequeCacheName() {
+		return sessionDequeCacheName;
 	}
 
-	public void setSessionControlCacheName(String sessionControlCacheName) {
-		this.sessionControlCacheName = sessionControlCacheName;
+	public void setSessionDequeCacheName(String sessionDequeCacheName) {
+		this.sessionDequeCacheName = sessionDequeCacheName;
 	}
 
 	public String getRedirectUrl() {

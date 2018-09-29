@@ -11,8 +11,9 @@ import org.apache.shiro.biz.utils.StringUtils;
 import org.apache.shiro.biz.utils.WebUtils;
 import org.apache.shiro.biz.web.Constants;
 import org.apache.shiro.session.Session;
+import org.apache.shiro.session.mgt.DefaultSessionKey;
+import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.session.mgt.SimpleOnlineSession;
-import org.apache.shiro.session.mgt.eis.SessionDAO;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.AccessControlFilter;
 
@@ -23,11 +24,7 @@ import org.apache.shiro.web.filter.AccessControlFilter;
  */
 public class HttpServletSessionStatusFilter extends AccessControlFilter {
 
-    private SessionDAO sessionDAO;
-
-    public void setSessionDAO(SessionDAO sessionDAO) {
-        this.sessionDAO = sessionDAO;
-    }
+	private SessionManager sessionManager;
 
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) throws Exception {
@@ -35,7 +32,8 @@ public class HttpServletSessionStatusFilter extends AccessControlFilter {
         if (subject == null || subject.getSession(false) == null) {
             return true;
         }
-        Session session = sessionDAO.readSession(subject.getSession().getId());
+        
+        Session session = getSessionManager().getSession(new DefaultSessionKey(subject.getSession().getId()));
         if (session != null && session instanceof SimpleOnlineSession) {
         	SimpleOnlineSession onlineSession = (SimpleOnlineSession) session;
             request.setAttribute(Constants.ONLINE_SESSION, onlineSession);
@@ -70,4 +68,12 @@ public class HttpServletSessionStatusFilter extends AccessControlFilter {
 		return false;
     }
 
+	public SessionManager getSessionManager() {
+		return sessionManager;
+	}
+
+	public void setSessionManager(SessionManager sessionManager) {
+		this.sessionManager = sessionManager;
+	}
+    
 }
