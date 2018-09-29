@@ -1,5 +1,8 @@
 package org.apache.shiro.biz.web.filter;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
@@ -55,9 +58,10 @@ public class HttpServletSessionOnlineFilter extends AccessControlFilter {
     	if (WebUtils.isAjaxRequest(request)) {
 			WebUtils.writeJSONString(response, HttpServletResponse.SC_UNAUTHORIZED, mString);
 		} else {
-			String loginUrl = getLoginUrl() + (getLoginUrl().contains("?") ? "&" : "?") + "forceLogout=1";
-			if (StringUtils.hasText(loginUrl)) {
-				WebUtils.issueRedirect(request, response, loginUrl);
+			if (StringUtils.hasText(getLoginUrl())) {
+				Map<String, String> parameters = new HashMap<String, String>();
+			    parameters.put("forceLogout", "1");
+				WebUtils.issueRedirect(request, response, getLoginUrl(), parameters);
 			} else {
 				WebUtils.toHttp(response).sendError(HttpServletResponse.SC_UNAUTHORIZED, mString);
 			}
