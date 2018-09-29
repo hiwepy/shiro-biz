@@ -23,10 +23,10 @@ import org.apache.shiro.web.util.WebUtils;
  */
 public abstract class HttpServletSessionControlFilter extends AccessControlFilter {
 
-	 /**
+	/**
      * The default session control cache name, equal to {@code shiro-controlSessionCache}.
      */
-    public static final String CREDENTIALS_RETRY_CACHE_NAME = "shiro-controlSessionCache";
+    public static final String SESSION_CONTROL_CACHE_NAME = "shiro-controlSessionCache";
 	/**
 	 * 用户sessionControl的缓存
 	 */
@@ -34,7 +34,7 @@ public abstract class HttpServletSessionControlFilter extends AccessControlFilte
 
 	protected CacheManager cacheManager;
 	
-	protected String sessionControlCacheName = CREDENTIALS_RETRY_CACHE_NAME;
+	protected String sessionControlCacheName = SESSION_CONTROL_CACHE_NAME;
 	
 	@Override
 	protected boolean isAccessAllowed(ServletRequest request,
