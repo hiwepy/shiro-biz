@@ -109,7 +109,7 @@ public abstract class AbstractTrustableAuthenticatingFilter extends AbstractAuth
     	// Login Listener
 		if(getLoginListeners() != null && getLoginListeners().size() > 0){
 			for (LoginListener loginListener : getLoginListeners()) {
-				loginListener.onLoginFailure(token, e, request, response);
+				loginListener.onFailure(token, e, request, response);
 			}
 		}
     			

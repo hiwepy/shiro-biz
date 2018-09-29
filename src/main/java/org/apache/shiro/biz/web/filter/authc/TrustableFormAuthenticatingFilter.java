@@ -41,7 +41,7 @@ public class TrustableFormAuthenticatingFilter extends AbstractTrustableAuthenti
 		// Login Listener
 		if(getLoginListeners() != null && getLoginListeners().size() > 0){
 			for (LoginListener loginListener : getLoginListeners()) {
-				loginListener.onLoginSuccess(token, subject, request, response);
+				loginListener.onSuccess(token, subject, request, response);
 			}
 		}
 		

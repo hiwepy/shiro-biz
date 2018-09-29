@@ -147,7 +147,7 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
     	// Login Listener
 		if(getLoginListeners() != null && getLoginListeners().size() > 0){
 			for (LoginListener loginListener : getLoginListeners()) {
-				loginListener.onLoginSuccess(token, subject, request, response);
+				loginListener.onSuccess(token, subject, request, response);
 			}
 		}
 		
@@ -178,7 +178,7 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
     	// Login Listener
 		if(getLoginListeners() != null && getLoginListeners().size() > 0){
 			for (LoginListener loginListener : getLoginListeners()) {
-				loginListener.onLoginFailure(token, e, request, response);
+				loginListener.onFailure(token, e, request, response);
 			}
 		}
     			
