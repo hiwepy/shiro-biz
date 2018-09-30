@@ -22,8 +22,8 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.SimpleAccount;
 import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.biz.authz.principal.ShiroPrincipalRepository;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
@@ -66,12 +66,11 @@ public abstract class AbstractAuthorizingRealm<T>  extends AuthorizingRealm {
 		}else{
 			permissionsSet = getRepository().getPermissions(principals.asSet());
 			rolesSet = getRepository().getRoles(principals.asSet());
-		}
+		} 
 		
-    	SimpleAccount account = new SimpleAccount();
-    	account.setRoles(rolesSet);
-    	account.setStringPermissions(permissionsSet);
-        return account;
+		SimpleAuthorizationInfo authzInfo = new SimpleAuthorizationInfo(rolesSet);
+		authzInfo.setStringPermissions(permissionsSet);
+        return authzInfo;
     }
 
 	/**
