@@ -1,19 +1,13 @@
 package org.apache.shiro.biz.spring;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-
 import org.apache.shiro.biz.web.filter.HttpServletShiroFilter;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
-import org.apache.shiro.subject.Subject;
-import org.apache.shiro.util.ThreadContext;
 import org.apache.shiro.web.filter.mgt.FilterChainManager;
 import org.apache.shiro.web.filter.mgt.FilterChainResolver;
 import org.apache.shiro.web.filter.mgt.PathMatchingFilterChainResolver;
 import org.apache.shiro.web.mgt.WebSecurityManager;
 import org.apache.shiro.web.servlet.AbstractShiroFilter;
-import org.apache.shiro.web.subject.WebSubject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanInitializationException;
@@ -74,16 +68,6 @@ public class ShiroFilterProxyFactoryBean extends ShiroFilterFactoryBean {
      * concrete subclass in the constructor.
      */
     private static final class SpringShiroFilterProxy extends HttpServletShiroFilter {
-    	
-    	@Override
-    	protected WebSubject createSubject(ServletRequest request, ServletResponse response) {
-    		Subject subject = ThreadContext.getSubject();
-            if (subject == null) {
-                subject = super.createSubject(request, response);
-                ThreadContext.bind(subject);
-            }
-            return (WebSubject) subject;
-    	}
     	
         protected SpringShiroFilterProxy(WebSecurityManager webSecurityManager, FilterChainResolver resolver) {
             super();
