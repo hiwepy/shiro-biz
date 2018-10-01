@@ -197,9 +197,10 @@ public interface HttpStatus {
     public static final int SC_INSUFFICIENT_STORAGE = 507;
 
     // --- 9xx custom Error ---
-    //HTTP Status 9xx（参数校验错误）    ->这些状态代码表示服务器内部对会话状态或者参数校验时的错误。
+    //HTTP Status 9xx（自定义错误）    ->这些状态代码表示服务器内部对会话状态或者参数校验时的错误。
     
-    
+    //HTTP Status 900（HTTP 会话注销）    -> 会话过期或者注销。
+    public static final int SC_SESSION_LOGOUT = 900;
     //HTTP Status 901（HTTP 会话过期）    -> 会话过期或者注销。
     public static final int SC_SESSION_TIMEOUT = 901;
     //HTTP Status 902（HTTP 未授权） ->请求要求身份验证。 对于需要登录的网页，服务器可能返回此响应。
