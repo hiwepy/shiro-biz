@@ -49,6 +49,10 @@ public class ShiroPrincipal implements Cloneable, Serializable {
 	 */
 	private String secret;
 	/**
+	 * 用户别名（昵称）
+	 */
+	private String alias;
+	/**
 	 * 用户拥有角色列表
 	 */
 	private Set<String> roles;
@@ -139,6 +143,14 @@ public class ShiroPrincipal implements Cloneable, Serializable {
 
 	public void setPerms(Set<String> perms) {
 		this.perms = perms;
+	}
+	
+	public String getAlias() {
+		return alias;
+	}
+
+	public void setAlias(String alias) {
+		this.alias = alias;
 	}
 
 	public boolean isDisabled() {
