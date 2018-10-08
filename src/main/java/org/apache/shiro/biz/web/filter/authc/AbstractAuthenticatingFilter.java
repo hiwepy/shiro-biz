@@ -265,9 +265,9 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 	}
 
 	/**
-     * Returns the URL to which users should be redirected if they are denied access to an underlying path or resource,
+     * <p>Returns the URL to which users should be redirected if they are denied access to an underlying path or resource,
      * or {@code null} if a raw {@link HttpServletResponse#SC_UNAUTHORIZED} response should be issued (401 Unauthorized).
-     * <p/>
+     * </p>
      * The default is {@code null}, ensuring default web server behavior.  Override this default by calling the
      * {@link #setUnauthorizedUrl(String) setUnauthorizedUrl} method with a meaningful path within your application
      * if you would like to show the user a 'nice' page in the event of unauthorized access.
@@ -280,11 +280,11 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
     }
 
     /**
-     * Sets the URL to which users should be redirected if they are denied access to an underlying path or resource.
-     * <p/>
-     * If the value is {@code null} a raw {@link HttpServletResponse#SC_UNAUTHORIZED} response will
+     * <p>Sets the URL to which users should be redirected if they are denied access to an underlying path or resource.
+     * </p>
+     * <p>If the value is {@code null} a raw {@link HttpServletResponse#SC_UNAUTHORIZED} response will
      * be issued (401 Unauthorized), retaining default web server behavior.
-     * <p/>
+     * </p>
      * Unless overridden by calling this method, the default value is {@code null}.  If desired, you can specify a
      * meaningful path within your application if you would like to show the user a 'nice' page in the event of
      * unauthorized access.

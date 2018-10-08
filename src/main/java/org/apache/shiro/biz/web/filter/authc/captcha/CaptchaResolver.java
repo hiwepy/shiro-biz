@@ -25,6 +25,7 @@ public interface CaptchaResolver {
 	/**
 	 * Valid the current captcha via the given request.
 	 * @param request request to be used for resolution
+	 * @param token the captcha authentication token
 	 * @return the result
 	 */
 	boolean validCaptcha(ServletRequest request, CaptchaAuthenticationToken token) throws AuthenticationException;

@@ -37,14 +37,12 @@ import org.apache.shiro.web.filter.AccessControlFilter;
 import org.apache.shiro.web.util.WebUtils;
 
 /**
- * 
  *  <p>cacheManager：使用cacheManager获取相应的cache来缓存用户登录的会话；用于保存用户—会话之间的关系的；</p>
  *	<p>sessionManager：用于根据会话ID，获取会话进行踢出操作的；</p>
  *	<p>kickoutAfter：是否踢出后来登录的，默认是false；即后者登录的用户踢出前者登录的用户；</p>
  *	<p>maxSession：同一个用户最大的会话数，默认1；比如2的意思是同一个用户允许最多同时两个人登录；</p>
  *	<p>kickoutUrl：被踢出后重定向到的地址；</p>
- *  部分资料来自：http://jinnianshilongnian.iteye.com/blog/2039760 
- * @author 		： <a href="https://github.com/vindell">vindell</a>
+ *  <p>部分资料来自：http://jinnianshilongnian.iteye.com/blog/2039760 </p>
  */
 public abstract class HttpServletSessionDequeFilter extends AccessControlFilter {
 
@@ -55,11 +53,11 @@ public abstract class HttpServletSessionDequeFilter extends AccessControlFilter 
     public static final String DEFAULT_REDIRECT_URL = "/";
     public static final String DEFAULT_SESSION_DEQUE_CACHE_NAME = "shiro-sessionDequeCache";
     
-    /**
-  	 * 用户登录状态缓存
-  	 */
+    /** User login status cache */
     private Cache<String, Deque<Serializable>> sessionDequeCache;
+    /** cacheManager */
     private CacheManager cacheManager;
+    /** sessionManager */
 	private SessionManager sessionManager;
 	
 	/** Whether to kickout the first login session. */
@@ -195,10 +193,6 @@ public abstract class HttpServletSessionDequeFilter extends AccessControlFilter 
 		this.sessionMaximumKickout = sessionMaximumKickout;
 	}
 
-	/**
-	 * 设置cache
-	 * @param cacheManager
-	 */
 	public void setCacheManager(CacheManager cacheManager) {
 		this.cacheManager = cacheManager;
     }

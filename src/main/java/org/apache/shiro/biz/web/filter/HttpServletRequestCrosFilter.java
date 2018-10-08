@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * <p>Request Cros Filter, 对跨域提供支持</p>
- * @author <a href="https://github.com/vindell">vindell</a> <br/>
- * https://blog.csdn.net/guodengh/article/details/73187908?locationNum=7&fps=1 <br/>
- * https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Access_control_CORS <br/>
- * https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Access-Control-Allow-Headers <br/>
+ * @author <a href="https://github.com/vindell">vindell</a>
+ * <p>https://blog.csdn.net/guodengh/article/details/73187908 </p>
+ * <p>https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Access_control_CORS </p>
+ * <p>https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Access-Control-Allow-Headers </p>
  */
 public class HttpServletRequestCrosFilter extends AccessControlFilter {
 

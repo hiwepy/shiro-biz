@@ -11,10 +11,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 
+ * Http Header 规则配置过滤器 
  * @author <a href="https://github.com/vindell">vindell</a>
- * https://developer.mozilla.org/zh-CN/docs/Web/HTTP/X-Frame-Options <br/>
- * https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/X-Content-Type-Options
+ * <p>https://developer.mozilla.org/zh-CN/docs/Web/HTTP/X-Frame-Options </p>
+ * <p>https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/X-Content-Type-Options </p>
  */
 public class HttpServletRequestOptionsFilter extends AccessControlFilter {
 	

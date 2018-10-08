@@ -67,7 +67,7 @@ public class WebUtils extends org.apache.shiro.web.util.WebUtils {
 	 * 获取请求客户端IP地址，支持代理服务器
 	 * http://blog.csdn.net/caoshuming_500/article/details/20952329
 	 * @param request {@link ServletRequest} 对象
-	 * @return
+	 * @return ip
 	 */
 	public static String getRemoteAddr(ServletRequest request) {
 		

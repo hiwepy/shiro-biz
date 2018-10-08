@@ -29,10 +29,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * 
- * TODO
+ * Http Header 规则配置过滤器 
  * @author 		： <a href="https://github.com/vindell">vindell</a>
- * https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Access_control_CORS <br/>
- * https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Access-Control-Allow-Headers <br/>
+ * <p>https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Access_control_CORS </p>
+ * <p>https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Access-Control-Allow-Headers </p>
  */
 public class HttpServletRequestHeaderFilter extends AccessControlFilter {
 	

@@ -74,7 +74,9 @@ public class SubjectUtils {
 	
 	/**
 	 * 登陆成功后重新生成session【基于安全考虑】
-	 * @param oldSession
+	 * @param subject {@link Subject} instance
+	 * @param oldSession Old {@link Session} instance
+	 * @return {@link Session} instance
 	 */
 	public static Session copySession(Subject subject, Session oldSession) {
 		// retain Session attributes to put in the new session after login:

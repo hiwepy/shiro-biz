@@ -17,7 +17,6 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * 使用spring的任务调度器完成 session验证
- * 功能直接复制了{@link org.apache.shiro.session.mgt.quartz.QuartzSessionValidationScheduler}
  * <p>User: Zhang Kaitao
  * <p>Date: 13-7-2 下午5:33
  * <p>Version: 1.0
@@ -103,7 +102,7 @@ public class SpringSessionValidationScheduler implements SessionValidationSchedu
      *
      * <p>Unless this method is called, the default value is {@link #DEFAULT_SESSION_VALIDATION_INTERVAL}.
      *
-     * @param sessionValidationInterval
+     * @param sessionValidationInterval  session Validation Interval
      */
     public void setSessionValidationInterval(long sessionValidationInterval) {
         this.sessionValidationInterval = sessionValidationInterval;

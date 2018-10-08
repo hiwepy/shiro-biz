@@ -27,9 +27,6 @@ public class SessionCreationEnabledSubjectFactory extends DefaultWebSubjectFacto
 	 */
 	private final boolean sessionCreationEnabled;
 
-	/**
-	 * 是否创建SESSION的开关
-	 */
 	public SessionCreationEnabledSubjectFactory(boolean sessionCreationEnabled) {
 		this.sessionCreationEnabled = sessionCreationEnabled;
 	}

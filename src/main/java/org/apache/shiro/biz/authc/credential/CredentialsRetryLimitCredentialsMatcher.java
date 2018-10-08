@@ -76,12 +76,9 @@ public class CredentialsRetryLimitCredentialsMatcher extends HashedCredentialsMa
         return matches;
         
     }
-    
 
     /**
-     * Sets the cacheManager to use for acquiring the {@link #getActiveSessionsCache() activeSessionsCache} if
-     * one is not configured.
-     *
+     * Sets the cacheManager to use.
      * @param cacheManager the manager to use for constructing the session cache.
      */
     public void setCacheManager(CacheManager cacheManager) {
@@ -89,10 +86,7 @@ public class CredentialsRetryLimitCredentialsMatcher extends HashedCredentialsMa
     }
 
     /**
-     * Returns the CacheManager to use for acquiring the {@link #getActiveSessionsCache() activeSessionsCache} if
-     * one is not configured.  That is, the {@code CacheManager} will only be used if the
-     * {@link #getActiveSessionsCache() activeSessionsCache} property is {@code null}.
-     *
+     * Returns the CacheManager to use.
      * @return the CacheManager used by the implementation that creates the activeSessions Cache.
      */
     public CacheManager getCacheManager() {
