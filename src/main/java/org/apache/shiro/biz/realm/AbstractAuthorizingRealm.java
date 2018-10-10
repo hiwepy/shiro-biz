@@ -36,14 +36,16 @@ import org.slf4j.LoggerFactory;
  * @author <a href="https://github.com/vindell">vindell</a>
  */
 @SuppressWarnings("unchecked")
-public abstract class AbstractAuthorizingRealm<T>  extends AuthorizingRealm {
+public abstract class AbstractAuthorizingRealm  extends AuthorizingRealm {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(AbstractAuthorizingRealm.class);
 
 	//realm listeners
 	protected List<AuthorizingRealmListener> realmsListeners;
 	
-	protected ShiroPrincipalRepository<T>  repository;
+	protected ShiroPrincipalRepository  repository;
+	
+	
 	    
 	/**
 	 * 获取授权信息;
@@ -58,14 +60,14 @@ public abstract class AbstractAuthorizingRealm<T>  extends AuthorizingRealm {
     	if(principals == null || principals.isEmpty()){
 			return null;
 		}
-    	
+    	List principalSet = principals.asList();
     	Set<String> permissionsSet, rolesSet = null;
-		if(principals.asList().size() <= 1){
-			permissionsSet = getRepository().getPermissions((T) principals.getPrimaryPrincipal());
-			rolesSet = getRepository().getRoles((T) principals.getPrimaryPrincipal());
+		if(principalSet.size() <= 1){
+			permissionsSet = getRepository().getPermissions(principals.getPrimaryPrincipal());
+			rolesSet = getRepository().getRoles(principals.getPrimaryPrincipal());
 		}else{
-			permissionsSet = getRepository().getPermissions(principals.asSet());
-			rolesSet = getRepository().getRoles(principals.asSet());
+			permissionsSet = getRepository().getPermissions(principalSet);
+			rolesSet = getRepository().getRoles(principalSet);
 		} 
 		
 		SimpleAuthorizationInfo authzInfo = new SimpleAuthorizationInfo(rolesSet);
@@ -130,11 +132,11 @@ public abstract class AbstractAuthorizingRealm<T>  extends AuthorizingRealm {
 		clearCachedAuthorizationInfo(SecurityUtils.getSubject().getPrincipals());
 	}
 	
-	public ShiroPrincipalRepository<T>  getRepository() {
+	public ShiroPrincipalRepository  getRepository() {
 		return repository;
 	}
 
-	public void setRepository(ShiroPrincipalRepository<T> repository) {
+	public void setRepository(ShiroPrincipalRepository repository) {
 		this.repository = repository;
 	}
 

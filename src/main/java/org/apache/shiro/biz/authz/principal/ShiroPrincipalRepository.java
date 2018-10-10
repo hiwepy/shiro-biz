@@ -25,7 +25,7 @@ import org.apache.shiro.authc.AuthenticationToken;
  * 认证主体信息提供者接口
  * @author <a href="https://github.com/vindell">vindell</a>
  */
-public interface ShiroPrincipalRepository<T>  {
+public interface ShiroPrincipalRepository  {
 
 	/**
 	 * 用户信息
@@ -40,34 +40,34 @@ public interface ShiroPrincipalRepository<T>  {
 	 * @param principal 认证主体对象
 	 * @return 角色列表
 	 */
-	Set<String> getRoles(T principal);
+	Set<String> getRoles(Object principal);
     
     /**
      * 用户角色列表【多realm认证的情况下使用】
      * @param principals 认证主体对象集合
      * @return 角色列表
      */
-	Set<String> getRoles(Set<T> principals);
+	Set<String> getRoles(Set<Object> principals);
 
     /**
      * 用户权限列表
      * @param principal 认证主体对象
      * @return 权限列表
      */
-	Set<String> getPermissions(T principal);
+	Set<String> getPermissions(Object principal);
     
     /**
      * 用户权限列表【多realm认证的情况下使用】
      * @param principals 认证主体对象集合
      * @return 权限列表
      */
-	Set<String> getPermissions(Set<T> principals);
+	Set<String> getPermissions(Set<Object> principals);
 	
 	/**
 	 * 用户锁定操作
      * @param principal 认证主体对象
 	 */
-	void doLock(T principal);
+	void doLock(Object principal);
 	
 	
 }
