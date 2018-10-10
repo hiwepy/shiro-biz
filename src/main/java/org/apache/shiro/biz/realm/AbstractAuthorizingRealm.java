@@ -15,6 +15,7 @@
  */
 package org.apache.shiro.biz.realm;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -23,6 +24,7 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.Permission;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.biz.authz.principal.ShiroPrincipalRepository;
 import org.apache.shiro.realm.AuthorizingRealm;
@@ -36,15 +38,32 @@ import org.slf4j.LoggerFactory;
  * @author <a href="https://github.com/vindell">vindell</a>
  */
 @SuppressWarnings("unchecked")
-public abstract class AbstractAuthorizingRealm  extends AuthorizingRealm {
+public abstract class AbstractAuthorizingRealm extends AuthorizingRealm {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(AbstractAuthorizingRealm.class);
 
 	//realm listeners
 	protected List<AuthorizingRealmListener> realmsListeners;
 	
-	protected ShiroPrincipalRepository  repository;
+	protected ShiroPrincipalRepository repository;
 	    
+	@Override
+	protected boolean isPermitted(Permission permission, AuthorizationInfo info) {
+
+		 Collection<Permission> perms = getPermissions(info);
+	        if (perms != null && !perms.isEmpty()) {
+	            for (Permission perm : perms) {
+	                if (perm.implies(permission)) {
+	                    return true;
+	                }
+	            }
+	        }
+	        
+	        
+		return super.isPermitted(permission, info);
+	}
+	
+	
 	/**
 	 * 获取授权信息;
 	 * 
@@ -58,11 +77,13 @@ public abstract class AbstractAuthorizingRealm  extends AuthorizingRealm {
     	if(principals == null || principals.isEmpty()){
 			return null;
 		}
-    	List principalSet = principals.asList();
+    	
+    	Set principalSet  = principals.asSet();
     	Set<String> permissionsSet, rolesSet = null;
 		if(principalSet.size() <= 1){
-			permissionsSet = getRepository().getPermissions(principals.getPrimaryPrincipal());
-			rolesSet = getRepository().getRoles(principals.getPrimaryPrincipal());
+			Object principal = principals.getPrimaryPrincipal();
+			permissionsSet = getRepository().getPermissions(principal);
+			rolesSet = getRepository().getRoles(principal);
 		}else{
 			permissionsSet = getRepository().getPermissions(principalSet);
 			rolesSet = getRepository().getRoles(principalSet);
