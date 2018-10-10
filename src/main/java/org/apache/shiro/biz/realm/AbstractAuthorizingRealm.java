@@ -44,8 +44,6 @@ public abstract class AbstractAuthorizingRealm  extends AuthorizingRealm {
 	protected List<AuthorizingRealmListener> realmsListeners;
 	
 	protected ShiroPrincipalRepository  repository;
-	
-	
 	    
 	/**
 	 * 获取授权信息;
