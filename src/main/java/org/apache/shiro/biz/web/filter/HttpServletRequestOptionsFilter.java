@@ -10,6 +10,8 @@ import org.apache.shiro.web.filter.AccessControlFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.net.HttpHeaders;
+
 /**
  * Http Header 规则配置过滤器 
  * @author <a href="https://github.com/vindell">vindell</a>
@@ -35,9 +37,9 @@ public class HttpServletRequestOptionsFilter extends AccessControlFilter {
 		String xContentTypeOptions =  StringUtils.hasText(getXContentTypeOptions()) ? getXContentTypeOptions() : DEFAULT_X_CONTENT_TYPE_OPTIONS;
 		
 		//iframe策略
-		httpResponse.setHeader("X-Frame-Options", xFrameOptions);
+		httpResponse.setHeader( HttpHeaders.X_FRAME_OPTIONS , xFrameOptions);
 		//防止在IE9、chrome和safari中的MIME类型混淆攻击
-		httpResponse.setHeader("X-Content-Type-Options", xContentTypeOptions);
+		httpResponse.setHeader( HttpHeaders.X_CONTENT_TYPE_OPTIONS, xContentTypeOptions);
 		
 		if(LOG.isDebugEnabled()){
 			LOG.debug("Filter:{} Set HTTP HEADER: X-Frame-Options:{}; X-Content-Type-Options:{}.",  getName(), xFrameOptions, xContentTypeOptions );

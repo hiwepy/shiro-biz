@@ -10,6 +10,8 @@ import org.apache.shiro.web.filter.AccessControlFilter;
 import org.apache.shiro.web.util.WebUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.google.common.net.HttpHeaders;
+
 /**
  * <p>Request Cros Filter, 对跨域提供支持</p>
  * @author <a href="https://github.com/vindell">vindell</a>
@@ -40,10 +42,10 @@ public class HttpServletRequestCrosFilter extends AccessControlFilter {
 		String allowHeaders = StringUtils.hasText(getAccessControlAllowHeaders()) ?  getAccessControlAllowHeaders() :  httpRequest.getHeader("Access-Control-Request-Headers");
 		
 		// 服务器端 Access-Control-Allow-Credentials = true时，参数Access-Control-Allow-Origin 的值不能为 '*' 
-		httpResponse.setHeader("Access-Control-Allow-Credentials", Boolean.toString(isAccessControlAllowCredentials()));
-		httpResponse.setHeader("Access-Control-Allow-Origin", allowOrigin);
-		httpResponse.setHeader("Access-Control-Allow-Methods", allowMethods);
-		httpResponse.setHeader("Access-Control-Allow-Headers", allowHeaders);
+		httpResponse.setHeader( HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, Boolean.toString(isAccessControlAllowCredentials()));
+		httpResponse.setHeader( HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, allowOrigin);
+		httpResponse.setHeader( HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, allowMethods);
+		httpResponse.setHeader( HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, allowHeaders);
 		
 		// 跨域时会首先发送一个option请求，这里我们给option请求直接返回正常状态
 		if (httpRequest.getMethod().equals(RequestMethod.OPTIONS.name())) {
