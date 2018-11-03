@@ -401,7 +401,7 @@
 		<shiro-ehcache.version>${shiro.version}</shiro-ehcache.version>
 		<shiro-ehcache3.version>1.0.0</shiro-ehcache3.version>
 		<shiro-hazelcast.version>${shiro.version}</shiro-hazelcast.version>
-		<shiro-j2cache.version>1.0.0-SNAPSHOT</shiro-j2cache.version>
+		<shiro-j2cache.version>1.0.0.RELEASE</shiro-j2cache.version>
 		<shiro-redis.version>3.1.0</shiro-redis.version>
 		<shiro-redisson.version>1.0.0.RELEASE</shiro-redisson.version>
 		<slf4j.version>1.7.21</slf4j.version>
@@ -587,13 +587,6 @@
 			<artifactId>shiro-j2cache</artifactId>
 			<version>${shiro-j2cache.version}</version>
 			<scope>provided</scope>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/net.oschina.j2cache/j2cache-core -->
-		<dependency>
-		    <groupId>net.oschina.j2cache</groupId>
-		    <artifactId>j2cache-core</artifactId>
-		    <version>${j2cache.version}</version>
-		    <scope>provided</scope>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.crazycake/shiro-redis -->
 		<dependency>
