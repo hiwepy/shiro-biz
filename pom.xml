@@ -374,7 +374,7 @@
 		<commons-text.version>1.4</commons-text.version>
 		<commons-io.version>2.6</commons-io.version>
 		<ehcache3.version>3.6.0</ehcache3.version>
-		<fastjson.version>1.2.49</fastjson.version>
+		<fastjson.version>1.2.51</fastjson.version>
 		<flexjson.version>3.3</flexjson.version>
 		<guava.version>26.0-jre</guava.version>
 		<junit.version>4.12</junit.version>
@@ -507,6 +507,11 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
