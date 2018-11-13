@@ -33,6 +33,7 @@ import com.google.common.net.HttpHeaders;
  * 
  * Http Header 规则配置过滤器 
  * @author 		： <a href="https://github.com/vindell">vindell</a>
+ * <p>https://blog.csdn.net/guodengh/article/details/73187908 </p>
  * <p>https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Access_control_CORS </p>
  * <p>https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Access-Control-Allow-Headers </p>
  */

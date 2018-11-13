@@ -15,14 +15,17 @@
  */
 package org.apache.shiro.biz.web.filter;
 
-import org.apache.shiro.biz.web.filter.HttpServletRequestCrosFilter;
-import org.apache.shiro.biz.web.filter.HttpServletRequestOptionsFilter;
-
 /**
  * 常用的Http Header 配置
  * @author 		： <a href="https://github.com/vindell">vindell</a>
  */
 public class HttpServletHeaderProperties {
+	
+	public static final String DEFAULT_ACCESS_CONTROL_ALLOW_METHODS = "PUT,POST,GET,DELETE,OPTIONS";
+	public static final String DEFAULT_ACCESS_CONTROL_ALLOW_HEADERS = "Authorization, Origin, X-Requested-With, Content-Type, Accept";
+	public static final String DEFAULT_X_FRAME_OPTIONS = "SAMEORIGIN";
+	public static final String DEFAULT_X_CONTENT_TYPE_OPTIONS = "nosniff";
+	
 	/**
 	 * https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Credentials
 	 */
@@ -30,11 +33,11 @@ public class HttpServletHeaderProperties {
 	/**
 	 * https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Headers
 	 */
-	private String AccessControlAllowHeaders = HttpServletRequestCrosFilter.DEFAULT_ACCESS_CONTROL_ALLOW_HEADERS;
+	private String AccessControlAllowHeaders = DEFAULT_ACCESS_CONTROL_ALLOW_HEADERS;
 	/**
 	 * https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Methods
 	 */
-	private String AccessControlAllowMethods = HttpServletRequestCrosFilter.DEFAULT_ACCESS_CONTROL_ALLOW_METHODS;
+	private String AccessControlAllowMethods = DEFAULT_ACCESS_CONTROL_ALLOW_METHODS;
 	/**
 	 * https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin
 	 */
@@ -78,7 +81,7 @@ public class HttpServletHeaderProperties {
 	/**
 	 * https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options
 	 */
-	private String XContentTypeOptions = HttpServletRequestOptionsFilter.DEFAULT_X_CONTENT_TYPE_OPTIONS;
+	private String XContentTypeOptions = DEFAULT_X_CONTENT_TYPE_OPTIONS;
 	/**
 	 * https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-DNS-Prefetch-Control
 	 */
@@ -86,7 +89,7 @@ public class HttpServletHeaderProperties {
 	/**
 	 * https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
 	 */
-	private String XFrameOptions = HttpServletRequestOptionsFilter.DEFAULT_X_FRAME_OPTIONS;
+	private String XFrameOptions = DEFAULT_X_FRAME_OPTIONS;
 	/**
 	 * https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection
 	 */
