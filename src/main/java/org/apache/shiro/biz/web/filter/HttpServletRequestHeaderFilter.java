@@ -93,10 +93,13 @@ public class HttpServletRequestHeaderFilter extends AccessControlFilter {
 	
 	protected void setHeader(HttpServletResponse response, String key, String value) {
 		if(StringUtils.hasText(value)) {
-			if(LOG.isDebugEnabled()){
-				LOG.debug("Filter:{} Set HTTP HEADER: {}:{}.", getName(), key, value);
+			boolean match = response.getHeaderNames().stream().allMatch(item -> StringUtils.equals(item, key));
+			if(!match) {
+				response.setHeader(key, value);
+				if(LOG.isDebugEnabled()){
+					LOG.debug("Filter:{} Set HTTP HEADER: {}:{}.", getName(), key, value);
+				}
 			}
-			response.setHeader(key, value);
 		}
 	}
 
