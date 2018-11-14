@@ -27,7 +27,11 @@ import org.apache.shiro.biz.utils.WebUtils;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.ThreadContext;
 import org.apache.shiro.web.filter.authz.AuthorizationFilter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.google.common.net.HttpHeaders;
 
 /**
  * 抽象的授权 (authorization)过滤器
@@ -36,10 +40,23 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 public abstract class AbstracAuthorizationFilter extends AuthorizationFilter {
 
+	private static final Logger LOG = LoggerFactory.getLogger(AbstracAuthorizationFilter.class);
 	/**
 	 * If Session Stateless
 	 */
 	private boolean sessionStateless = false;
+	
+	protected void setHeader(HttpServletResponse response, String key, String value) {
+		if(StringUtils.hasText(value)) {
+			boolean match = response.getHeaderNames().stream().anyMatch(item -> StringUtils.equalsIgnoreCase(item, key));
+			if(!match) {
+				response.setHeader(key, value);
+				if(LOG.isDebugEnabled()){
+					LOG.debug("Filter:{} Set HTTP HEADER: {}:{}.", getName(), key, value);
+				}
+			}
+		}
+	}
 	
 	@Override
 	protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue)
@@ -48,6 +65,9 @@ public abstract class AbstracAuthorizationFilter extends AuthorizationFilter {
 		HttpServletResponse httpResponse = WebUtils.toHttp(response);
 		// 跨域时会首先发送一个option请求，这里我们给option请求直接返回正常状态
 		if (httpRequest.getMethod().equals(RequestMethod.OPTIONS.name())) {
+			// 服务器端 Access-Control-Allow-Credentials = true时，参数Access-Control-Allow-Origin 的值不能为 '*' 
+			this.setHeader(httpResponse, HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true");
+			this.setHeader(httpResponse, HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, httpRequest.getHeader("Origin"));
 			httpResponse.setStatus(HttpServletResponse.SC_OK);
 			return false;
 		}

@@ -29,6 +29,7 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.biz.authc.exception.SessionRestrictedException;
 import org.apache.shiro.biz.authc.exception.TerminalRestrictedException;
+import org.apache.shiro.biz.utils.StringUtils;
 import org.apache.shiro.biz.utils.WebUtils;
 import org.apache.shiro.biz.web.filter.authc.listener.LoginListener;
 import org.apache.shiro.session.Session;
@@ -39,6 +40,8 @@ import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.google.common.net.HttpHeaders;
 
 /**
  * 抽象的认证 (authentication)过滤器
@@ -68,9 +71,21 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
      * (401 Unauthorized).
      */
     private String unauthorizedUrl;
-    
+	
 	public AbstractAuthenticatingFilter() {
 		setLoginUrl(DEFAULT_LOGIN_URL);
+	}
+	
+	protected void setHeader(HttpServletResponse response, String key, String value) {
+		if(StringUtils.hasText(value)) {
+			boolean match = response.getHeaderNames().stream().anyMatch(item -> StringUtils.equalsIgnoreCase(item, key));
+			if(!match) {
+				response.setHeader(key, value);
+				if(LOG.isDebugEnabled()){
+					LOG.debug("Filter:{} Set HTTP HEADER: {}:{}.", getName(), key, value);
+				}
+			}
+		}
 	}
 	
 	@Override
@@ -79,6 +94,9 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 		HttpServletResponse httpResponse = WebUtils.toHttp(response);
 		// 跨域时会首先发送一个option请求，这里我们给option请求直接返回正常状态
 		if (httpRequest.getMethod().equals(RequestMethod.OPTIONS.name())) {
+			// 服务器端 Access-Control-Allow-Credentials = true时，参数Access-Control-Allow-Origin 的值不能为 '*' 
+			this.setHeader(httpResponse, HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true");
+			this.setHeader(httpResponse, HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, httpRequest.getHeader("Origin"));
 			httpResponse.setStatus(HttpServletResponse.SC_OK);
 			return false;
 		}
