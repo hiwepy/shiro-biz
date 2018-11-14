@@ -19,6 +19,7 @@ import java.io.IOException;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.biz.utils.StringUtils;
@@ -26,6 +27,7 @@ import org.apache.shiro.biz.utils.WebUtils;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.ThreadContext;
 import org.apache.shiro.web.filter.authz.AuthorizationFilter;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * 抽象的授权 (authorization)过滤器
@@ -42,6 +44,13 @@ public abstract class AbstracAuthorizationFilter extends AuthorizationFilter {
 	@Override
 	protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue)
 			throws Exception {
+		HttpServletRequest httpRequest = WebUtils.toHttp(request);
+		HttpServletResponse httpResponse = WebUtils.toHttp(response);
+		// 跨域时会首先发送一个option请求，这里我们给option请求直接返回正常状态
+		if (httpRequest.getMethod().equals(RequestMethod.OPTIONS.name())) {
+			httpResponse.setStatus(HttpServletResponse.SC_OK);
+			return false;
+		}
 		return !isSessionStateless();
 	}
 	

@@ -22,6 +22,7 @@ import java.util.Map;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.authc.AuthenticationException;
@@ -37,6 +38,7 @@ import org.apache.shiro.util.ThreadContext;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * 抽象的认证 (authentication)过滤器
@@ -73,6 +75,13 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 	
 	@Override
 	protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
+		HttpServletRequest httpRequest = WebUtils.toHttp(request);
+		HttpServletResponse httpResponse = WebUtils.toHttp(response);
+		// 跨域时会首先发送一个option请求，这里我们给option请求直接返回正常状态
+		if (httpRequest.getMethod().equals(RequestMethod.OPTIONS.name())) {
+			httpResponse.setStatus(HttpServletResponse.SC_OK);
+			return false;
+		}
 		return isSessionStateless() ? false : super.isAccessAllowed(request, response, mappedValue);
 	}
 	
