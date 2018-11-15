@@ -36,6 +36,6 @@ public interface AuthorizingRealmListener {
 	 * @param info 当前认证信息
 	 * @param session {@link Session}对象
 	 */
-	void onSuccess(AuthorizingRealm realm, AuthenticationInfo info, Session session);
+	void onSuccess(AuthorizingRealm realm, AuthenticationInfo info);
 	
 }

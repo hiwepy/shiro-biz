@@ -85,7 +85,11 @@ public abstract class AbstracAuthorizationFilter extends AuthorizationFilter {
 				return false;
 			}
 			// 普通请求：重定向到登录页
-			saveRequestAndRedirectToLogin(request, response);
+			if(isSessionStateless()) {
+				redirectToLogin(request, response);
+			} else {
+				saveRequestAndRedirectToLogin(request, response);
+			}
 			return false;
 		} else {
 			if (WebUtils.isAjaxRequest(request)) {

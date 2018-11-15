@@ -71,7 +71,8 @@ public abstract class AbstractAuthorizingRealm extends AuthorizingRealm {
 	 * @param principals : PrincipalCollection是一个身份集合，因为我们现在就一个Realm，所以直接调用getPrimaryPrincipal得到之前传入的用户名即可；然后根据用户名调用UserService接口获取角色及权限信息。
 	 * @return 授权信息
 	 */
-    @Override
+    @SuppressWarnings("rawtypes")
+	@Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
     	
     	if(principals == null || principals.isEmpty()){
@@ -135,7 +136,7 @@ public abstract class AbstractAuthorizingRealm extends AuthorizingRealm {
 				if(ex != null || null == info){
 					realmListener.onFailure(this, token, ex);
 				}else{
-					realmListener.onSuccess(this, info, SecurityUtils.getSubject().getSession());
+					realmListener.onSuccess(this, info);
 				}
 			}
 		}
