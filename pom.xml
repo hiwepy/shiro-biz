@@ -373,7 +373,7 @@
 		<commons-lang3.version>3.5</commons-lang3.version>
 		<commons-text.version>1.4</commons-text.version>
 		<commons-io.version>2.6</commons-io.version>
-		<ehcache3.version>3.6.0</ehcache3.version>
+		<ehcache3.version>3.6.2</ehcache3.version>
 		<fastjson.version>1.2.51</fastjson.version>
 		<flexjson.version>3.3</flexjson.version>
 		<guava.version>26.0-jre</guava.version>
@@ -394,7 +394,7 @@
 		<maven-surefire-plugin.vertsion>2.21.0</maven-surefire-plugin.vertsion>
 		<maven-source-plugin.version>3.0.1</maven-source-plugin.version>
 		<maven-nexus-staging-plugin.version>1.6.8</maven-nexus-staging-plugin.version>
-		<j2cache.version>2.7.0-release</j2cache.version>
+		<j2cache.version>2.7.6-release</j2cache.version>
  		<redisson.version>3.8.1</redisson.version>
 		<servlet-api.version>4.0.1</servlet-api.version>
 		<shiro.version>1.4.0</shiro.version>
