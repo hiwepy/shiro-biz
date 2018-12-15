@@ -10,6 +10,7 @@ import javax.servlet.ServletResponse;
 
 import org.apache.shiro.biz.utils.WebUtils;
 import org.apache.shiro.biz.web.filter.authc.listener.LogoutListener;
+import org.apache.shiro.biz.web.servlet.http.HttpStatus;
 import org.apache.shiro.session.SessionException;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.LogoutFilter;
@@ -91,6 +92,7 @@ public abstract class AbstractLogoutFilter extends LogoutFilter {
 			
 			// Response success status information
 			Map<String, Object> data = new HashMap<String, Object>();
+			data.put("code", HttpStatus.SC_SESSION_LOGOUT);
 			data.put("status", "logout");
 			data.put("message", "Logout Success.");
 			// 响应
