@@ -19,7 +19,6 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.realm.AuthorizingRealm;
-import org.apache.shiro.session.Session;
 
 public interface AuthorizingRealmListener {
 
@@ -27,6 +26,7 @@ public interface AuthorizingRealmListener {
 	 * 当认证失败时调用【报异常或则是查询不到认证信息认为是失败】
 	 * @param realm 调用该方法的Realm实现
 	 * @param token 认证Token
+	 * @param ex 异常对象
 	 */
 	void onFailure(AuthorizingRealm realm, AuthenticationToken token, AuthenticationException ex);
 	
@@ -34,7 +34,6 @@ public interface AuthorizingRealmListener {
 	 * 当认证成功时调用
 	 * @param realm 调用该方法的Realm实现
 	 * @param info 当前认证信息
-	 * @param session {@link Session}对象
 	 */
 	void onSuccess(AuthorizingRealm realm, AuthenticationInfo info);
 	
