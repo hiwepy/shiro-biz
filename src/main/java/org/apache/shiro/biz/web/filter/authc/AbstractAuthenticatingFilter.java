@@ -27,6 +27,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.biz.authc.AuthcResponse;
+import org.apache.shiro.biz.authc.AuthenticationSuccessHandler;
 import org.apache.shiro.biz.authc.exception.SessionRestrictedException;
 import org.apache.shiro.biz.authc.exception.TerminalRestrictedException;
 import org.apache.shiro.biz.utils.StringUtils;
@@ -53,6 +55,8 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 	private static final String DEFAULT_SESSION_RESTRICTED_ATTR_NAME = "session-restricted";
 	/** Login Listener */
 	private List<LoginListener> loginListeners;
+	/** Authentication SuccessHandler */
+	private List<AuthenticationSuccessHandler> successHandlers;
 	/** SessionDAO */
 	private SessionDAO sessionDao; 
 	/** If Session Stateless */
@@ -178,7 +182,9 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 			}
 		}
 		
-		if (WebUtils.isAjaxRequest(request)) {
+		if( isSessionStateless() || WebUtils.isAjaxRequest(request)) {
+			
+			AuthcResponse.of(code, msg, data)
 			
 			// Response success status information
 			Map<String, Object> data = new HashMap<String, Object>();

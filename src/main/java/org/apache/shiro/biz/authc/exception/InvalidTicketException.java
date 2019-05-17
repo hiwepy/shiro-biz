@@ -18,29 +18,29 @@ package org.apache.shiro.biz.authc.exception;
 import org.apache.shiro.authc.CredentialsException;
 
 /**
- * 票据无效异常
+ * 令牌无效异常
  * @author <a href="https://github.com/vindell">vindell</a>
  */
-public class IncorrectTicketException extends CredentialsException {
+public class InvalidTicketException extends CredentialsException {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 5804347841925337928L;
 
-	public IncorrectTicketException() {
+	public InvalidTicketException() {
 		super();
 	}
 
-	public IncorrectTicketException(String message, Throwable cause) {
+	public InvalidTicketException(String message, Throwable cause) {
 		super(message, cause);
 	}
 
-	public IncorrectTicketException(String message) {
+	public InvalidTicketException(String message) {
 		super(message);
 	}
 
-	public IncorrectTicketException(Throwable cause) {
+	public InvalidTicketException(Throwable cause) {
 		super(cause);
 	}
 }

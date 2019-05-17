@@ -15,13 +15,13 @@
  */
 package org.apache.shiro.biz.authc.exception;
 
-import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.CredentialsException;
 
 /**
  * 令牌无效异常
  * @author <a href="https://github.com/vindell">vindell</a>
  */
-public class IncorrectTokenException extends AuthenticationException {
+public class IncorrectTokenException extends CredentialsException {
 
 	/**
 	 * 

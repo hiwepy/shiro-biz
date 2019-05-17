@@ -15,32 +15,34 @@
  */
 package org.apache.shiro.biz.authc.exception;
 
-import org.apache.shiro.authc.CredentialsException;
+import org.apache.shiro.authc.AccountException;
 
 /**
- * 票据无效异常
+ * 验证码必须异常
  * @author <a href="https://github.com/vindell">vindell</a>
  */
-public class IncorrectTicketException extends CredentialsException {
+public class NoneTokenException extends AccountException {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 5804347841925337928L;
+	private static final long serialVersionUID = 2110512266031697524L;
 
-	public IncorrectTicketException() {
+	public NoneTokenException() {
 		super();
 	}
 
-	public IncorrectTicketException(String message, Throwable cause) {
+	public NoneTokenException(String message, Throwable cause) {
 		super(message, cause);
 	}
 
-	public IncorrectTicketException(String message) {
+	public NoneTokenException(String message) {
 		super(message);
 	}
 
-	public IncorrectTicketException(Throwable cause) {
+	public NoneTokenException(Throwable cause) {
 		super(cause);
 	}
+
+	
 }

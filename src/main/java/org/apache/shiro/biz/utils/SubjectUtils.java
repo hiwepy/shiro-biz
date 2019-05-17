@@ -71,6 +71,17 @@ public class SubjectUtils {
 	public static Session getSession(boolean create){
 		return getSubject().getSession(create);
 	}
+
+	public static boolean supports(Class<?> target, Class<?> ... classes) {
+		if(classes != null) {
+			for (Class<?> clazz : classes) {
+				if(clazz != null && clazz.isAssignableFrom(target)) {
+					return true;
+				};
+			}
+		}
+		return false;
+	}
 	
 	/**
 	 * 登陆成功后重新生成session【基于安全考虑】

@@ -15,13 +15,13 @@
  */
 package org.apache.shiro.biz.authc.exception;
 
-import org.apache.shiro.authc.AccountException;
+import org.apache.shiro.authc.CredentialsException;
 
 /**
  * 验证码无效异常
  * @author <a href="https://github.com/vindell">vindell</a>
  */
-public class InvalidCaptchaException extends AccountException {
+public class InvalidCaptchaException extends CredentialsException {
 
 	/**
 	 * 
