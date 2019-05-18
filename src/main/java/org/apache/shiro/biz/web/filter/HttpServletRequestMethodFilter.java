@@ -5,12 +5,16 @@ import java.io.IOException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
+import org.apache.shiro.biz.authc.AuthcResponse;
 import org.apache.shiro.biz.utils.WebUtils;
+import org.apache.shiro.biz.web.servlet.http.HttpStatus;
 import org.apache.shiro.web.filter.AccessControlFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
+
+import com.alibaba.fastjson.JSONObject;
 
 /**
  * <p>Request Method Filter, 对跨域提供支持</p>
@@ -68,11 +72,13 @@ public class HttpServletRequestMethodFilter extends AccessControlFilter {
 	protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
 		String mString = String.format("Request Denied! Request Method {%s} is Not Allowed.", WebUtils.toHttp(request).getMethod());
 		if (WebUtils.isAjaxRequest(request)) {
-			WebUtils.writeJSONString(response, HttpServletResponse.SC_FORBIDDEN, mString);
+			WebUtils.toHttp(response).setStatus(HttpStatus.SC_FORBIDDEN);
+    		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+    		JSONObject.writeJSONString(response.getWriter(), AuthcResponse.error(mString));
 			return false;
 		} else {
 			try {
-				WebUtils.toHttp(response).sendError(HttpServletResponse.SC_FORBIDDEN, mString);
+				WebUtils.toHttp(response).sendError(HttpStatus.SC_FORBIDDEN, mString);
 			} catch (IOException e) {
 				if(LOG.isErrorEnabled()){
 					LOG.error("Send Response Error:{}.",e.getCause());

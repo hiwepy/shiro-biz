@@ -15,19 +15,20 @@
  */
 package org.apache.shiro.biz.web.filter.authc;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.biz.authc.AuthcResponse;
 import org.apache.shiro.biz.utils.WebUtils;
 import org.apache.shiro.biz.web.filter.authc.listener.LoginListener;
+import org.apache.shiro.biz.web.servlet.http.HttpStatus;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
+
+import com.alibaba.fastjson.JSONObject;
 
 public class TrustableRestAuthenticatingFilter extends AbstractTrustableAuthenticatingFilter {
 
@@ -51,7 +52,10 @@ public class TrustableRestAuthenticatingFilter extends AbstractTrustableAuthenti
 				if (LOG.isTraceEnabled()) {
 					LOG.trace(mString);
 				}
-				WebUtils.writeJSONString(response, HttpServletResponse.SC_BAD_REQUEST, mString);
+				
+				WebUtils.toHttp(response).setStatus(HttpStatus.SC_BAD_REQUEST);
+	    		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+	    		JSONObject.writeJSONString(response.getWriter(), AuthcResponse.fail(mString));
 				return false;
 			}
 		} else {
@@ -63,11 +67,9 @@ public class TrustableRestAuthenticatingFilter extends AbstractTrustableAuthenti
 			}
 			
 			// 响应成功状态信息
-			Map<String, Object> data = new HashMap<String, Object>();
-			data.put("status", "fail");
-			data.put("message", mString);
-			// 响应
-			WebUtils.writeJSONString(response, data);
+			WebUtils.toHttp(response).setStatus(HttpStatus.SC_BAD_REQUEST);
+    		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+    		JSONObject.writeJSONString(response.getWriter(), AuthcResponse.fail(mString));
 			
 			return false;
 		}
@@ -88,11 +90,10 @@ public class TrustableRestAuthenticatingFilter extends AbstractTrustableAuthenti
 		}
 		
         // Response success status information
-		Map<String, Object> data = new HashMap<String, Object>();
-		data.put("status", "success");
-		data.put("message", "Authentication Success.");
-		// 响应
-		WebUtils.writeJSONString(response, data);
+		
+		WebUtils.toHttp(response).setStatus(HttpStatus.SC_OK);
+		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+		JSONObject.writeJSONString(response.getWriter(), AuthcResponse.success("Authentication Success."));
         
         //we handled the success , prevent the chain from continuing:
         return false;

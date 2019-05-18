@@ -15,11 +15,11 @@
  */
 package org.apache.shiro.biz.web.filter.authc;
 
+import java.io.IOException;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
@@ -27,22 +27,29 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.biz.ShiroBizMessageSource;
 import org.apache.shiro.biz.authc.AuthcResponse;
+import org.apache.shiro.biz.authc.AuthcResponseCode;
 import org.apache.shiro.biz.authc.AuthenticationSuccessHandler;
 import org.apache.shiro.biz.authc.exception.SessionRestrictedException;
 import org.apache.shiro.biz.authc.exception.TerminalRestrictedException;
 import org.apache.shiro.biz.utils.StringUtils;
 import org.apache.shiro.biz.utils.WebUtils;
 import org.apache.shiro.biz.web.filter.authc.listener.LoginListener;
+import org.apache.shiro.biz.web.servlet.http.HttpStatus;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.eis.SessionDAO;
 import org.apache.shiro.subject.Subject;
+import org.apache.shiro.util.CollectionUtils;
 import org.apache.shiro.util.ThreadContext;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.support.MessageSourceAccessor;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.net.HttpHeaders;
 
 /**
@@ -53,6 +60,8 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 
 	private static final Logger LOG = LoggerFactory.getLogger(AbstractAuthenticatingFilter.class);
 	private static final String DEFAULT_SESSION_RESTRICTED_ATTR_NAME = "session-restricted";
+	protected MessageSourceAccessor messages =ShiroBizMessageSource.getAccessor();
+	
 	/** Login Listener */
 	private List<LoginListener> loginListeners;
 	/** Authentication SuccessHandler */
@@ -184,14 +193,22 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 		
 		if( isSessionStateless() || WebUtils.isAjaxRequest(request)) {
 			
-			AuthcResponse.of(code, msg, data)
-			
-			// Response success status information
-			Map<String, Object> data = new HashMap<String, Object>();
-			data.put("status", "success");
-			data.put("message", "Authentication Success.");
-			// 响应
-			WebUtils.writeJSONString(response, data);
+			if (CollectionUtils.isEmpty(successHandlers)) {
+				this.writeJSONString(WebUtils.toHttp(request), WebUtils.toHttp(response), token, subject);
+			} else {
+				boolean isMatched = false;
+				for (AuthenticationSuccessHandler successHandler : successHandlers) {
+
+					if (successHandler != null && successHandler.supports(token)) {
+						successHandler.onAuthenticationSuccess(request, response, subject);
+						isMatched = true;
+						break;
+					}
+				}
+				if (!isMatched) {
+					this.writeJSONString(WebUtils.toHttp(request), WebUtils.toHttp(response), token, subject);
+				}
+			}
 			
 			return false;
 		}
@@ -201,6 +218,17 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
         return false;
     }
 	
+    protected void writeJSONString(HttpServletRequest request, HttpServletResponse response,
+    		AuthenticationToken token, Subject subject) throws IOException, ServletException {
+
+		response.setStatus(HttpStatus.SC_OK);
+		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+		
+		// Response Authentication status information
+		JSONObject.writeJSONString(response.getWriter(), AuthcResponse.success(messages.getMessage(AuthcResponseCode.SC_AUTHC_SUCCESS.getMsgKey())));
+
+	}
+    
     /**
      * Response logic after rewriting failed successfully: increase the number of failed records
      */

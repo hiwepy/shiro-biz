@@ -1,11 +1,15 @@
 package org.apache.shiro.biz.authc;
 
+import org.apache.shiro.biz.web.servlet.http.HttpStatus;
+
 /**
  * Enumeration of response code.
  */
 public enum AuthcResponseCode {
 	
 	SC_AUTHC_SUCCESS("0", "shiro.authc.success"),
+	SC_AUTHC_ERROR(HttpStatus.SC_INTERNAL_SERVER_ERROR + "", "shiro.authc.error"),
+	SC_AUTHC_LOGOUT(HttpStatus.SC_SESSION_LOGOUT + "", "shiro.authc.logout"),
 	SC_AUTHC_FAIL("10001", "shiro.authc.fail"),
 	SC_AUTHC_METHOD_NOT_ALLOWED("10002", "shiro.authc.method-not-supported"),
 	SC_AUTHC_OVER_RETRY_REMIND("10003", "shiro.authc.over-retry-remind"),

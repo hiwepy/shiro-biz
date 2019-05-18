@@ -12,13 +12,16 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.collections.MapUtils;
+import org.apache.shiro.biz.authc.AuthcResponse;
 import org.apache.shiro.biz.utils.WebUtils;
+import org.apache.shiro.biz.web.servlet.http.HttpStatus;
 import org.apache.shiro.util.AntPathMatcher;
 import org.apache.shiro.web.filter.AccessControlFilter;
+import org.springframework.http.MediaType;
 
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -91,9 +94,11 @@ public class HttpServletRequestLimitWithIPFilter extends AccessControlFilter {
 						} else {
 							String mString = String.format("Request Forbidden! Requests per second exceeds %s limit.", entry.getValue());
 					    	if (WebUtils.isAjaxRequest(request)) {
-								WebUtils.writeJSONString(response, HttpServletResponse.SC_FORBIDDEN, mString);
+					    		WebUtils.toHttp(response).setStatus(HttpStatus.SC_FORBIDDEN);
+					    		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+					    		JSONObject.writeJSONString(response.getWriter(), AuthcResponse.error(mString));
 							} else {
-								WebUtils.toHttp(response).sendError(HttpServletResponse.SC_FORBIDDEN, mString);
+								WebUtils.toHttp(response).sendError(HttpStatus.SC_FORBIDDEN, mString);
 							}
 						}
 						

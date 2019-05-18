@@ -7,16 +7,20 @@ import java.util.Set;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.collections.MapUtils;
+import org.apache.shiro.biz.authc.AuthcResponse;
 import org.apache.shiro.biz.utils.WebUtils;
+import org.apache.shiro.biz.web.servlet.http.HttpStatus;
 import org.apache.shiro.web.filter.AccessControlFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
 import org.springframework.util.StringUtils;
+
+import com.alibaba.fastjson.JSONObject;
 
 
 public class HttpServletRequestReferrerFilter extends AccessControlFilter {
@@ -71,10 +75,12 @@ public class HttpServletRequestReferrerFilter extends AccessControlFilter {
 	protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
 		String mString = String.format("Request Denied! Request Referer {%s} is Not Allowed.", WebUtils.toHttp(request).getHeader(properties.getRefererHeaderName()));
 		//判断是否ajax请求
-		if( WebUtils.isAjaxRequest(request) ){ 
-			WebUtils.writeJSONString(response, HttpServletResponse.SC_FORBIDDEN, mString);
+		if (WebUtils.isAjaxRequest(request)) {
+    		WebUtils.toHttp(response).setStatus(HttpStatus.SC_FORBIDDEN);
+    		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+    		JSONObject.writeJSONString(response.getWriter(), AuthcResponse.error(mString));
 		} else {
-			WebUtils.toHttp(response).sendError(HttpServletResponse.SC_FORBIDDEN, mString);
+			WebUtils.toHttp(response).sendError(HttpStatus.SC_FORBIDDEN, mString);
 		}
 		// The request has been processed, no longer enter the next filter
 		return false;

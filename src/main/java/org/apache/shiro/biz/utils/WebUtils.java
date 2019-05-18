@@ -16,18 +16,12 @@
 package org.apache.shiro.biz.utils;
 
 
-import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.web.util.RequestPairSource;
-
-import com.alibaba.fastjson.JSONObject;
 
 public class WebUtils extends org.apache.shiro.web.util.WebUtils {
 
@@ -89,33 +83,6 @@ public class WebUtils extends org.apache.shiro.web.util.WebUtils {
 		}
 		 
 		return remoteAddr;
-	}
-	
-	public static void writeJSONString(ServletResponse response, Map<String, Object> data)  {
-    	
-    	try {
-			response.setCharacterEncoding("UTF-8");
-			response.setContentType(CONTENT_TYPE_JSON);
-			PrintWriter out = response.getWriter();
-			out.write(JSONObject.toJSONString(data));
-			out.flush();
-		} catch (Exception e) {
-		}
-	}
-	
-    public static void writeJSONString(ServletResponse response, int status, String message)  {
-    	
-    	try {
-			Map<String, Object> data = new HashMap<String, Object>();
-			data.put("status", status);
-			data.put("message", message);
-			response.setCharacterEncoding("UTF-8");
-			response.setContentType(CONTENT_TYPE_JSON);
-			PrintWriter out = response.getWriter();
-			out.write(JSONObject.toJSONString(data));
-			out.flush();
-		} catch (Exception e) {
-		}
 	}
     
 }

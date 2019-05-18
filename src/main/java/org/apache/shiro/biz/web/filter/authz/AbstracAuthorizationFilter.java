@@ -22,15 +22,19 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.shiro.biz.authc.AuthcResponse;
 import org.apache.shiro.biz.utils.StringUtils;
 import org.apache.shiro.biz.utils.WebUtils;
+import org.apache.shiro.biz.web.servlet.http.HttpStatus;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.ThreadContext;
 import org.apache.shiro.web.filter.authz.AuthorizationFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.net.HttpHeaders;
 
 /**
@@ -80,8 +84,12 @@ public abstract class AbstracAuthorizationFilter extends AuthorizationFilter {
 		// 未认证
 		if (null == subject.getPrincipal()) {
 			// Ajax 请求：响应json数据对象
-			if (WebUtils.isAjaxRequest(request)) {
-				WebUtils.writeJSONString(response, HttpServletResponse.SC_UNAUTHORIZED, "Unauthentication.");
+			if (isSessionStateless() || WebUtils.isAjaxRequest(request)) {
+				
+				WebUtils.toHttp(response).setStatus(HttpStatus.SC_UNAUTHORIZED);
+	    		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+	    		JSONObject.writeJSONString(response.getWriter(), AuthcResponse.error("Unauthentication."));
+	    		
 				return false;
 			}
 			// 普通请求：重定向到登录页
@@ -92,8 +100,10 @@ public abstract class AbstracAuthorizationFilter extends AuthorizationFilter {
 			}
 			return false;
 		} else {
-			if (WebUtils.isAjaxRequest(request)) {
-				WebUtils.writeJSONString(response, HttpServletResponse.SC_FORBIDDEN, "Forbidden.");
+			if (isSessionStateless() ||WebUtils.isAjaxRequest(request)) {
+				WebUtils.toHttp(response).setStatus(HttpStatus.SC_FORBIDDEN);
+	    		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+	    		JSONObject.writeJSONString(response.getWriter(), AuthcResponse.error("Forbidden."));
 				return false;
 			} else {
 				// If subject is known but not authorized, redirect to the unauthorized URL if

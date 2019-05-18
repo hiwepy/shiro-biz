@@ -5,17 +5,21 @@ import java.util.Map;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletResponse;
 
+import org.apache.shiro.biz.authc.AuthcResponse;
 import org.apache.shiro.biz.utils.StringUtils;
 import org.apache.shiro.biz.utils.WebUtils;
 import org.apache.shiro.biz.web.Constants;
+import org.apache.shiro.biz.web.servlet.http.HttpStatus;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.DefaultSessionKey;
 import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.session.mgt.SimpleOnlineSession;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.AccessControlFilter;
+import org.springframework.http.MediaType;
+
+import com.alibaba.fastjson.JSONObject;
 
 /**
  * 在线状态会话过滤器
@@ -54,14 +58,18 @@ public class HttpServletSessionStatusFilter extends AccessControlFilter {
 		}
     	String mString = "Request Denied! Session is Force Logout.";
     	if (WebUtils.isAjaxRequest(request)) {
-			WebUtils.writeJSONString(response, HttpServletResponse.SC_UNAUTHORIZED, mString);
+    		
+    		WebUtils.toHttp(response).setStatus(HttpStatus.SC_UNAUTHORIZED);
+    		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+    		JSONObject.writeJSONString(response.getWriter(), AuthcResponse.error(mString));
+    		
 		} else {
 			if (StringUtils.hasText(getLoginUrl())) {
 				Map<String, String> parameters = new HashMap<String, String>();
 			    parameters.put("forceLogout", "1");
 				WebUtils.issueRedirect(request, response, getLoginUrl(), parameters);
 			} else {
-				WebUtils.toHttp(response).sendError(HttpServletResponse.SC_UNAUTHORIZED, mString);
+				WebUtils.toHttp(response).sendError(HttpStatus.SC_UNAUTHORIZED, mString);
 			}
 		}
 		// The request has been processed, no longer enter the next filter
