@@ -129,7 +129,7 @@ public abstract class HttpServletSessionDequeFilter extends AccessControlFilter 
                     kickoutSession.setAttribute(Constants.SESSION_KICKOUT_KEY, true);
                 	if(kickoutSession instanceof SimpleOnlineSession) {
                 		SimpleOnlineSession onlineSession = (SimpleOnlineSession) session;
-                		onlineSession.setStatus(SimpleOnlineSession.OnlineStatus.force_logout);
+                		onlineSession.setStatus(SimpleOnlineSession.OnlineStatus.FORCE_LOGOUT);
                 	}
                 }
             } catch (Exception e) {

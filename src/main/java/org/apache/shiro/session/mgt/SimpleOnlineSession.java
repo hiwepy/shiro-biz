@@ -27,14 +27,14 @@ public class SimpleOnlineSession extends SimpleSession {
     private static final int STATUS_BIT_MASK = 1 << bitIndexCounter++;
 
 	protected String userAgent; 	//用户浏览器类型
-	protected OnlineStatus status = OnlineStatus.on_line; //在线状态
+	protected OnlineStatus status = OnlineStatus.ON_LINE; //在线状态
 	protected String systemHost; 	//用户登录时系统IP
     
     public static enum OnlineStatus {
     	
-        on_line("在线"), 
-        hidden("隐身"), 
-        force_logout("强制退出");
+        ON_LINE("在线"), 
+        HIDDEN("隐身"), 
+        FORCE_LOGOUT("强制退出");
     	
         private final String info;
         private OnlineStatus(String info) {

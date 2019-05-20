@@ -41,7 +41,7 @@ public class HttpServletSessionStatusFilter extends AccessControlFilter {
         if (session != null && session instanceof SimpleOnlineSession) {
         	SimpleOnlineSession onlineSession = (SimpleOnlineSession) session;
             request.setAttribute(Constants.ONLINE_SESSION, onlineSession);
-            if (onlineSession.getStatus() == SimpleOnlineSession.OnlineStatus.force_logout) {
+            if (onlineSession.getStatus() == SimpleOnlineSession.OnlineStatus.FORCE_LOGOUT) {
                 return false;
             }
         }
