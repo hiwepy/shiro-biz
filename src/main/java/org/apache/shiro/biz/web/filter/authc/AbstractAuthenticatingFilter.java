@@ -254,7 +254,7 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 		if( isSessionStateless() || WebUtils.isAjaxRequest(request)) {
 			
 			if (CollectionUtils.isEmpty(failureHandlers)) {
-				this.writeFailureString(WebUtils.toHttp(request), WebUtils.toHttp(response), token);
+				this.writeFailureString(request, response, token);
 			} else {
 				boolean isMatched = false;
 				for (AuthenticationFailureHandler failureHandler : failureHandlers) {
@@ -266,7 +266,7 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 					}
 				}
 				if (!isMatched) {
-					this.writeFailureString(WebUtils.toHttp(request), WebUtils.toHttp(response), token);
+					this.writeFailureString(request, response, token);
 				}
 			}
 			
@@ -287,7 +287,7 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 			response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
 			
 			// Response Authentication status information
-			JSONObject.writeJSONString(response.getWriter(), AuthcResponse.success(messages.getMessage(AuthcResponseCode.SC_AUTHC_FAIL.getMsgKey())));
+			JSONObject.writeJSONString(response.getWriter(), AuthcResponse.fail(messages.getMessage(AuthcResponseCode.SC_AUTHC_FAIL.getMsgKey())));
 			
 		} catch (NoSuchMessageException e1) {
 			throw new AuthenticationException(e1);
