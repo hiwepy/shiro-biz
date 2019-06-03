@@ -20,6 +20,7 @@ import javax.servlet.ServletResponse;
 
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.biz.authc.AuthenticationFailureHandler;
 import org.apache.shiro.biz.authc.exception.IncorrectCaptchaException;
 import org.apache.shiro.biz.authc.exception.NoneCaptchaException;
 import org.apache.shiro.biz.authc.token.CaptchaAuthenticationToken;
@@ -28,6 +29,7 @@ import org.apache.shiro.biz.utils.WebUtils;
 import org.apache.shiro.biz.web.filter.authc.captcha.CaptchaResolver;
 import org.apache.shiro.biz.web.filter.authc.listener.LoginListener;
 import org.apache.shiro.subject.Subject;
+import org.apache.shiro.util.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -112,10 +114,33 @@ public abstract class AbstractTrustableAuthenticatingFilter extends AbstractAuth
 				loginListener.onFailure(token, e, request, response);
 			}
 		}
-    			
+		
         if (LOG.isDebugEnabled()) {
         	LOG.debug( "Authentication exception", e );
         }
+        
+		if( isSessionStateless() || WebUtils.isAjaxRequest(request)) {
+			
+			if (CollectionUtils.isEmpty(getFailureHandlers())) {
+				this.writeFailureString(request, response, token);
+			} else {
+				boolean isMatched = false;
+				for (AuthenticationFailureHandler failureHandler : getFailureHandlers()) {
+
+					if (failureHandler != null && failureHandler.supports(e)) {
+						failureHandler.onAuthenticationFailure(request, response, e);
+						isMatched = true;
+						break;
+					}
+				}
+				if (!isMatched) {
+					this.writeFailureString(request, response, token);
+				}
+			}
+			
+			return false;
+		}
+		
         setFailureAttribute(request, e);
         setFailureCountAttribute(request, response, e);
         // The retry limit has been exceeded and a reminder is required

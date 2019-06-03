@@ -20,10 +20,12 @@ import javax.servlet.ServletResponse;
 
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.biz.authc.AuthcResponse;
+import org.apache.shiro.biz.authc.AuthenticationSuccessHandler;
 import org.apache.shiro.biz.utils.WebUtils;
 import org.apache.shiro.biz.web.filter.authc.listener.LoginListener;
 import org.apache.shiro.biz.web.servlet.http.HttpStatus;
 import org.apache.shiro.subject.Subject;
+import org.apache.shiro.util.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -89,11 +91,22 @@ public class TrustableRestAuthenticatingFilter extends AbstractTrustableAuthenti
 			}
 		}
 		
-        // Response success status information
-		
-		WebUtils.toHttp(response).setStatus(HttpStatus.SC_OK);
-		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
-		JSONObject.writeJSONString(response.getWriter(), AuthcResponse.success("Authentication Success."));
+		if (CollectionUtils.isEmpty(getSuccessHandlers())) {
+			this.writeSuccessString(request, response, token, subject);
+		} else {
+			boolean isMatched = false;
+			for (AuthenticationSuccessHandler successHandler : getSuccessHandlers()) {
+
+				if (successHandler != null && successHandler.supports(token)) {
+					successHandler.onAuthenticationSuccess(request, response, subject);
+					isMatched = true;
+					break;
+				}
+			}
+			if (!isMatched) {
+				this.writeSuccessString(request, response, token, subject);
+			}
+		}
         
         //we handled the success , prevent the chain from continuing:
         return false;
