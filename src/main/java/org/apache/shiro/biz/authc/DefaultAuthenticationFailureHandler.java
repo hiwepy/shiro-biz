@@ -2,7 +2,6 @@ package org.apache.shiro.biz.authc;
 
 import java.io.IOException;
 
-import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
@@ -23,7 +22,7 @@ import org.apache.shiro.biz.authc.exception.OverRetryRemindException;
 import org.apache.shiro.biz.authc.exception.UnsupportedMethodException;
 import org.apache.shiro.biz.utils.SubjectUtils;
 import org.apache.shiro.biz.utils.WebUtils;
-import org.apache.shiro.subject.Subject;
+import org.springframework.context.NoSuchMessageException;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -44,51 +43,57 @@ public class DefaultAuthenticationFailureHandler  implements AuthenticationFailu
 	}
 
 	@Override
-	public void onAuthenticationFailure(ServletRequest request, ServletResponse response,
-			Subject subject, AuthenticationException e) throws IOException, ServletException {
+	public void onAuthenticationFailure(ServletRequest request, ServletResponse response, AuthenticationException e) throws AuthenticationException{
 		
-		HttpServletRequest httpRequest = WebUtils.toHttp(request);
-		HttpServletResponse httpResponse = WebUtils.toHttp(response);
-		
-		httpResponse.setStatus(HttpStatus.UNAUTHORIZED.value());
-		httpResponse.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
-		
-		if (e instanceof UnsupportedMethodException) {
-			JSONObject.writeJSONString(response.getWriter(), AuthcResponse.error(AuthcResponseCode.SC_AUTHC_METHOD_NOT_ALLOWED.getCode(),
-					messages.getMessage(AuthcResponseCode.SC_AUTHC_METHOD_NOT_ALLOWED.getMsgKey(), e.getMessage())));
-		} else if (e instanceof OverRetryRemindException) {
-				JSONObject.writeJSONString(response.getWriter(), AuthcResponse.error(AuthcResponseCode.SC_AUTHC_OVER_RETRY_REMIND.getCode(),
-						messages.getMessage(AuthcResponseCode.SC_AUTHC_OVER_RETRY_REMIND.getMsgKey(), e.getMessage())));
-		} else if (e instanceof CaptchaSendException) {
-			JSONObject.writeJSONString(response.getWriter(), AuthcResponse.error(AuthcResponseCode.SC_AUTHC_CAPTCHA_SEND_FAIL.getCode(),
-					messages.getMessage(AuthcResponseCode.SC_AUTHC_CAPTCHA_SEND_FAIL.getMsgKey(), e.getMessage())));
-		} else if (e instanceof NoneCaptchaException) {
-			JSONObject.writeJSONString(response.getWriter(), AuthcResponse.error(AuthcResponseCode.SC_AUTHC_CAPTCHA_REQUIRED.getCode(),
-					messages.getMessage(AuthcResponseCode.SC_AUTHC_CAPTCHA_REQUIRED.getMsgKey(), e.getMessage())));
-		} else if (e instanceof ExpiredCaptchaException) {
-			JSONObject.writeJSONString(response.getWriter(), AuthcResponse.error(AuthcResponseCode.SC_AUTHC_CAPTCHA_EXPIRED.getCode(),
-					messages.getMessage(AuthcResponseCode.SC_AUTHC_CAPTCHA_EXPIRED.getMsgKey(), e.getMessage())));
-		} else if (e instanceof IncorrectCaptchaException) {
-			JSONObject.writeJSONString(response.getWriter(), AuthcResponse.error(AuthcResponseCode.SC_AUTHC_CAPTCHA_INCORRECT.getCode(),
-					messages.getMessage(AuthcResponseCode.SC_AUTHC_CAPTCHA_INCORRECT.getMsgKey(), e.getMessage())));
-		} else if (e instanceof InvalidCaptchaException) {
-			JSONObject.writeJSONString(response.getWriter(), AuthcResponse.error(AuthcResponseCode.SC_AUTHC_CAPTCHA_INVALID.getCode(),
-					messages.getMessage(AuthcResponseCode.SC_AUTHC_CAPTCHA_INVALID.getMsgKey(), e.getMessage())));
-		} else if (e instanceof NoneTokenException) {
-			JSONObject.writeJSONString(response.getWriter(), AuthcResponse.error(AuthcResponseCode.SC_AUTHZ_TOKEN_REQUIRED.getCode(),
-					messages.getMessage(AuthcResponseCode.SC_AUTHZ_TOKEN_REQUIRED.getMsgKey(), e.getMessage())));
-		} else if (e instanceof ExpiredTokenException) {
-			JSONObject.writeJSONString(response.getWriter(), AuthcResponse.error(AuthcResponseCode.SC_AUTHZ_TOKEN_EXPIRED.getCode(),
-					messages.getMessage(AuthcResponseCode.SC_AUTHZ_TOKEN_EXPIRED.getMsgKey(), e.getMessage())));
-		} else if (e instanceof IncorrectTokenException) {
-			JSONObject.writeJSONString(response.getWriter(), AuthcResponse.error(AuthcResponseCode.SC_AUTHZ_TOKEN_INCORRECT.getCode(),
-					messages.getMessage(AuthcResponseCode.SC_AUTHZ_TOKEN_INCORRECT.getMsgKey(), e.getMessage())));
-		} else if (e instanceof InvalidTokenException) {
-			JSONObject.writeJSONString(response.getWriter(), AuthcResponse.error(AuthcResponseCode.SC_AUTHZ_TOKEN_INVALID.getCode(),
-					messages.getMessage(AuthcResponseCode.SC_AUTHZ_TOKEN_INVALID.getMsgKey(), e.getMessage())));
-		} else {
-			JSONObject.writeJSONString(response.getWriter(), AuthcResponse.error(AuthcResponseCode.SC_AUTHC_FAIL.getCode(),
-					messages.getMessage(AuthcResponseCode.SC_AUTHC_FAIL.getMsgKey())));
+		try {
+			
+			HttpServletRequest httpRequest = WebUtils.toHttp(request);
+			HttpServletResponse httpResponse = WebUtils.toHttp(response);
+			
+			httpResponse.setStatus(HttpStatus.UNAUTHORIZED.value());
+			httpResponse.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+			
+			if (e instanceof UnsupportedMethodException) {
+				JSONObject.writeJSONString(response.getWriter(), AuthcResponse.error(AuthcResponseCode.SC_AUTHC_METHOD_NOT_ALLOWED.getCode(),
+						messages.getMessage(AuthcResponseCode.SC_AUTHC_METHOD_NOT_ALLOWED.getMsgKey(), e.getMessage())));
+			} else if (e instanceof OverRetryRemindException) {
+					JSONObject.writeJSONString(response.getWriter(), AuthcResponse.error(AuthcResponseCode.SC_AUTHC_OVER_RETRY_REMIND.getCode(),
+							messages.getMessage(AuthcResponseCode.SC_AUTHC_OVER_RETRY_REMIND.getMsgKey(), e.getMessage())));
+			} else if (e instanceof CaptchaSendException) {
+				JSONObject.writeJSONString(response.getWriter(), AuthcResponse.error(AuthcResponseCode.SC_AUTHC_CAPTCHA_SEND_FAIL.getCode(),
+						messages.getMessage(AuthcResponseCode.SC_AUTHC_CAPTCHA_SEND_FAIL.getMsgKey(), e.getMessage())));
+			} else if (e instanceof NoneCaptchaException) {
+				JSONObject.writeJSONString(response.getWriter(), AuthcResponse.error(AuthcResponseCode.SC_AUTHC_CAPTCHA_REQUIRED.getCode(),
+						messages.getMessage(AuthcResponseCode.SC_AUTHC_CAPTCHA_REQUIRED.getMsgKey(), e.getMessage())));
+			} else if (e instanceof ExpiredCaptchaException) {
+				JSONObject.writeJSONString(response.getWriter(), AuthcResponse.error(AuthcResponseCode.SC_AUTHC_CAPTCHA_EXPIRED.getCode(),
+						messages.getMessage(AuthcResponseCode.SC_AUTHC_CAPTCHA_EXPIRED.getMsgKey(), e.getMessage())));
+			} else if (e instanceof IncorrectCaptchaException) {
+				JSONObject.writeJSONString(response.getWriter(), AuthcResponse.error(AuthcResponseCode.SC_AUTHC_CAPTCHA_INCORRECT.getCode(),
+						messages.getMessage(AuthcResponseCode.SC_AUTHC_CAPTCHA_INCORRECT.getMsgKey(), e.getMessage())));
+			} else if (e instanceof InvalidCaptchaException) {
+				JSONObject.writeJSONString(response.getWriter(), AuthcResponse.error(AuthcResponseCode.SC_AUTHC_CAPTCHA_INVALID.getCode(),
+						messages.getMessage(AuthcResponseCode.SC_AUTHC_CAPTCHA_INVALID.getMsgKey(), e.getMessage())));
+			} else if (e instanceof NoneTokenException) {
+				JSONObject.writeJSONString(response.getWriter(), AuthcResponse.error(AuthcResponseCode.SC_AUTHZ_TOKEN_REQUIRED.getCode(),
+						messages.getMessage(AuthcResponseCode.SC_AUTHZ_TOKEN_REQUIRED.getMsgKey(), e.getMessage())));
+			} else if (e instanceof ExpiredTokenException) {
+				JSONObject.writeJSONString(response.getWriter(), AuthcResponse.error(AuthcResponseCode.SC_AUTHZ_TOKEN_EXPIRED.getCode(),
+						messages.getMessage(AuthcResponseCode.SC_AUTHZ_TOKEN_EXPIRED.getMsgKey(), e.getMessage())));
+			} else if (e instanceof IncorrectTokenException) {
+				JSONObject.writeJSONString(response.getWriter(), AuthcResponse.error(AuthcResponseCode.SC_AUTHZ_TOKEN_INCORRECT.getCode(),
+						messages.getMessage(AuthcResponseCode.SC_AUTHZ_TOKEN_INCORRECT.getMsgKey(), e.getMessage())));
+			} else if (e instanceof InvalidTokenException) {
+				JSONObject.writeJSONString(response.getWriter(), AuthcResponse.error(AuthcResponseCode.SC_AUTHZ_TOKEN_INVALID.getCode(),
+						messages.getMessage(AuthcResponseCode.SC_AUTHZ_TOKEN_INVALID.getMsgKey(), e.getMessage())));
+			} else {
+				JSONObject.writeJSONString(response.getWriter(), AuthcResponse.error(AuthcResponseCode.SC_AUTHC_FAIL.getCode(),
+						messages.getMessage(AuthcResponseCode.SC_AUTHC_FAIL.getMsgKey())));
+			}
+		} catch (NoSuchMessageException e1) {
+			throw new AuthenticationException(e1);
+		} catch (IOException e1) {
+			throw new AuthenticationException(e1);
 		}
 		
 	}

@@ -100,7 +100,7 @@ public abstract class AbstracAuthorizationFilter extends AuthorizationFilter {
 			}
 			return false;
 		} else {
-			if (isSessionStateless() ||WebUtils.isAjaxRequest(request)) {
+			if (isSessionStateless() || WebUtils.isAjaxRequest(request)) {
 				WebUtils.toHttp(response).setStatus(HttpStatus.SC_FORBIDDEN);
 	    		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
 	    		JSONObject.writeJSONString(response.getWriter(), AuthcResponse.error("Forbidden."));

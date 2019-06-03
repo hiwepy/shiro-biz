@@ -15,14 +15,10 @@
  */
 package org.apache.shiro.biz.authc;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
 import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.subject.Subject;
 
 /**
  * TODO
@@ -31,7 +27,7 @@ import org.apache.shiro.subject.Subject;
  */
 public interface AuthenticationFailureHandler {
 
-	public boolean supports(AuthenticationException e);
+	public boolean supports(AuthenticationException ex);
 
 	/**
 	 * Called when an authentication attempt fails.
@@ -39,10 +35,7 @@ public interface AuthenticationFailureHandler {
 	 * @param request   the request during which the authentication attempt
 	 *                  occurred.
 	 * @param response  the response.
-	 * @param exception the exception which was thrown to reject the authentication
-	 *                  request.
 	 */
-	public void onAuthenticationFailure(ServletRequest request, ServletResponse response,
-			Subject subject, AuthenticationException exception) throws IOException, ServletException;
+	public void onAuthenticationFailure(ServletRequest request, ServletResponse response, AuthenticationException exception) throws AuthenticationException;
 
 }

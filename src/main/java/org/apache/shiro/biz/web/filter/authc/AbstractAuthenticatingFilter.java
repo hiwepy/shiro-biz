@@ -30,6 +30,7 @@ import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.biz.ShiroBizMessageSource;
 import org.apache.shiro.biz.authc.AuthcResponse;
 import org.apache.shiro.biz.authc.AuthcResponseCode;
+import org.apache.shiro.biz.authc.AuthenticationFailureHandler;
 import org.apache.shiro.biz.authc.AuthenticationSuccessHandler;
 import org.apache.shiro.biz.authc.exception.SessionRestrictedException;
 import org.apache.shiro.biz.authc.exception.TerminalRestrictedException;
@@ -45,6 +46,7 @@ import org.apache.shiro.util.ThreadContext;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.NoSuchMessageException;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -66,6 +68,8 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 	private List<LoginListener> loginListeners;
 	/** Authentication SuccessHandler */
 	private List<AuthenticationSuccessHandler> successHandlers;
+	/** Authentication FailureHandler */
+	private List<AuthenticationFailureHandler> failureHandlers;
 	/** SessionDAO */
 	private SessionDAO sessionDao; 
 	/** If Session Stateless */
@@ -194,7 +198,7 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 		if( isSessionStateless() || WebUtils.isAjaxRequest(request)) {
 			
 			if (CollectionUtils.isEmpty(successHandlers)) {
-				this.writeJSONString(WebUtils.toHttp(request), WebUtils.toHttp(response), token, subject);
+				this.writeSuccessString(WebUtils.toHttp(request), WebUtils.toHttp(response), token, subject);
 			} else {
 				boolean isMatched = false;
 				for (AuthenticationSuccessHandler successHandler : successHandlers) {
@@ -206,7 +210,7 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 					}
 				}
 				if (!isMatched) {
-					this.writeJSONString(WebUtils.toHttp(request), WebUtils.toHttp(response), token, subject);
+					this.writeSuccessString(WebUtils.toHttp(request), WebUtils.toHttp(response), token, subject);
 				}
 			}
 			
@@ -218,7 +222,7 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
         return false;
     }
 	
-    protected void writeJSONString(HttpServletRequest request, HttpServletResponse response,
+    protected void writeSuccessString(HttpServletRequest request, HttpServletResponse response,
     		AuthenticationToken token, Subject subject) throws IOException, ServletException {
 
 		response.setStatus(HttpStatus.SC_OK);
@@ -242,15 +246,56 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 				loginListener.onFailure(token, e, request, response);
 			}
 		}
-    			
+		
         if (LOG.isDebugEnabled()) {
         	LOG.debug( "Authentication exception", e );
         }
+        
+		if( isSessionStateless() || WebUtils.isAjaxRequest(request)) {
+			
+			if (CollectionUtils.isEmpty(failureHandlers)) {
+				this.writeFailureString(WebUtils.toHttp(request), WebUtils.toHttp(response), token);
+			} else {
+				boolean isMatched = false;
+				for (AuthenticationFailureHandler failureHandler : failureHandlers) {
+
+					if (failureHandler != null && failureHandler.supports(e)) {
+						failureHandler.onAuthenticationFailure(request, response, e);
+						isMatched = true;
+						break;
+					}
+				}
+				if (!isMatched) {
+					this.writeFailureString(WebUtils.toHttp(request), WebUtils.toHttp(response), token);
+				}
+			}
+			
+			return false;
+		}
+		
         setFailureAttribute(request, e);
         
         // Login failed, let the request continue to process the response message in the specific business logic
         return true;
     }
+    
+    protected void writeFailureString(HttpServletRequest request, HttpServletResponse response, AuthenticationToken token) {
+
+		try {
+			
+			response.setStatus(HttpStatus.SC_OK);
+			response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+			
+			// Response Authentication status information
+			JSONObject.writeJSONString(response.getWriter(), AuthcResponse.success(messages.getMessage(AuthcResponseCode.SC_AUTHC_FAIL.getMsgKey())));
+			
+		} catch (NoSuchMessageException e1) {
+			throw new AuthenticationException(e1);
+		} catch (IOException e1) {
+			throw new AuthenticationException(e1);
+		}
+
+	}
     
 	@Override
 	protected String getHost(ServletRequest request) {
@@ -357,5 +402,21 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
     public void setUnauthorizedUrl(String unauthorizedUrl) {
         this.unauthorizedUrl = unauthorizedUrl;
     }
+
+	public List<AuthenticationSuccessHandler> getSuccessHandlers() {
+		return successHandlers;
+	}
+
+	public void setSuccessHandlers(List<AuthenticationSuccessHandler> successHandlers) {
+		this.successHandlers = successHandlers;
+	}
+
+	public List<AuthenticationFailureHandler> getFailureHandlers() {
+		return failureHandlers;
+	}
+
+	public void setFailureHandlers(List<AuthenticationFailureHandler> failureHandlers) {
+		this.failureHandlers = failureHandlers;
+	}
     
 }
