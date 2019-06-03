@@ -283,7 +283,7 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 
 		try {
 			
-			response.setStatus(HttpStatus.SC_OK);
+			response.setStatus(HttpStatus.SC_UNAUTHORIZED);
 			response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
 			
 			// Response Authentication status information
