@@ -35,7 +35,7 @@ public class DefaultAuthenticationSuccessHandler  implements AuthenticationSucce
 	}
 
 	@Override
-	public void onAuthenticationSuccess(ServletRequest request, ServletResponse response,
+	public void onAuthenticationSuccess(AuthenticationToken token, ServletRequest request, ServletResponse response,
 			Subject subject) {
  
 		try {

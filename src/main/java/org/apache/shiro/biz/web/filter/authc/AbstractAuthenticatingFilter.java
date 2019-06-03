@@ -204,7 +204,7 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 				for (AuthenticationSuccessHandler successHandler : successHandlers) {
 
 					if (successHandler != null && successHandler.supports(token)) {
-						successHandler.onAuthenticationSuccess(request, response, subject);
+						successHandler.onAuthenticationSuccess(token, request, response, subject);
 						isMatched = true;
 						break;
 					}
@@ -260,7 +260,7 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 				for (AuthenticationFailureHandler failureHandler : failureHandlers) {
 
 					if (failureHandler != null && failureHandler.supports(e)) {
-						failureHandler.onAuthenticationFailure(request, response, e);
+						failureHandler.onAuthenticationFailure(token, request, response, e);
 						isMatched = true;
 						break;
 					}

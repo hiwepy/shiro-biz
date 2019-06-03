@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.biz.ShiroBizMessageSource;
 import org.apache.shiro.biz.authc.exception.CaptchaSendException;
 import org.apache.shiro.biz.authc.exception.ExpiredCaptchaException;
@@ -43,7 +44,7 @@ public class DefaultAuthenticationFailureHandler  implements AuthenticationFailu
 	}
 
 	@Override
-	public void onAuthenticationFailure(ServletRequest request, ServletResponse response, AuthenticationException e) {
+	public void onAuthenticationFailure(AuthenticationToken token, ServletRequest request, ServletResponse response, AuthenticationException e) {
 		
 		try {
 			

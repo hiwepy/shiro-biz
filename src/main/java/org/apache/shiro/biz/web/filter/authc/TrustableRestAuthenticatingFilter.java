@@ -98,7 +98,7 @@ public class TrustableRestAuthenticatingFilter extends AbstractTrustableAuthenti
 			for (AuthenticationSuccessHandler successHandler : getSuccessHandlers()) {
 
 				if (successHandler != null && successHandler.supports(token)) {
-					successHandler.onAuthenticationSuccess(request, response, subject);
+					successHandler.onAuthenticationSuccess(token, request, response, subject);
 					isMatched = true;
 					break;
 				}

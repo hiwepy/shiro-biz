@@ -19,6 +19,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
 import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.AuthenticationToken;
 
 /**
  * TODO
@@ -36,6 +37,6 @@ public interface AuthenticationFailureHandler {
 	 *                  occurred.
 	 * @param response  the response.
 	 */
-	public void onAuthenticationFailure(ServletRequest request, ServletResponse response, AuthenticationException exception) ;
+	public void onAuthenticationFailure(AuthenticationToken token, ServletRequest request, ServletResponse response, AuthenticationException exception) ;
 
 }

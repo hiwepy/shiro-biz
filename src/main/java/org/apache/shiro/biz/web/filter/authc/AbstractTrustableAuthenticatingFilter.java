@@ -128,7 +128,7 @@ public abstract class AbstractTrustableAuthenticatingFilter extends AbstractAuth
 				for (AuthenticationFailureHandler failureHandler : getFailureHandlers()) {
 
 					if (failureHandler != null && failureHandler.supports(e)) {
-						failureHandler.onAuthenticationFailure(request, response, e);
+						failureHandler.onAuthenticationFailure(token, request, response, e);
 						isMatched = true;
 						break;
 					}

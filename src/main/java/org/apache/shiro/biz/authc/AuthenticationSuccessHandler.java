@@ -36,6 +36,6 @@ public interface AuthenticationSuccessHandler {
 	 * @param response       the response
 	 * @param subject the <tt>Subject</tt> object which was created during the authentication process.
 	 */
-	void onAuthenticationSuccess(ServletRequest request, ServletResponse response, Subject subject) ;
+	void onAuthenticationSuccess(AuthenticationToken token, ServletRequest request, ServletResponse response, Subject subject) ;
 
 }
