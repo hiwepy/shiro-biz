@@ -45,9 +45,7 @@ import com.google.common.net.HttpHeaders;
 public abstract class AbstracAuthorizationFilter extends AuthorizationFilter {
 
 	private static final Logger LOG = LoggerFactory.getLogger(AbstracAuthorizationFilter.class);
-	/**
-	 * If Session Stateless
-	 */
+	/** If Session Stateless */
 	private boolean sessionStateless = false;
 	
 	protected void setHeader(HttpServletResponse response, String key, String value) {

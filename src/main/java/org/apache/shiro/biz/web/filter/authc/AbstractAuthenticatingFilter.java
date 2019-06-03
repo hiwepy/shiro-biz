@@ -66,9 +66,9 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 	
 	/** Login Listener */
 	private List<LoginListener> loginListeners;
-	/** Authentication SuccessHandler */
+	/** Authentication Success Handler */
 	private List<AuthenticationSuccessHandler> successHandlers;
-	/** Authentication FailureHandler */
+	/** Authentication Failure Handler */
 	private List<AuthenticationFailureHandler> failureHandlers;
 	/** SessionDAO */
 	private SessionDAO sessionDao; 
