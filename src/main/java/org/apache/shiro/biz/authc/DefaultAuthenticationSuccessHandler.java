@@ -2,11 +2,11 @@ package org.apache.shiro.biz.authc;
 
 import java.io.IOException;
 
-import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.biz.ShiroBizMessageSource;
@@ -15,6 +15,7 @@ import org.apache.shiro.biz.utils.SubjectUtils;
 import org.apache.shiro.biz.utils.WebUtils;
 import org.apache.shiro.biz.web.servlet.http.HttpStatus;
 import org.apache.shiro.subject.Subject;
+import org.springframework.context.NoSuchMessageException;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.http.MediaType;
 
@@ -35,16 +36,23 @@ public class DefaultAuthenticationSuccessHandler  implements AuthenticationSucce
 
 	@Override
 	public void onAuthenticationSuccess(ServletRequest request, ServletResponse response,
-			Subject subject) throws IOException, ServletException {
+			Subject subject) {
  
-		//HttpServletRequest httpRequest = WebUtils.toHttp(request);
-		HttpServletResponse httpResponse = WebUtils.toHttp(response);
-		
-		httpResponse.setStatus(HttpStatus.SC_OK);
-		httpResponse.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
-		
-		// Response Authentication status information
-		JSONObject.writeJSONString(response.getWriter(), AuthcResponse.success(messages.getMessage(AuthcResponseCode.SC_AUTHC_SUCCESS.getMsgKey())));
+		try {
+			//HttpServletRequest httpRequest = WebUtils.toHttp(request);
+			HttpServletResponse httpResponse = WebUtils.toHttp(response);
+			
+			httpResponse.setStatus(HttpStatus.SC_OK);
+			httpResponse.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+			
+			// Response Authentication status information
+			JSONObject.writeJSONString(response.getWriter(), AuthcResponse.success(messages.getMessage(AuthcResponseCode.SC_AUTHC_SUCCESS.getMsgKey())));
+			
+		} catch (NoSuchMessageException e) {
+			throw new AuthenticationException(e);
+		} catch (IOException e) {
+			throw new AuthenticationException(e);
+		}
 		
 	}
 

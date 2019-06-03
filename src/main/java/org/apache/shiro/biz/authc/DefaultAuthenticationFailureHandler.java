@@ -43,7 +43,7 @@ public class DefaultAuthenticationFailureHandler  implements AuthenticationFailu
 	}
 
 	@Override
-	public void onAuthenticationFailure(ServletRequest request, ServletResponse response, AuthenticationException e) throws AuthenticationException{
+	public void onAuthenticationFailure(ServletRequest request, ServletResponse response, AuthenticationException e) {
 		
 		try {
 			

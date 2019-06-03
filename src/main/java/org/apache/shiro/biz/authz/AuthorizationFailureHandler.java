@@ -36,6 +36,6 @@ public interface AuthorizationFailureHandler {
 	 *                  occurred.
 	 * @param response  the response.
 	 */
-	public void onAuthorizationFailure(ServletRequest request, ServletResponse response, AuthenticationException exception) throws AuthenticationException;
+	public void onAuthorizationFailure(ServletRequest request, ServletResponse response, AuthenticationException exception);
 
 }

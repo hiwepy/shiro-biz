@@ -222,10 +222,10 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
         return false;
     }
 	
-    protected void writeSuccessString(HttpServletRequest request, HttpServletResponse response,
+    protected void writeSuccessString( ServletRequest request, ServletResponse response,
     		AuthenticationToken token, Subject subject) throws IOException, ServletException {
 
-		response.setStatus(HttpStatus.SC_OK);
+    	WebUtils.toHttp(response).setStatus(HttpStatus.SC_OK);
 		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
 		
 		// Response Authentication status information
@@ -279,11 +279,11 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
         return true;
     }
     
-    protected void writeFailureString(HttpServletRequest request, HttpServletResponse response, AuthenticationToken token) {
+    protected void writeFailureString( ServletRequest request, ServletResponse response, AuthenticationToken token) {
 
 		try {
 			
-			response.setStatus(HttpStatus.SC_UNAUTHORIZED);
+			WebUtils.toHttp(response).setStatus(HttpStatus.SC_UNAUTHORIZED);
 			response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
 			
 			// Response Authentication status information

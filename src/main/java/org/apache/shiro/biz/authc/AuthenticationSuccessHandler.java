@@ -15,9 +15,6 @@
  */
 package org.apache.shiro.biz.authc;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
@@ -39,7 +36,6 @@ public interface AuthenticationSuccessHandler {
 	 * @param response       the response
 	 * @param subject the <tt>Subject</tt> object which was created during the authentication process.
 	 */
-	void onAuthenticationSuccess(ServletRequest request, ServletResponse response,
-			Subject subject) throws IOException, ServletException;
+	void onAuthenticationSuccess(ServletRequest request, ServletResponse response, Subject subject) ;
 
 }
