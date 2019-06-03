@@ -68,6 +68,10 @@ public class ShiroPrincipal implements Cloneable, Serializable {
 	 * 用户是否锁定
 	 */
     protected boolean locked = Boolean.FALSE;
+    /**
+   	 * 用户是否首次登录
+   	 */
+    protected boolean initial = Boolean.FALSE;
     
     public ShiroPrincipal() {
     }
@@ -167,6 +171,14 @@ public class ShiroPrincipal implements Cloneable, Serializable {
 
 	public void setLocked(boolean locked) {
 		this.locked = locked;
+	}
+	
+	public boolean isInitial() {
+		return initial;
+	}
+
+	public void setInitial(boolean initial) {
+		this.initial = initial;
 	}
 
 	@Override
