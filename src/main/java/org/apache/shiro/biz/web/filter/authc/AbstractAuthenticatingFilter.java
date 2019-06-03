@@ -247,9 +247,7 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 			}
 		}
 		
-        if (LOG.isDebugEnabled()) {
-        	LOG.debug( "Authentication exception", e );
-        }
+		LOG.error("Host {} Authentication Failure : {}", getHost(request), e.getMessage());
         
 		if( isSessionStateless() || WebUtils.isAjaxRequest(request)) {
 			

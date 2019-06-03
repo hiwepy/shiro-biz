@@ -156,9 +156,7 @@ public abstract class AbstracAuthorizationFilter extends AuthorizationFilter {
 	protected boolean onAccessFailure(Object mappedValue, AuthenticationException e, ServletRequest request,
 			ServletResponse response) throws IOException {
 		
-		if (LOG.isDebugEnabled()) {
-        	LOG.debug( "Authorization exception", e );
-        }
+		LOG.error("Host {} Authorization Failure : {}", getHost(request), e.getMessage());
 			
 		if (!CollectionUtils.isEmpty(failureHandlers)) {
 			for (AuthorizationFailureHandler failureHandler : failureHandlers) {
