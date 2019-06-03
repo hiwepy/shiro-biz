@@ -308,7 +308,7 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
         return true;
 	}
 
-	protected boolean onAccessFailure(AuthenticationToken token, Exception e, ServletRequest request,
+	protected boolean onAccessFailure(AuthenticationToken token, AuthenticationException ex, ServletRequest request,
 			ServletResponse response) {
 		
 		return false;
