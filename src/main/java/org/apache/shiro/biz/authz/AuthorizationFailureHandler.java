@@ -15,6 +15,8 @@
  */
 package org.apache.shiro.biz.authz;
 
+import java.io.IOException;
+
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
@@ -36,6 +38,7 @@ public interface AuthorizationFailureHandler {
 	 *                  occurred.
 	 * @param response  the response.
 	 */
-	public void onAuthorizationFailure(ServletRequest request, ServletResponse response, AuthenticationException exception);
+	public boolean onAuthorizationFailure(Object mappedValue, AuthenticationException e, ServletRequest request,
+			ServletResponse response) throws IOException;
 
 }

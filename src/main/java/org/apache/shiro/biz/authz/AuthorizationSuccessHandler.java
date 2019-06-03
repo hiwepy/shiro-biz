@@ -22,6 +22,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
 import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.biz.web.filter.authz.AbstracAuthorizationFilter;
 import org.apache.shiro.subject.Subject;
 
 /**
@@ -30,7 +31,7 @@ import org.apache.shiro.subject.Subject;
  */
 public interface AuthorizationSuccessHandler {
 
-	public boolean supports(AuthenticationToken token);
+	public boolean supports(AbstracAuthorizationFilter filter);
 
 	/**
 	 * Called when a user has been successfully authorization.
@@ -38,7 +39,9 @@ public interface AuthorizationSuccessHandler {
 	 * @param request        the request which caused the successful authorization
 	 * @param response       the response
 	 * @param subject the <tt>Subject</tt> object which was created during the authorization process.
+	 * @return 
 	 */
-	void onAuthorizationSuccess(ServletRequest request, ServletResponse response, Subject subject) throws IOException, ServletException;
+	public boolean onAuthorizationSuccess(Object mappedValue, Subject subject, ServletRequest request,
+			ServletResponse response) throws Exception;
 
 }

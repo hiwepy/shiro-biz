@@ -31,6 +31,7 @@ import org.apache.shiro.biz.utils.StringUtils;
 import org.apache.shiro.biz.utils.WebUtils;
 import org.apache.shiro.biz.web.servlet.http.HttpStatus;
 import org.apache.shiro.subject.Subject;
+import org.apache.shiro.util.CollectionUtils;
 import org.apache.shiro.util.ThreadContext;
 import org.apache.shiro.web.filter.authz.AuthorizationFilter;
 import org.slf4j.Logger;
@@ -142,11 +143,31 @@ public abstract class AbstracAuthorizationFilter extends AuthorizationFilter {
 	
 	protected boolean onAccessSuccess(Object mappedValue, Subject subject, ServletRequest request,
 			ServletResponse response) throws Exception {
+		if (!CollectionUtils.isEmpty(successHandlers)) {
+			for (AuthorizationSuccessHandler successHandler : successHandlers) {
+				if (successHandler != null && successHandler.supports(this)) {
+					return successHandler.onAuthorizationSuccess(mappedValue, subject, request, response); 
+				}
+			}
+		}
 		return true;
 	}
 
 	protected boolean onAccessFailure(Object mappedValue, AuthenticationException e, ServletRequest request,
 			ServletResponse response) throws IOException {
+		
+		if (LOG.isDebugEnabled()) {
+        	LOG.debug( "Authorization exception", e );
+        }
+			
+		if (!CollectionUtils.isEmpty(failureHandlers)) {
+			for (AuthorizationFailureHandler failureHandler : failureHandlers) {
+				if (failureHandler != null && failureHandler.supports(e)) {
+					return failureHandler.onAuthorizationFailure(mappedValue, e, request, response);
+				}
+			}
+		}
+		
 		return false;
 	}
 	
