@@ -195,6 +195,10 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 			}
 		}
 		
+		if(LOG.isDebugEnabled()) {
+			LOG.error("Host {} Authentication Success : {}", getHost(request), JSONObject.toJSONString(subject.getPrincipal()));
+		}
+		
 		if( WebUtils.isAjaxResponse(request)) {
 			
 			if (CollectionUtils.isEmpty(successHandlers)) {

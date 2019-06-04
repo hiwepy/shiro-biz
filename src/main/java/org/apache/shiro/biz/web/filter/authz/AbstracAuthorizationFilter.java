@@ -149,6 +149,11 @@ public abstract class AbstracAuthorizationFilter extends AuthorizationFilter {
 	
 	protected boolean onAccessSuccess(Object mappedValue, Subject subject, ServletRequest request,
 			ServletResponse response) throws Exception {
+		
+		if(LOG.isDebugEnabled()) {
+			LOG.error("Host {} Authorization Success : {}", getHost(request), JSONObject.toJSONString(subject.getPrincipal()));
+		}
+		
 		if (!CollectionUtils.isEmpty(successHandlers)) {
 			for (AuthorizationSuccessHandler successHandler : successHandlers) {
 				if (successHandler != null && successHandler.supports(this)) {
