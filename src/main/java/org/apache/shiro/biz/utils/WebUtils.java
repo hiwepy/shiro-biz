@@ -22,6 +22,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.web.util.RequestPairSource;
+import org.springframework.http.HttpMethod;
+
+import com.google.common.net.HttpHeaders;
 
 public class WebUtils extends org.apache.shiro.web.util.WebUtils {
 
@@ -31,17 +34,26 @@ public class WebUtils extends org.apache.shiro.web.util.WebUtils {
 	private static String LOCALHOST = "localhost";
 	
 	private static final String XML_HTTP_REQUEST = "XMLHttpRequest";
-    private static final String X_REQUESTED_WITH = "X-Requested-With";
-
-    private static final String CONTENT_TYPE = "Content-type";
-    private static final String CONTENT_TYPE_JSON = "application/json; charset=utf-8";
+    private static final String CONTENT_TYPE_JSON = "application/json";
+    
+	public static boolean isAjaxResponse(ServletRequest request) {
+		return isAjaxRequest(request) || isContentTypeJson(request) || isPostRequest(request);
+	}
+    
+	public static boolean isObjectRequest(ServletRequest request) {
+        return isAjaxRequest(request) && isContentTypeJson(request);
+    }
 
     public static boolean isAjaxRequest(ServletRequest request) {
-        return XML_HTTP_REQUEST.equals(toHttp(request).getHeader(X_REQUESTED_WITH));
+        return XML_HTTP_REQUEST.equals(toHttp(request).getHeader(HttpHeaders.X_REQUESTED_WITH));
     }
 
     public static boolean isContentTypeJson(ServletRequest request) {
-        return toHttp(request).getHeader(CONTENT_TYPE).contains(CONTENT_TYPE_JSON);
+        return toHttp(request).getHeader(HttpHeaders.CONTENT_TYPE).contains(CONTENT_TYPE_JSON);
+    }
+    
+    public static boolean isPostRequest(ServletRequest request) {
+        return HttpMethod.POST.name().equals(toHttp(request).getMethod());
     }
     
     public static boolean isWebRequest(RequestPairSource source) {

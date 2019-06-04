@@ -95,7 +95,7 @@ public abstract class AbstractLogoutFilter extends LogoutFilter {
         	LOG.debug("Encountered session exception during logout.  This can generally safely be ignored.", ise);
         }
         
-    	if( isSessionStateless() || WebUtils.isAjaxRequest(request)) {
+    	if( WebUtils.isAjaxResponse(request)) {
 			
 			// Response success status information
     		

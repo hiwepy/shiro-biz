@@ -119,7 +119,7 @@ public abstract class AbstractTrustableAuthenticatingFilter extends AbstractAuth
         	LOG.debug( "Authentication exception", e );
         }
         
-		if( isSessionStateless() || WebUtils.isAjaxRequest(request)) {
+		if( WebUtils.isAjaxResponse(request)) {
 			
 			if (CollectionUtils.isEmpty(getFailureHandlers())) {
 				this.writeFailureString(request, response, token);

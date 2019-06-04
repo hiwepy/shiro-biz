@@ -71,7 +71,7 @@ public class HttpServletRequestMethodFilter extends AccessControlFilter {
 	@Override
 	protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
 		String mString = String.format("Request Denied! Request Method {%s} is Not Allowed.", WebUtils.toHttp(request).getMethod());
-		if (WebUtils.isAjaxRequest(request)) {
+		if (WebUtils.isAjaxResponse(request)) {
 			WebUtils.toHttp(response).setStatus(HttpStatus.SC_FORBIDDEN);
     		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
     		JSONObject.writeJSONString(response.getWriter(), AuthcResponse.error(mString));

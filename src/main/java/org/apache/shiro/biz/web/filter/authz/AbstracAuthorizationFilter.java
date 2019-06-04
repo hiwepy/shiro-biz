@@ -91,7 +91,7 @@ public abstract class AbstracAuthorizationFilter extends AuthorizationFilter {
 		// 未认证
 		if (null == subject.getPrincipal()) {
 			// Ajax 请求：响应json数据对象
-			if (isSessionStateless() || WebUtils.isAjaxRequest(request)) {
+			if (WebUtils.isAjaxResponse(request)) {
 				
 				WebUtils.toHttp(response).setStatus(HttpStatus.SC_UNAUTHORIZED);
 	    		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
@@ -106,13 +106,18 @@ public abstract class AbstracAuthorizationFilter extends AuthorizationFilter {
 				saveRequestAndRedirectToLogin(request, response);
 			}
 			return false;
+			
 		} else {
-			if (isSessionStateless() || WebUtils.isAjaxRequest(request)) {
+			
+			if (WebUtils.isAjaxResponse(request)) {
+				
 				WebUtils.toHttp(response).setStatus(HttpStatus.SC_FORBIDDEN);
 	    		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
 	    		JSONObject.writeJSONString(response.getWriter(), AuthcResponse.error("Forbidden."));
 				return false;
+				
 			} else {
+				
 				// If subject is known but not authorized, redirect to the unauthorized URL if
 				// there is one
 				// If no unauthorized URL is specified, just return an unauthorized HTTP status
@@ -125,6 +130,7 @@ public abstract class AbstracAuthorizationFilter extends AuthorizationFilter {
 				} else {
 					WebUtils.toHttp(response).sendError(HttpServletResponse.SC_UNAUTHORIZED);
 				}
+				
 			}
 		}
 		return false;

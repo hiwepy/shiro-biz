@@ -93,7 +93,7 @@ public class HttpServletRequestLimitWithIPFilter extends AccessControlFilter {
 							super.doFilterInternal(request, response, chain);
 						} else {
 							String mString = String.format("Request Forbidden! Requests per second exceeds %s limit.", entry.getValue());
-					    	if (WebUtils.isAjaxRequest(request)) {
+					    	if (WebUtils.isAjaxResponse(request)) {
 					    		WebUtils.toHttp(response).setStatus(HttpStatus.SC_FORBIDDEN);
 					    		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
 					    		JSONObject.writeJSONString(response.getWriter(), AuthcResponse.error(mString));

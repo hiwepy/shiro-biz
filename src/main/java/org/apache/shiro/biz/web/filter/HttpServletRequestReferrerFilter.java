@@ -75,7 +75,7 @@ public class HttpServletRequestReferrerFilter extends AccessControlFilter {
 	protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
 		String mString = String.format("Request Denied! Request Referer {%s} is Not Allowed.", WebUtils.toHttp(request).getHeader(properties.getRefererHeaderName()));
 		//判断是否ajax请求
-		if (WebUtils.isAjaxRequest(request)) {
+		if (WebUtils.isAjaxResponse(request)) {
     		WebUtils.toHttp(response).setStatus(HttpStatus.SC_FORBIDDEN);
     		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
     		JSONObject.writeJSONString(response.getWriter(), AuthcResponse.error(mString));

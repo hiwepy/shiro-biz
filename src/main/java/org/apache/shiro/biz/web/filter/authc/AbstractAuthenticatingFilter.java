@@ -195,7 +195,7 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 			}
 		}
 		
-		if( isSessionStateless() || WebUtils.isAjaxRequest(request)) {
+		if( WebUtils.isAjaxResponse(request)) {
 			
 			if (CollectionUtils.isEmpty(successHandlers)) {
 				this.writeSuccessString(WebUtils.toHttp(request), WebUtils.toHttp(response), token, subject);
@@ -249,7 +249,7 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 		
 		LOG.error("Host {} Authentication Failure : {}", getHost(request), e.getMessage());
         
-		if( isSessionStateless() || WebUtils.isAjaxRequest(request)) {
+		if( WebUtils.isAjaxResponse(request)) {
 			
 			if (CollectionUtils.isEmpty(failureHandlers)) {
 				this.writeFailureString(request, response, token);

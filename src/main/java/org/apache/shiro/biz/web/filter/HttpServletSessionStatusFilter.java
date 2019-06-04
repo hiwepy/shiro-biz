@@ -57,7 +57,7 @@ public class HttpServletSessionStatusFilter extends AccessControlFilter {
 			/* ignore exception */
 		}
     	String mString = "Request Denied! Session is Force Logout.";
-    	if (WebUtils.isAjaxRequest(request)) {
+    	if (WebUtils.isAjaxResponse(request)) {
     		
     		WebUtils.toHttp(response).setStatus(HttpStatus.SC_UNAUTHORIZED);
     		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);

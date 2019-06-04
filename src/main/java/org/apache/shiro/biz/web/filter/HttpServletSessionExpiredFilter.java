@@ -39,7 +39,7 @@ public class HttpServletSessionExpiredFilter extends AccessControlFilter {
 	@Override
 	protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
 		String mString = "Request Denied! Session is Expired.";
-		if (WebUtils.isAjaxRequest(request)) {
+		if (WebUtils.isAjaxResponse(request)) {
 			WebUtils.toHttp(response).setHeader("session-status", "timeout");
 			WebUtils.toHttp(response).setStatus(HttpStatus.SC_FORBIDDEN);
     		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
