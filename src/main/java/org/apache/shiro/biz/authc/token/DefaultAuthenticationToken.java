@@ -31,107 +31,78 @@ public class DefaultAuthenticationToken extends UsernamePasswordToken
 	 */
 	protected LoginType loginType = LoginType.DEFAULE;
 
-	protected String userType; // 用户类型
-
 	protected int strength; // 密码强度
 
 	protected String captcha; // 验证码
-
+	
 	public DefaultAuthenticationToken() {
 		super();
 	}
 
-	public DefaultAuthenticationToken(String username, String password) {
-		super(username, password);
+	public DefaultAuthenticationToken(String username, String password, String host) {
+		super(username, password, host);
 	}
 
-	public DefaultAuthenticationToken(String username, String password, LoginType loginType) {
-		super(username, password);
+	public DefaultAuthenticationToken(String username, String password, String host, LoginType loginType) {
+		super(username, password, host);
 		this.loginType = loginType;
 	}
 
-	public DefaultAuthenticationToken(String username, char[] password) {
-		super(username, password);
+	public DefaultAuthenticationToken(String username, char[] password, String host) {
+		super(username, password, host);
 	}
 
-	public DefaultAuthenticationToken(String username, char[] password, LoginType loginType) {
-		super(username, password);
+	public DefaultAuthenticationToken(String username, char[] password, String host, LoginType loginType) {
+		super(username, password, host);
 		this.loginType = loginType;
 	}
-
-	public DefaultAuthenticationToken(String username, String password, String captcha) {
-		this(username, password != null ? password.toCharArray() : null, captcha);
-	}
-
-	public DefaultAuthenticationToken(String username, String password, String captcha, LoginType loginType) {
-		this(username, password != null ? password.toCharArray() : null, captcha, loginType);
-	}
-
-	public DefaultAuthenticationToken(String username, char[] password, String captcha) {
-		super(username, password);
+	
+	public DefaultAuthenticationToken(String username, String password, String captcha, String host) {
+		super(username, password, host);
 		this.captcha = captcha;
 	}
-
-	public DefaultAuthenticationToken(String username, char[] password, String captcha, LoginType loginType) {
-		super(username, password);
+	
+	public DefaultAuthenticationToken(String username, String password, String captcha, String host, LoginType loginType) {
+		super(username, password, host);
 		this.captcha = captcha;
 		this.loginType = loginType;
 	}
 
-	public DefaultAuthenticationToken(String username, String password, String userType, String captcha) {
-		this(username, password != null ? password.toCharArray() : null, userType, captcha);
-	}
-
-	public DefaultAuthenticationToken(String username, char[] password, String userType, String captcha) {
-		super(username, password);
-		this.userType = userType;
+	public DefaultAuthenticationToken(String username, char[] password, String captcha, String host) {
+		super(username, password, host);
 		this.captcha = captcha;
 	}
 
-	public DefaultAuthenticationToken(String username, String password, String userType, boolean rememberMe) {
-		this(username, password != null ? password.toCharArray() : null, userType, rememberMe);
+	public DefaultAuthenticationToken(String username, char[] password, String captcha, String host, LoginType loginType) {
+		super(username, password, host);
+		this.captcha = captcha;
+		this.loginType = loginType;
 	}
 
-	public DefaultAuthenticationToken(String username, char[] password, String userType, boolean rememberMe) {
-		super(username, password, rememberMe);
-		this.userType = userType;
-	}
-
-	public DefaultAuthenticationToken(String username, String password, String userType, String host,
-			boolean rememberMe) {
-		this(username, password != null ? password.toCharArray() : null, userType, host, rememberMe);
-	}
-
-	public DefaultAuthenticationToken(String username, char[] password, String userType, String host,
-			boolean rememberMe) {
+	public DefaultAuthenticationToken(String username, String password, String captcha, boolean rememberMe, String host) {
 		super(username, password, rememberMe, host);
-		this.userType = userType;
+		this.captcha = captcha;
 	}
-
-	public DefaultAuthenticationToken(String username, String password, String userType, String captcha, String host,
-			boolean rememberMe) {
-		this(username, password != null ? password.toCharArray() : null, userType, captcha, host, rememberMe);
-	}
-
-	public DefaultAuthenticationToken(String username, char[] password, String userType, String captcha, String host,
-			boolean rememberMe) {
-		this(username, password, userType, captcha, host, rememberMe, LoginType.DEFAULE);
-	}
-
-	public DefaultAuthenticationToken(String username, char[] password, String userType, String captcha, String host,
-			boolean rememberMe, LoginType loginType) {
+	
+	public DefaultAuthenticationToken(String username, String password, String captcha, boolean rememberMe, String host, LoginType loginType ) {
 		super(username, password, rememberMe, host);
-		this.userType = userType;
 		this.captcha = captcha;
 		this.loginType = loginType;
 	}
 
-	public String getUserType() {
-		return userType;
+	public DefaultAuthenticationToken(String username, char[] password, boolean rememberMe, String host) {
+		super(username, password, rememberMe, host);
 	}
 
-	public void setUserType(String userType) {
-		this.userType = userType;
+	public DefaultAuthenticationToken(String username, char[] password, String captcha, boolean rememberMe, String host) {
+		super(username, password, rememberMe, host);
+		this.captcha = captcha;
+	}
+
+	public DefaultAuthenticationToken(String username, char[] password, String captcha, boolean rememberMe, String host, LoginType loginType) {
+		super(username, password, rememberMe, host);
+		this.captcha = captcha;
+		this.loginType = loginType;
 	}
 
 	public int getStrength() {

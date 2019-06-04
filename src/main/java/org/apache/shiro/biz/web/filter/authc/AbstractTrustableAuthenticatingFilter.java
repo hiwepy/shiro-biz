@@ -88,14 +88,7 @@ public abstract class AbstractTrustableAuthenticatingFilter extends AbstractAuth
 		String host = getHost(request);
 		// Determine if a verification code check is required
 		if (isCaptchaEnabled()) {
-			
-			DefaultAuthenticationToken token = new DefaultAuthenticationToken(username, password);
-
-			token.setHost(host);
-			token.setRememberMe(rememberMe);
-			token.setCaptcha(getCaptcha(request));
-
-			return token;
+			return new DefaultAuthenticationToken(username, password, getCaptcha(request), rememberMe, getHost(request));
 		}
 		
 		return super.createToken(username, password, rememberMe, host);
