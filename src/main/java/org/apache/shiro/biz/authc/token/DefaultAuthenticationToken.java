@@ -38,73 +38,43 @@ public class DefaultAuthenticationToken extends UsernamePasswordToken
 	public DefaultAuthenticationToken() {
 		super();
 	}
-
-	public DefaultAuthenticationToken(String username, String password, String host) {
-		super(username, password, host);
-	}
-
-	public DefaultAuthenticationToken(String username, String password, String host, LoginType loginType) {
-		super(username, password, host);
-		this.loginType = loginType;
-	}
-
-	public DefaultAuthenticationToken(String username, char[] password, String host) {
-		super(username, password, host);
-	}
-
-	public DefaultAuthenticationToken(String username, char[] password, String host, LoginType loginType) {
-		super(username, password, host);
-		this.loginType = loginType;
+	
+	public DefaultAuthenticationToken(final String username, final String password, final boolean rememberMe) {
+		super(username, password, rememberMe);
 	}
 	
-	public DefaultAuthenticationToken(String username, String password, String captcha, String host) {
+	public DefaultAuthenticationToken(final String username, final String password, final boolean rememberMe, String host) {
+		super(username, password, rememberMe, host);
+	}
+	
+	public DefaultAuthenticationToken(final String username, final String password, final String captcha, final String host) {
 		super(username, password, host);
 		this.captcha = captcha;
 	}
 	
-	public DefaultAuthenticationToken(String username, String password, String captcha, String host, LoginType loginType) {
-		super(username, password, host);
-		this.captcha = captcha;
-		this.loginType = loginType;
-	}
-
-	public DefaultAuthenticationToken(String username, char[] password, String captcha, String host) {
-		super(username, password, host);
-		this.captcha = captcha;
-	}
-
-	public DefaultAuthenticationToken(String username, char[] password, String captcha, String host, LoginType loginType) {
-		super(username, password, host);
-		this.captcha = captcha;
-		this.loginType = loginType;
-	}
-
-	public DefaultAuthenticationToken(String username, String password, String captcha, boolean rememberMe, String host) {
+	public DefaultAuthenticationToken(final String username, final String password, final String captcha, final boolean rememberMe, final String host ) {
 		super(username, password, rememberMe, host);
 		this.captcha = captcha;
 	}
 	
-	public DefaultAuthenticationToken(String username, String password, String captcha, boolean rememberMe, String host, LoginType loginType ) {
-		super(username, password, rememberMe, host);
-		this.captcha = captcha;
-		this.loginType = loginType;
+	public DefaultAuthenticationToken(final String username, final char[] password, final boolean rememberMe) {
+		super(username, password, rememberMe);
 	}
-
-	public DefaultAuthenticationToken(String username, char[] password, boolean rememberMe, String host) {
+	
+	public DefaultAuthenticationToken(final String username, final char[] password, final boolean rememberMe, String host) {
 		super(username, password, rememberMe, host);
 	}
-
-	public DefaultAuthenticationToken(String username, char[] password, String captcha, boolean rememberMe, String host) {
-		super(username, password, rememberMe, host);
+	
+	public DefaultAuthenticationToken(final String username, final char[] password, final String captcha, final String host) {
+		super(username, password, host);
 		this.captcha = captcha;
 	}
-
-	public DefaultAuthenticationToken(String username, char[] password, String captcha, boolean rememberMe, String host, LoginType loginType) {
+	
+	public DefaultAuthenticationToken(final String username, final char[] password, final String captcha, final boolean rememberMe, final String host) {
 		super(username, password, rememberMe, host);
 		this.captcha = captcha;
-		this.loginType = loginType;
 	}
-
+	
 	public int getStrength() {
 		return strength;
 	}

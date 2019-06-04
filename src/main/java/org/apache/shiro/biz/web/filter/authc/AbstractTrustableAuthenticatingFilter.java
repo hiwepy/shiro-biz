@@ -91,7 +91,7 @@ public abstract class AbstractTrustableAuthenticatingFilter extends AbstractAuth
 			return new DefaultAuthenticationToken(username, password, getCaptcha(request), rememberMe, host);
 		}
 		
-		return super.createToken(username, password, rememberMe, host);
+		return new DefaultAuthenticationToken(username, password, rememberMe, host);
 	}
 	
     /**
