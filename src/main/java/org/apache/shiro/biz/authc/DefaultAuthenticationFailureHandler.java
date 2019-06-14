@@ -55,8 +55,15 @@ public class DefaultAuthenticationFailureHandler  implements AuthenticationFailu
 	 
 	@Override
 	public boolean supports(AuthenticationException e) {
-		return SubjectUtils.supports(e.getClass(), UnsupportedMethodException.class,
-				NoneCaptchaException.class, IncorrectCaptchaException.class);
+		return SubjectUtils.supports(e.getClass(), CaptchaSendException.class, DisabledAccountException.class,
+				LockedAccountException.class, ExcessiveAttemptsException.class, ExpiredCaptchaException.class,
+				ExpiredCredentialsException.class, ExpiredTicketException.class, ExpiredTokenException.class,
+				IncorrectCaptchaException.class, IncorrectCredentialsException.class, IncorrectSecretException.class,
+				IncorrectTicketException.class, IncorrectTokenException.class, InvalidAccountException.class,
+				NoneCaptchaException.class, NoneRoleException.class, NoneTicketException.class,
+				NoneTokenException.class, SessionKickedoutException.class, SessionRestrictedException.class,
+				TerminalRestrictedException.class, SessionKickedoutException.class, UnknownAccountException.class,
+				UnsupportedMethodException.class, UnsupportedTokenException.class);
 	}
 
 	@Override
