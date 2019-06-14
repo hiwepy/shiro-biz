@@ -29,6 +29,7 @@ public class ShiroBizMessageSource extends ResourceBundleMessageSource {
 
 	public ShiroBizMessageSource() {
 		setBasename("org.apache.shiro.biz.messages");
+		setDefaultEncoding("UTF-8");
 	}
 
 	// ~ Methods
@@ -37,4 +38,5 @@ public class ShiroBizMessageSource extends ResourceBundleMessageSource {
 	public static MessageSourceAccessor getAccessor() {
 		return new MessageSourceAccessor(new ShiroBizMessageSource());
 	}
+	
 }
