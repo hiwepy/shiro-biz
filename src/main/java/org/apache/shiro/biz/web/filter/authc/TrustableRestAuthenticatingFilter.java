@@ -92,7 +92,7 @@ public class TrustableRestAuthenticatingFilter extends AbstractTrustableAuthenti
 		}
 		
 		if (CollectionUtils.isEmpty(getSuccessHandlers())) {
-			this.writeSuccessString(request, response, token, subject);
+			this.writeSuccessString(token, subject, request, response);
 		} else {
 			boolean isMatched = false;
 			for (AuthenticationSuccessHandler successHandler : getSuccessHandlers()) {
@@ -104,7 +104,7 @@ public class TrustableRestAuthenticatingFilter extends AbstractTrustableAuthenti
 				}
 			}
 			if (!isMatched) {
-				this.writeSuccessString(request, response, token, subject);
+				this.writeSuccessString(token, subject, request, response);
 			}
 		}
         

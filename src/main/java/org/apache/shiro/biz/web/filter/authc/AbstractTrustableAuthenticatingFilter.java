@@ -115,7 +115,7 @@ public abstract class AbstractTrustableAuthenticatingFilter extends AbstractAuth
 		if( WebUtils.isAjaxResponse(request)) {
 			
 			if (CollectionUtils.isEmpty(getFailureHandlers())) {
-				this.writeFailureString(request, response, token);
+				this.writeFailureString(token , e, request, response);
 			} else {
 				boolean isMatched = false;
 				for (AuthenticationFailureHandler failureHandler : getFailureHandlers()) {
@@ -127,7 +127,7 @@ public abstract class AbstractTrustableAuthenticatingFilter extends AbstractAuth
 					}
 				}
 				if (!isMatched) {
-					this.writeFailureString(request, response, token);
+					this.writeFailureString(token , e, request, response);
 				}
 			}
 			

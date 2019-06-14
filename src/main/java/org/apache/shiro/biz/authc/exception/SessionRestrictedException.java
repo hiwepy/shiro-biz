@@ -15,10 +15,10 @@
  */
 package org.apache.shiro.biz.authc.exception;
 
-import org.apache.shiro.authz.UnauthenticatedException;
+import org.apache.shiro.authc.AuthenticationException;
 
 @SuppressWarnings("serial")
-public class SessionRestrictedException extends UnauthenticatedException {
+public class SessionRestrictedException extends AuthenticationException {
 
 	public SessionRestrictedException() {
 		super();

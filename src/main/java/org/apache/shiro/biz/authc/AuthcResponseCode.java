@@ -12,7 +12,7 @@ public enum AuthcResponseCode {
 	SC_AUTHC_LOGOUT(HttpStatus.SC_SESSION_LOGOUT + "", "shiro.authc.logout"),
 	SC_AUTHC_FAIL("10001", "shiro.authc.fail"),
 	SC_AUTHC_METHOD_NOT_ALLOWED("10002", "shiro.authc.method-not-supported"),
-	SC_AUTHC_OVER_RETRY_REMIND("10003", "shiro.authc.over-retry-remind"),
+	SC_AUTHC_EXCESSIVE_ATTEMPTS("10003", "shiro.authc.excessive.attempts"),
 	SC_AUTHC_CAPTCHA_SEND_FAIL("10004", "shiro.authc.captcha.send-fail"),     
 	SC_AUTHC_CAPTCHA_REQUIRED("10005", "shiro.authc.captcha.required"),
 	SC_AUTHC_CAPTCHA_EXPIRED("10006", "shiro.authc.captcha.expired"),
@@ -28,6 +28,10 @@ public enum AuthcResponseCode {
 	SC_AUTHC_USER_LOCKED("10016", "shiro.authc.principal.locked"),
 	SC_AUTHC_USER_NO_ROLE("10017", "shiro.authc.principal.no-role"),
 	
+	SC_AUTHC_SESSION_KICKEDOUT("10018", "shiro.authc.session.kickedout"),
+	SC_AUTHC_SESSION_RESTRICTED("10019", "shiro.authc.session.restricted"),
+	SC_AUTHC_SESSION_TERMINAL_RESTRICTED("10020", "shiro.authc.session.terminal.restricted"),
+	
 	SC_AUTHZ_SUCCESS("0", "shiro.authz.success"),
 	SC_AUTHZ_FAIL("10021", "shiro.authz.fail"),
 	SC_AUTHZ_CODE_REQUIRED("10022", "shiro.authz.code.required"),
@@ -38,12 +42,17 @@ public enum AuthcResponseCode {
 	SC_AUTHZ_DINGTALK_EXPIRED("10027", "shiro.authz.dingtalk.expired"),
 	SC_AUTHZ_DINGTALK_INVALID("10028", "shiro.authz.dingtalk.invalid"),
 	SC_AUTHZ_DINGTALK_INCORRECT("10029", "shiro.authz.dingtalk.incorrect"),
-	SC_AUTHZ_TOKEN_ISSUED("10030", "shiro.authz.token.issued"),
-	SC_AUTHZ_TOKEN_REQUIRED("10031", "shiro.authz.token.required"),
-	SC_AUTHZ_TOKEN_EXPIRED("10032", "shiro.authz.token.expired"),
-	SC_AUTHZ_TOKEN_INVALID("10033", "shiro.authz.token.invalid"),
-	SC_AUTHZ_TOKEN_INCORRECT("10034", "shiro.authz.token.incorrect"),
-	SC_AUTHZ_THIRD_PARTY_SERVICE("10035", "shiro.authz.server.error");
+	SC_AUTHZ_TICKET_ISSUED("10030", "shiro.authz.ticket.issued"),
+	SC_AUTHZ_TICKET_REQUIRED("10031", "shiro.authz.ticket.required"),
+	SC_AUTHZ_TICKET_EXPIRED("10032", "shiro.authz.ticket.expired"),
+	SC_AUTHZ_TICKET_INVALID("10033", "shiro.authz.ticket.invalid"),
+	SC_AUTHZ_TICKET_INCORRECT("10034", "shiro.authz.ticket.incorrect"),
+	SC_AUTHZ_TOKEN_ISSUED("10035", "shiro.authz.token.issued"),
+	SC_AUTHZ_TOKEN_REQUIRED("10036", "shiro.authz.token.required"),
+	SC_AUTHZ_TOKEN_EXPIRED("10037", "shiro.authz.token.expired"),
+	SC_AUTHZ_TOKEN_INVALID("10038", "shiro.authz.token.invalid"),
+	SC_AUTHZ_TOKEN_INCORRECT("10039", "shiro.authz.token.incorrect"),
+	SC_AUTHZ_THIRD_PARTY_SERVICE("10040", "shiro.authz.server.error");
 	
 	private final String code;
 	private final String msgKey;

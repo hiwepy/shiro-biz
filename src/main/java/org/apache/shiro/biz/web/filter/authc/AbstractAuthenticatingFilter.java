@@ -202,7 +202,7 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 		if( WebUtils.isAjaxResponse(request)) {
 			
 			if (CollectionUtils.isEmpty(successHandlers)) {
-				this.writeSuccessString(WebUtils.toHttp(request), WebUtils.toHttp(response), token, subject);
+				this.writeSuccessString(token, subject, request, response);
 			} else {
 				boolean isMatched = false;
 				for (AuthenticationSuccessHandler successHandler : successHandlers) {
@@ -214,7 +214,7 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 					}
 				}
 				if (!isMatched) {
-					this.writeSuccessString(WebUtils.toHttp(request), WebUtils.toHttp(response), token, subject);
+					this.writeSuccessString( token, subject, request, response);
 				}
 			}
 			
@@ -226,8 +226,8 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
         return false;
     }
 	
-    protected void writeSuccessString( ServletRequest request, ServletResponse response,
-    		AuthenticationToken token, Subject subject) throws IOException, ServletException {
+    protected void writeSuccessString( AuthenticationToken token, Subject subject,
+            ServletRequest request, ServletResponse response) throws IOException, ServletException {
 
     	WebUtils.toHttp(response).setStatus(HttpStatus.SC_OK);
 		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
@@ -256,7 +256,7 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 		if( WebUtils.isAjaxResponse(request)) {
 			
 			if (CollectionUtils.isEmpty(failureHandlers)) {
-				this.writeFailureString(request, response, token);
+				this.writeFailureString(token , e, request, response);
 			} else {
 				boolean isMatched = false;
 				for (AuthenticationFailureHandler failureHandler : failureHandlers) {
@@ -268,7 +268,7 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 					}
 				}
 				if (!isMatched) {
-					this.writeFailureString(request, response, token);
+					this.writeFailureString(token , e, request, response);
 				}
 			}
 			
@@ -281,7 +281,8 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
         return true;
     }
     
-    protected void writeFailureString( ServletRequest request, ServletResponse response, AuthenticationToken token) {
+    protected void writeFailureString( AuthenticationToken token, AuthenticationException e,
+            ServletRequest request, ServletResponse response) {
 
 		try {
 			

@@ -50,12 +50,12 @@ public class DefaultCredentialsMatcher extends CodecSupport implements Credentia
 	@Override
 	public boolean doCredentialsMatch(AuthenticationToken token, AuthenticationInfo info) {
 		// check retry
-		//checkCredentialsRetry(token);
+		checkCredentialsRetry(token);
 		// credentials match
-		//boolean matches = credentialsMatch(token, info);
-		//if (matches) {
-		//	cacheManager.getCache(getCredentialsRetryCacheName()).remove(token.getPrincipal());
-		//}
+		boolean matches = credentialsMatch(token, info);
+		if (matches) {
+			cacheManager.getCache(getCredentialsRetryCacheName()).remove(token.getPrincipal());
+		}
 		return credentialsMatch(token, info);
 	}
 
