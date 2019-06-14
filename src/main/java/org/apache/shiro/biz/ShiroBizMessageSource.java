@@ -28,7 +28,7 @@ public class ShiroBizMessageSource extends ResourceBundleMessageSource {
 	// ===================================================================================================
 
 	public ShiroBizMessageSource() {
-		setBasename("org.apache.shiro.biz");
+		setBasename("org.apache.shiro.biz.messages");
 	}
 
 	// ~ Methods
