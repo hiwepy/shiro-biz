@@ -64,7 +64,7 @@ public class CredentialsRetryLimitCredentialsMatcher extends HashedCredentialsMa
 		}
 		
 		//retry count + 1
-		if (retryCount.incrementAndGet() > getCredentialsRetryTimesLimit()) {
+		if (retryCount.incrementAndGet() >= getCredentialsRetryTimesLimit()) {
 			throw new ExcessiveAttemptsException();
 		}
 		

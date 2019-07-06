@@ -92,7 +92,7 @@ public class DefaultCredentialsMatcher extends CodecSupport implements Credentia
 			retryCount = new AtomicInteger(0);
 			credentialsRetryCache.put(token.getPrincipal(), retryCount);
 		}
-		if (retryCount.incrementAndGet() > getRetryLimit()) {
+		if (retryCount.incrementAndGet() >= getRetryLimit()) {
 			throw new ExcessiveAttemptsException();
 		}
 	}

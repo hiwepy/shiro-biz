@@ -132,6 +132,9 @@ public class DefaultAuthenticationFailureHandler  implements AuthenticationFailu
 				JSONObject.writeJSONString(response.getWriter(), AuthcResponse.error(AuthcResponseCode.SC_AUTHZ_TOKEN_INVALID.getCode(),
 						messages.getMessage(AuthcResponseCode.SC_AUTHZ_TOKEN_INVALID.getMsgKey(), e.getMessage())));
 			} else if (e instanceof NoneCaptchaException) {
+				
+				// 已经超出了重试限制，需要进行提醒
+				
 				JSONObject.writeJSONString(response.getWriter(), AuthcResponse.error(AuthcResponseCode.SC_AUTHC_CAPTCHA_REQUIRED.getCode(),
 						messages.getMessage(AuthcResponseCode.SC_AUTHC_CAPTCHA_REQUIRED.getMsgKey(), e.getMessage())));
 			} else if (e instanceof NoneRoleException) {
