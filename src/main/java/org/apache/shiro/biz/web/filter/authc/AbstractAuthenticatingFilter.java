@@ -311,8 +311,34 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
         return true;
 	}
 
-	protected boolean onAccessFailure(AuthenticationToken token, AuthenticationException ex, ServletRequest request,
+	protected boolean onAccessFailure(AuthenticationToken token, AuthenticationException e, ServletRequest request,
 			ServletResponse response) {
+		
+		LOG.error("Host {} Authentication Failure : {}", getHost(request), e.getMessage());
+        
+		if( WebUtils.isAjaxResponse(request)) {
+			
+			if (CollectionUtils.isEmpty(failureHandlers)) {
+				this.writeFailureString(token , e, request, response);
+			} else {
+				boolean isMatched = false;
+				for (AuthenticationFailureHandler failureHandler : failureHandlers) {
+
+					if (failureHandler != null && failureHandler.supports(e)) {
+						failureHandler.onAuthenticationFailure(token, request, response, e);
+						isMatched = true;
+						break;
+					}
+				}
+				if (!isMatched) {
+					this.writeFailureString(token , e, request, response);
+				}
+			}
+			
+			return false;
+		}
+		
+        setFailureAttribute(request, e);
 		
 		return false;
 	}

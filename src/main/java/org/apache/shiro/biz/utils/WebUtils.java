@@ -45,11 +45,19 @@ public class WebUtils extends org.apache.shiro.web.util.WebUtils {
     }
 
     public static boolean isAjaxRequest(ServletRequest request) {
-        return XML_HTTP_REQUEST.equals(toHttp(request).getHeader(HttpHeaders.X_REQUESTED_WITH));
+        try {
+			return XML_HTTP_REQUEST.equals(toHttp(request).getHeader(HttpHeaders.X_REQUESTED_WITH));
+		} catch (Exception e) {
+			return false;
+		}
     }
 
     public static boolean isContentTypeJson(ServletRequest request) {
-        return toHttp(request).getHeader(HttpHeaders.CONTENT_TYPE).contains(CONTENT_TYPE_JSON);
+        try {
+			return toHttp(request).getHeader(HttpHeaders.CONTENT_TYPE).contains(CONTENT_TYPE_JSON);
+		} catch (Exception e) {
+			return false;
+		}
     }
     
     public static boolean isPostRequest(ServletRequest request) {
