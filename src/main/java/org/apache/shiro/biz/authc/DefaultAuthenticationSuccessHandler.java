@@ -30,7 +30,7 @@ public class DefaultAuthenticationSuccessHandler  implements AuthenticationSucce
 	 
 	@Override
 	public boolean supports(AuthenticationToken token) {
-		return SubjectUtils.supports(token.getClass(), UsernamePasswordToken.class,
+		return SubjectUtils.isAssignableFrom(token.getClass(), UsernamePasswordToken.class,
 				DefaultAuthenticationToken.class);
 	}
 
