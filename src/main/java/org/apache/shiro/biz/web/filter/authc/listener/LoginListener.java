@@ -8,8 +8,8 @@ import org.apache.shiro.subject.Subject;
 
 public interface LoginListener {
 
-	void onSuccess(AuthenticationToken token, Subject subject, ServletRequest request, ServletResponse response);
-
 	void onFailure(AuthenticationToken token, Exception ex, ServletRequest request, ServletResponse response);
+
+	void onSuccess(AuthenticationToken token, Subject subject, ServletRequest request, ServletResponse response);
 
 }

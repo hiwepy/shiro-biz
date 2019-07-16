@@ -20,7 +20,6 @@ import javax.servlet.ServletResponse;
 
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.biz.utils.WebUtils;
-import org.apache.shiro.biz.web.filter.authc.listener.LoginListener;
 import org.apache.shiro.subject.Subject;
 
 public class TrustableFormAuthenticatingFilter extends AbstractTrustableAuthenticatingFilter {
@@ -37,13 +36,6 @@ public class TrustableFormAuthenticatingFilter extends AbstractTrustableAuthenti
 	@Override
 	protected boolean onLoginSuccess(AuthenticationToken token, Subject subject, ServletRequest request,
 			ServletResponse response) throws Exception {
-		
-		// Login Listener
-		if(getLoginListeners() != null && getLoginListeners().size() > 0){
-			for (LoginListener loginListener : getLoginListeners()) {
-				loginListener.onSuccess(token, subject, request, response);
-			}
-		}
 		
 		if(isRedirectToSavedRequest()) {
 			issueSuccessRedirect(request, response);
