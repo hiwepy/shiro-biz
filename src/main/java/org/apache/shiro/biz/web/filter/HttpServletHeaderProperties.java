@@ -22,7 +22,7 @@ package org.apache.shiro.biz.web.filter;
 public class HttpServletHeaderProperties {
 	
 	public static final String DEFAULT_ACCESS_CONTROL_ALLOW_METHODS = "PUT,POST,GET,DELETE,OPTIONS";
-	public static final String DEFAULT_ACCESS_CONTROL_ALLOW_HEADERS = "Authorization, Origin, X-Requested-With, Content-Type, Accept";
+	public static final String DEFAULT_ACCESS_CONTROL_ALLOW_HEADERS = "Accept, Content-Type, Credential, Authorization, Origin, X-Authorization, X-Requested-With,  X-XSRF-TOKEN";
 	public static final String DEFAULT_X_FRAME_OPTIONS = "SAMEORIGIN";
 	public static final String DEFAULT_X_CONTENT_TYPE_OPTIONS = "nosniff";
 	
