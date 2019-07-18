@@ -16,6 +16,8 @@
 package org.apache.shiro.biz.authz.principal;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -72,7 +74,15 @@ public class ShiroPrincipal implements Cloneable, Serializable {
    	 * 用户是否首次登录
    	 */
     protected boolean initial = Boolean.FALSE;
-    
+    /**
+	 * 用户数据
+	 */
+	private Map<String, Object> profile = new HashMap<String, Object>();
+	/**
+	 * 用户是否功能受限（false:无限制|true:有限制）
+	 */
+	private boolean restricted = false;
+	
     public ShiroPrincipal() {
     }
 
@@ -179,6 +189,22 @@ public class ShiroPrincipal implements Cloneable, Serializable {
 
 	public void setInitial(boolean initial) {
 		this.initial = initial;
+	}
+	
+	public Map<String, Object> getProfile() {
+		return profile;
+	}
+
+	public void setProfile(Map<String, Object> profile) {
+		this.profile = profile;
+	}
+
+	public boolean isRestricted() {
+		return restricted;
+	}
+
+	public void setRestricted(boolean restricted) {
+		this.restricted = restricted;
 	}
 
 	@Override
