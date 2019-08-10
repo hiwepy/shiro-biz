@@ -5,7 +5,7 @@
 
 	<groupId>com.github.vindell</groupId>
 	<artifactId>shiro-biz</artifactId>
-	<version>1.0.7-SNAPSHOT</version>
+	<version>1.0.8-SNAPSHOT</version>
 	<description>Shiro Extension</description>
 	<name>${project.groupId}:${project.artifactId}</name>
 	<url>https://github.com/vindell/${project.artifactId}</url>
@@ -402,7 +402,7 @@
 		<shiro-ehcache.version>${shiro.version}</shiro-ehcache.version>
 		<shiro-ehcache3.version>1.0.0</shiro-ehcache3.version>
 		<shiro-hazelcast.version>${shiro.version}</shiro-hazelcast.version>
-		<shiro-j2cache.version>1.0.1-SNAPSHOT</shiro-j2cache.version>
+		<shiro-j2cache.version>1.0.1.RELEASE</shiro-j2cache.version>
 		<shiro-redis.version>3.1.0</shiro-redis.version>
 		<shiro-redisson.version>1.0.0.RELEASE</shiro-redisson.version>
 		<slf4j.version>1.7.26</slf4j.version>
