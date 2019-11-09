@@ -58,21 +58,27 @@ public class HttpServletRequestHeaderFilter extends AccessControlFilter {
 		HttpServletResponse httpResponse = WebUtils.toHttp(response);
 		
 		// 服务器端 Access-Control-Allow-Credentials = true时，参数Access-Control-Allow-Origin 的值不能为 '*'
-		Optional.ofNullable(properties.isAccessControlAllowCredentials()).ifPresent(value -> {
-			this.setHeader(httpResponse, HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, Boolean.toString(properties.isAccessControlAllowCredentials()));
-		});
-		Optional.ofNullable(properties.getAccessControlAllowHeaders()).ifPresent(value -> {
-			this.setHeader(httpResponse, HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, properties.getAccessControlAllowHeaders());
-		});
+		this.setHeader(httpResponse, HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, Boolean.toString(properties.isAccessControlAllowCredentials()));
+		
 		Optional.ofNullable(properties.getAccessControlAllowMethods()).ifPresent(value -> {
 			this.setHeader(httpResponse, HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, properties.getAccessControlAllowMethods());
 		});
-		Optional.ofNullable(properties.getAccessControlAllowOrigin()).ifPresent(value -> {
-			this.setHeader(httpResponse, HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, properties.getAccessControlAllowOrigin());
-		});
-		Optional.ofNullable(properties.getAccessControlExposeHeaders()).ifPresent(value -> {
-			this.setHeader(httpResponse, HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, properties.getAccessControlExposeHeaders());
-		});
+		if(properties.isAccessControlAllowCredentials()) {
+			Optional.ofNullable(properties.getAccessControlAllowHeaders()).ifPresent(value -> {
+				this.setHeader(httpResponse, HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, properties.getAccessControlAllowHeaders());
+			});
+			Optional.ofNullable(properties.getAccessControlAllowOrigin()).ifPresent(value -> {
+				this.setHeader(httpResponse, HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, properties.getAccessControlAllowOrigin());
+			});
+			Optional.ofNullable(properties.getAccessControlExposeHeaders()).ifPresent(value -> {
+				this.setHeader(httpResponse, HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, properties.getAccessControlExposeHeaders());
+			});
+		} else {
+			this.setHeader(httpResponse, HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, HttpServletHeaderProperties.DEFAULT_ACCESS_CONTROL_ALLOW_ALL);
+			this.setHeader(httpResponse, HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, HttpServletHeaderProperties.DEFAULT_ACCESS_CONTROL_ALLOW_ALL);
+			this.setHeader(httpResponse, HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, HttpServletHeaderProperties.DEFAULT_ACCESS_CONTROL_ALLOW_ALL);
+		}		
+		
 		Optional.ofNullable(properties.getAccessControlMaxAge()).ifPresent(value -> {
 			this.setHeader(httpResponse, HttpHeaders.ACCESS_CONTROL_MAX_AGE, properties.getAccessControlMaxAge());
 		});
@@ -118,6 +124,12 @@ public class HttpServletRequestHeaderFilter extends AccessControlFilter {
 		
 		// 跨域时会首先发送一个option请求，这里我们给option请求直接返回正常状态
 		if (httpRequest.getMethod().equals(RequestMethod.OPTIONS.name())) {
+			//跨域资源共享标准新增了一组 HTTP 首部字段，允许服务器声明哪些源站有权限访问哪些资源。
+            // 另外，规范要求，对那些可能对服务器数据产生副作用的 HTTP 请求方法（特别是 GET 以外的 HTTP 请求，或者搭配某些 MIME 类型的 POST 请求），
+            // 浏览器必须首先使用 OPTIONS 方法发起一个预检请求（preflight request），
+            // 从而获知服务端是否允许该跨域请求。服务器确认允许之后，才发起实际的 HTTP 请求。
+            // 在预检请求的返回中，服务器端也可以通知客户端，是否需要携带身份凭证（包括 Cookies 和 HTTP 认证相关数据）。
+            // 参考：https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Access_control_CORS
 			httpResponse.setStatus(HttpServletResponse.SC_OK);
 			return false;
 		}
@@ -139,7 +151,19 @@ public class HttpServletRequestHeaderFilter extends AccessControlFilter {
 
 	@Override
 	protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
-		WebUtils.toHttp(response).sendError(HttpServletResponse.SC_UNAUTHORIZED);
+		HttpServletRequest httpRequest = WebUtils.toHttp(request);
+		HttpServletResponse httpResponse = WebUtils.toHttp(response);
+		// 跨域时会首先发送一个option请求，这里我们给option请求直接返回正常状态
+		if (httpRequest.getMethod().equals(RequestMethod.OPTIONS.name())) {
+			//跨域资源共享标准新增了一组 HTTP 首部字段，允许服务器声明哪些源站有权限访问哪些资源。
+            // 另外，规范要求，对那些可能对服务器数据产生副作用的 HTTP 请求方法（特别是 GET 以外的 HTTP 请求，或者搭配某些 MIME 类型的 POST 请求），
+            // 浏览器必须首先使用 OPTIONS 方法发起一个预检请求（preflight request），
+            // 从而获知服务端是否允许该跨域请求。服务器确认允许之后，才发起实际的 HTTP 请求。
+            // 在预检请求的返回中，服务器端也可以通知客户端，是否需要携带身份凭证（包括 Cookies 和 HTTP 认证相关数据）。
+            // 参考：https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Access_control_CORS
+			httpResponse.setStatus(HttpServletResponse.SC_OK);
+			return false;
+		}
         return false;
 	}
 	

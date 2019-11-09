@@ -21,8 +21,10 @@ package org.apache.shiro.biz.web.filter;
  */
 public class HttpServletHeaderProperties {
 	
+	public static final String DEFAULT_ACCESS_CONTROL_ALLOW_ALL = "*";
 	public static final String DEFAULT_ACCESS_CONTROL_ALLOW_METHODS = "PUT,POST,GET,DELETE,OPTIONS";
-	public static final String DEFAULT_ACCESS_CONTROL_ALLOW_HEADERS = "Accept, Content-Type, Credential, Authorization, Origin, X-Authorization, X-Requested-With,  X-XSRF-TOKEN";
+	public static final String DEFAULT_ACCESS_CONTROL_ALLOW_HEADERS = "Accept,Accept-Encoding,Accept-Language,Content-Language,Content-Type,Credential,Authorization,Origin,X-Authorization,X-Requested-With,X-XSRF-TOKEN";
+	public static final String DEFAULT_ACCESS_CONTROL_EXPOSE_HEADERS = "*," + DEFAULT_ACCESS_CONTROL_ALLOW_HEADERS;
 	public static final String DEFAULT_X_FRAME_OPTIONS = "SAMEORIGIN";
 	public static final String DEFAULT_X_CONTENT_TYPE_OPTIONS = "nosniff";
 	
@@ -41,15 +43,15 @@ public class HttpServletHeaderProperties {
 	/**
 	 * https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin
 	 */
-	private String AccessControlAllowOrigin = "*";
+	private String AccessControlAllowOrigin = DEFAULT_ACCESS_CONTROL_ALLOW_ALL;
 	/**
 	 * https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Expose-Headers
 	 */
-	private String AccessControlExposeHeaders = "Cache-Control,Content-Language,Content-Type,Expires,Last-Modified,Pragma";
+	private String AccessControlExposeHeaders = DEFAULT_ACCESS_CONTROL_EXPOSE_HEADERS;
 	/**
 	 * https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Max-Age
 	 */
-	private String AccessControlMaxAge;
+	private String AccessControlMaxAge = "86400";
 	/**
 	 * https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
 	 */
