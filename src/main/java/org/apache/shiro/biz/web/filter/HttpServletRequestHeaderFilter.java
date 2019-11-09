@@ -119,6 +119,7 @@ public class HttpServletRequestHeaderFilter extends AccessControlFilter {
 		// 跨域时会首先发送一个option请求，这里我们给option请求直接返回正常状态
 		if (httpRequest.getMethod().equals(RequestMethod.OPTIONS.name())) {
 			httpResponse.setStatus(HttpServletResponse.SC_OK);
+			return false;
 		}
 		
 		return true;
@@ -138,9 +139,9 @@ public class HttpServletRequestHeaderFilter extends AccessControlFilter {
 
 	@Override
 	protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
-		
-		
-		return true;
+		WebUtils.toHttp(response).sendError(HttpServletResponse.SC_UNAUTHORIZED);
+        return false;
 	}
+	
 	
 }
