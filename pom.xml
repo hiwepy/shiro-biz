@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.github.vindell</groupId>
+	<groupId>com.github.hiwepy</groupId>
 	<artifactId>shiro-biz</artifactId>
 	<version>1.0.8-SNAPSHOT</version>
 	<description>Shiro Extension</description>
@@ -27,7 +27,7 @@
 
 	<developers>
 		<developer>
-			<name>vindell</name>
+			<name>wandl</name>
 			<email>hnxyhcwdl1003@163.com</email>
 			<roles>
 				<role>developer</role>
@@ -398,11 +398,11 @@
 		<j2cache.version>2.7.7-release</j2cache.version>
  		<redisson.version>3.10.0</redisson.version>
 		<servlet-api.version>4.0.1</servlet-api.version>
-		<shiro.version>1.4.1</shiro.version>
+		<shiro.version>1.4.2</shiro.version>
 		<shiro-ehcache.version>${shiro.version}</shiro-ehcache.version>
 		<shiro-ehcache3.version>1.0.0</shiro-ehcache3.version>
 		<shiro-hazelcast.version>${shiro.version}</shiro-hazelcast.version>
-		<shiro-j2cache.version>1.0.1.RELEASE</shiro-j2cache.version>
+		<shiro-j2cache.version>1.0.2-SNAPSHOT</shiro-j2cache.version>
 		<shiro-redis.version>3.1.0</shiro-redis.version>
 		<shiro-redisson.version>1.0.0.RELEASE</shiro-redisson.version>
 		<slf4j.version>1.7.26</slf4j.version>
@@ -589,7 +589,7 @@
 		    <scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.github.vindell</groupId>
+			<groupId>com.github.hiwepy</groupId>
 			<artifactId>shiro-j2cache</artifactId>
 			<version>${shiro-j2cache.version}</version>
 			<scope>provided</scope>
