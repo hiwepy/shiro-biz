@@ -10,7 +10,7 @@ import org.apache.shiro.subject.Subject;
 /**
  * 
  * TODO
- * @author <a href="https://github.com/vindell">vindell</a>
+ * @author <a href="https://github.com/hiwepy">hiwepy</a>
  * @see org.apache.shiro.web.filter.authz.PermissionsAuthorizationFilter
  */
 public class PermissionsAuthorizationFilter extends AbstracAuthorizationFilter {

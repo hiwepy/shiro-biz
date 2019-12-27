@@ -4,7 +4,7 @@ import org.apache.shiro.authc.AuthenticationToken;
 
 /**
  * 登录类型支持
- * @author <a href="https://github.com/vindell">vindell</a>
+ * @author <a href="https://github.com/hiwepy">hiwepy</a>
  */
 public interface LoginTypeAuthenticationToken extends AuthenticationToken {
 

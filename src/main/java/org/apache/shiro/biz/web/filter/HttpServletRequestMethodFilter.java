@@ -18,7 +18,7 @@ import com.alibaba.fastjson.JSONObject;
 
 /**
  * <p>Request Method Filter, 对跨域提供支持</p>
- * @author <a href="https://github.com/vindell">vindell</a>
+ * @author <a href="https://github.com/hiwepy">hiwepy</a>
  */
 public class HttpServletRequestMethodFilter extends AccessControlFilter {
 

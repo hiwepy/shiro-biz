@@ -4,7 +4,7 @@ import org.apache.shiro.authc.AuthenticationToken;
 
 /**
  * 验证码支持
- * @author <a href="https://github.com/vindell">vindell</a>
+ * @author <a href="https://github.com/hiwepy">hiwepy</a>
  */
 public interface CaptchaAuthenticationToken extends AuthenticationToken {
 

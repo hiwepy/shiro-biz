@@ -12,7 +12,7 @@ import org.apache.shiro.web.servlet.OncePerRequestFilter;
 
 /**
  * WebThreadContext对象绑定过滤器
- * @author <a href="https://github.com/vindell">vindell</a>
+ * @author <a href="https://github.com/hiwepy">hiwepy</a>
  */
 public class HttpServletRequestBindFilter extends OncePerRequestFilter {
 	

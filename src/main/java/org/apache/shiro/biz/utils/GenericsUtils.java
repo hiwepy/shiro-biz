@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 (https://github.com/vindell).
+ * Copyright (c) 2018 (https://github.com/hiwepy).
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -47,7 +47,7 @@ public class GenericsUtils {
 	/**
 	 * 
 	 * 通过反射,获得定义Class时声明的父类的范型参数的类型. 如public BookManager extends GenricManager&lt;Book&gt;
-	 * @author 		： <a href="https://github.com/vindell">vindell</a>
+	 * @author 		： <a href="https://github.com/hiwepy">hiwepy</a>
 	 * @param sourceClass  The class to introspect
 	 * @param index the Index of the generic ddeclaration,start from 0.
 	 * @return the index generic declaration, or <code>Object.class</code> if cannot be determined

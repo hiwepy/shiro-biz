@@ -14,7 +14,7 @@ import org.apache.commons.text.StringEscapeUtils;
 
 /**
  * 使用 StringEscapeUtils.escapeHtml4()对Http请求中的  Parameter，Header 进行统一的转码处理
- * @author 		： <a href="https://github.com/vindell">vindell</a>
+ * @author 		： <a href="https://github.com/hiwepy">hiwepy</a>
  */
 public class HttpServletEscapeHtml4RequestWrapper extends HttpServletRequestWrapper {
 	

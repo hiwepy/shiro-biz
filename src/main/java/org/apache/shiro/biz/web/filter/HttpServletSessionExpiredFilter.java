@@ -18,7 +18,7 @@ import com.alibaba.fastjson.JSONObject;
 
 /**
  * 会话超时过滤器
- * @author <a href="https://github.com/vindell">vindell</a>
+ * @author <a href="https://github.com/hiwepy">hiwepy</a>
  * https://blog.csdn.net/ZhangjcGG/article/details/79014030
  */
 public class HttpServletSessionExpiredFilter extends AccessControlFilter {

@@ -14,7 +14,7 @@ import org.apache.shiro.web.filter.AccessControlFilter;
 
 /**
  * 基于StringEscapeUtils.escapeHtml4()方法的XSS(Cross Site Scripting)，即跨站脚本攻击请求过滤
- * @author 		： <a href="https://github.com/vindell">vindell</a>
+ * @author 		： <a href="https://github.com/hiwepy">hiwepy</a>
  */
 public class HttpServletRequestEscapeHtml4Filter extends AccessControlFilter {
 	

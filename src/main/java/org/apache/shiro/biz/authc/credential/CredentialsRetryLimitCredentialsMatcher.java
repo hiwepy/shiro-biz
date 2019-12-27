@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 (https://github.com/vindell).
+ * Copyright (c) 2018 (https://github.com/hiwepy).
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -26,7 +26,7 @@ import org.apache.shiro.cache.CacheManager;
 
 /**
  * 密码校验器，支持重复提交次数校验，防范暴力破解
- * @author <a href="https://github.com/vindell">vindell</a>
+ * @author <a href="https://github.com/hiwepy">hiwepy</a>
  */
 public class CredentialsRetryLimitCredentialsMatcher extends HashedCredentialsMatcher {
 

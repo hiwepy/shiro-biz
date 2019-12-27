@@ -12,7 +12,7 @@ import org.apache.shiro.biz.web.Parameters;
 
 /**
  * 基础HttpServlet
- * @author <a href="https://github.com/vindell">vindell</a>
+ * @author <a href="https://github.com/hiwepy">hiwepy</a>
  */
 @SuppressWarnings("serial")
 public abstract class AbstractHttpServlet extends HttpServlet {

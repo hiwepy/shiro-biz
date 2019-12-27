@@ -18,7 +18,7 @@ import com.google.common.util.concurrent.RateLimiter;
 
 /**
  * 基于Guava提供的限流工具类RateLimiter实现的访问请求限流过滤器
- * @author 		： <a href="https://github.com/vindell">vindell</a>
+ * @author 		： <a href="https://github.com/hiwepy">hiwepy</a>
  */
 public class HttpServletRequestLimitFilter extends AccessControlFilter {
 	

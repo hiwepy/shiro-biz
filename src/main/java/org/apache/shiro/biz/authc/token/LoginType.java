@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 (https://github.com/vindell).
+ * Copyright (c) 2018 (https://github.com/hiwepy).
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -16,7 +16,7 @@
 package org.apache.shiro.biz.authc.token;
 /**
  * 登录类型枚举；1：系统正常登录；2：外部单点登录；3：外部票据登录（通过握手秘钥等参数认证登录）
- * @author <a href="https://github.com/vindell">vindell</a>
+ * @author <a href="https://github.com/hiwepy">hiwepy</a>
  */
 public enum LoginType {
 
