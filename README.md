@@ -84,7 +84,7 @@ DAO大家都用过，数据访问对象，用于会话的CRUD，比如我们想�
 
 ``` xml
 <dependency>
-	<groupId>com.github.vindell</groupId>
+	<groupId>com.github.hiwepy</groupId>
 	<artifactId>shiro-biz</artifactId>
 	<version>${project.version}</version>
 </dependency>
