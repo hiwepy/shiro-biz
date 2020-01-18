@@ -5,7 +5,7 @@
 
 	<groupId>com.github.hiwepy</groupId>
 	<artifactId>shiro-biz</artifactId>
-	<version>1.0.9-SNAPSHOT</version>
+	<version>1.0.9.RELEASE</version>
 	<description>Shiro Extension</description>
 	<name>${project.groupId}:${project.artifactId}</name>
 	<url>https://github.com/hiwepy/${project.artifactId}</url>
@@ -236,7 +236,7 @@
 					<configuration>
 						<serverId>ossrh</serverId>
 						<nexusUrl>https://oss.sonatype.org/</nexusUrl>
-						<autoReleaseAfterClose>true</autoReleaseAfterClose>
+						<autoReleaseAfterClose>false</autoReleaseAfterClose>
 						<!-- <sslAllowAll>true</sslAllowAll> -->
 						<stagingProgressPauseDurationSeconds>60</stagingProgressPauseDurationSeconds>
 						<stagingProgressTimeoutMinutes>20</stagingProgressTimeoutMinutes>
