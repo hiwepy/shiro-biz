@@ -379,6 +379,7 @@
 		<guava.version>27.0.1-jre</guava.version>
 		<junit.version>4.12</junit.version>
 		<java.version>1.8</java.version>
+		<jwt-issuer.version>1.0.4.RELEASE</jwt-issuer.version>
 		<maven.version>3.0</maven.version>
 		<maven-antrun-plugin.version>1.8</maven-antrun-plugin.version>
 		<maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
@@ -495,6 +496,12 @@
 				<version>${spring.version}</version>
 			</dependency>
 			
+			<dependency>
+				<groupId>com.github.hiwepy</groupId>
+				<artifactId>jwt-issuer-api</artifactId>
+				<version>${jwt-issuer.version}</version>
+			</dependency>
+			
 		</dependencies>
 	</dependencyManagement>
 
@@ -560,6 +567,11 @@
             <artifactId>shiro-spring</artifactId>
         </dependency>
         
+        <dependency>
+			<groupId>com.github.hiwepy</groupId>
+			<artifactId>jwt-issuer-api</artifactId>
+		</dependency>
+		
         <!-- https://mvnrepository.com/artifact/org.apache.shiro/shiro-ehcache -->
 		<dependency>
 			<groupId>org.apache.shiro</groupId>

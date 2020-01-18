@@ -16,9 +16,17 @@
 package org.apache.shiro.biz.authz.principal;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.CollectionUtils;
+
+
+import com.github.hiwepy.jwt.JwtPayload.RolePair;
 
 /**
  * @author <a href="https://github.com/hiwepy">hiwepy</a>
@@ -29,24 +37,28 @@ public class ShiroPrincipal implements Cloneable, Serializable {
 	/**
 	 * 用户ID（用户来源表Id）
 	 */
-	protected String userid;
+	private String userid;
 	/**
-	 * 用户Key
+	 * 用户Key：用户业务表中的唯一ID
 	 */
-	protected String userkey;
+	private String userkey;
+	/**
+	 * 用户Code：用户业务表中的唯一编码
+	 */
+	private String usercode;
 	/**
 	 * 用户名称
 	 */
-	protected String username;
+	private String username;
 	/**
 	 * 用户密码
 	 */
-	protected String password;
+	private String password;
 	/**
 	 * 用户密码盐：用于密码加解密
 	 */
-    protected String salt;
-    /**
+	private String salt;
+	/**
 	 * 用户秘钥：用于用户JWT加解密
 	 */
 	private String secret;
@@ -55,33 +67,45 @@ public class ShiroPrincipal implements Cloneable, Serializable {
 	 */
 	private String alias;
 	/**
+	 * 用户角色ID
+	 */
+	private String roleid;
+	/**
+	 * 用户角色Key
+	 */
+	private String role;
+	/**
+	 * 用户人脸识别ID
+	 */
+	private String faceId;
+	/**
 	 * 用户拥有角色列表
 	 */
-	private Set<String> roles;
+	private List<RolePair> roles;
 	/**
 	 * 用户权限标记列表
 	 */
 	private Set<String> perms;
 	/**
-	 * 用户是否可用
-	 */
-    protected boolean disabled = Boolean.FALSE;
-    /**
-	 * 用户是否锁定
-	 */
-    protected boolean locked = Boolean.FALSE;
-    /**
-   	 * 用户是否首次登录
-   	 */
-    protected boolean initial = Boolean.FALSE;
-    /**
 	 * 用户数据
 	 */
 	private Map<String, Object> profile = new HashMap<String, Object>();
 	/**
-	 * 用户是否功能受限（false:无限制|true:有限制）
+	 * 用户是否可用
 	 */
-	private boolean restricted = false;
+    private boolean disabled = Boolean.FALSE;
+    /**
+	 * 用户是否锁定
+	 */
+    private boolean locked = Boolean.FALSE;
+    /**
+   	 * 用户是否首次登录
+   	 */
+    private boolean initial = Boolean.FALSE;
+    /**
+	 * 用户是否扫脸登录
+	 */
+	private boolean face = Boolean.FALSE;
 	
     public ShiroPrincipal() {
     }
@@ -91,7 +115,7 @@ public class ShiroPrincipal implements Cloneable, Serializable {
         this.password = password;
     }
 
-    public String getUserid() {
+	public String getUserid() {
 		return userid;
 	}
 
@@ -105,6 +129,14 @@ public class ShiroPrincipal implements Cloneable, Serializable {
 
 	public void setUserkey(String userkey) {
 		this.userkey = userkey;
+	}
+
+	public String getUsercode() {
+		return usercode;
+	}
+
+	public void setUsercode(String usercode) {
+		this.usercode = usercode;
 	}
 
 	public String getUsername() {
@@ -124,14 +156,14 @@ public class ShiroPrincipal implements Cloneable, Serializable {
 	}
 
 	public String getSalt() {
-        return salt;
-    }
+		return salt;
+	}
 
-    public void setSalt(String salt) {
-        this.salt = salt;
-    }
-
-    public String getCredentialsSalt() {
+	public void setSalt(String salt) {
+		this.salt = salt;
+	}
+	
+	public String getCredentialsSalt() {
         return username + salt;
     }
 
@@ -142,12 +174,44 @@ public class ShiroPrincipal implements Cloneable, Serializable {
 	public void setSecret(String secret) {
 		this.secret = secret;
 	}
-	
-	public Set<String> getRoles() {
+
+	public String getAlias() {
+		return alias;
+	}
+
+	public void setAlias(String alias) {
+		this.alias = alias;
+	}
+
+	public String getRoleid() {
+		return roleid;
+	}
+
+	public void setRoleid(String roleid) {
+		this.roleid = roleid;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	public String getFaceId() {
+		return faceId;
+	}
+
+	public void setFaceId(String faceId) {
+		this.faceId = faceId;
+	}
+
+	public List<RolePair> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(Set<String> roles) {
+	public void setRoles(List<RolePair> roles) {
 		this.roles = roles;
 	}
 
@@ -158,13 +222,13 @@ public class ShiroPrincipal implements Cloneable, Serializable {
 	public void setPerms(Set<String> perms) {
 		this.perms = perms;
 	}
-	
-	public String getAlias() {
-		return alias;
+
+	public Map<String, Object> getProfile() {
+		return profile;
 	}
 
-	public void setAlias(String alias) {
-		this.alias = alias;
+	public void setProfile(Map<String, Object> profile) {
+		this.profile = profile;
 	}
 
 	public boolean isDisabled() {
@@ -182,7 +246,7 @@ public class ShiroPrincipal implements Cloneable, Serializable {
 	public void setLocked(boolean locked) {
 		this.locked = locked;
 	}
-	
+
 	public boolean isInitial() {
 		return initial;
 	}
@@ -190,21 +254,43 @@ public class ShiroPrincipal implements Cloneable, Serializable {
 	public void setInitial(boolean initial) {
 		this.initial = initial;
 	}
+
+	public boolean isFace() {
+		return face;
+	}
+
+	public void setFace(boolean face) {
+		this.face = face;
+	}
+
+	public boolean isAdmin() {
+		if(!StringUtils.isNoneBlank(role)) {
+			return false;
+		}
+		if(CollectionUtils.isEmpty(roles)) {
+			return false;
+		}
+		return CollectionUtils.contains(getRoles().iterator(), "admin") || StringUtils.equalsIgnoreCase("admin", this.getRole()) || StringUtils.equalsIgnoreCase("admin", this.getRoleid());
+	}
 	
-	public Map<String, Object> getProfile() {
-		return profile;
+	public boolean hasRole(String role) {
+		if(!StringUtils.isNoneBlank(role)) {
+			return false;
+		}
+		if(CollectionUtils.isEmpty(roles)) {
+			return false;
+		}
+		return roles.stream().anyMatch(entry -> StringUtils.equalsIgnoreCase(entry.getKey(), role));
 	}
-
-	public void setProfile(Map<String, Object> profile) {
-		this.profile = profile;
-	}
-
-	public boolean isRestricted() {
-		return restricted;
-	}
-
-	public void setRestricted(boolean restricted) {
-		this.restricted = restricted;
+	
+	public boolean hasAnyRole(String... roles) {
+		if(!StringUtils.isNoneBlank(roles)) {
+			return false;
+		}
+		if(CollectionUtils.isEmpty(getRoles())) {
+			return false;
+		}
+		return CollectionUtils.containsAny(getRoles(), Arrays.asList(roles));
 	}
 
 	@Override

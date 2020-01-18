@@ -15,8 +15,12 @@
  */
 package org.apache.shiro.biz.authz.principal;
 
+import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.collections.CollectionUtils;
+
+import com.github.hiwepy.jwt.JwtPayload.RolePair;
 import com.google.common.collect.Sets;
 
 public abstract class ShiroPrincipalRepositoryImpl implements ShiroPrincipalRepository {
@@ -25,7 +29,12 @@ public abstract class ShiroPrincipalRepositoryImpl implements ShiroPrincipalRepo
 	public Set<String> getRoles(Object principal) {
 		Set<String> sets = Sets.newHashSet();
 		if(principal instanceof ShiroPrincipal) {
-			sets.addAll(((ShiroPrincipal)principal).getRoles());
+			List<RolePair> roles = ((ShiroPrincipal)principal).getRoles();
+			if(CollectionUtils.isNotEmpty(roles)) {
+				for (RolePair role : roles) {
+					sets.add(role.getKey());
+				}
+			}
 		}
 		return sets;
 	}
@@ -35,7 +44,12 @@ public abstract class ShiroPrincipalRepositoryImpl implements ShiroPrincipalRepo
 		Set<String> sets = Sets.newHashSet();
 		for (Object principal : principals) {
 			if(principal instanceof ShiroPrincipal) {
-				sets.addAll(((ShiroPrincipal)principal).getRoles());
+				List<RolePair> roles = ((ShiroPrincipal)principal).getRoles();
+				if(CollectionUtils.isNotEmpty(roles)) {
+					for (RolePair role : roles) {
+						sets.add(role.getKey());
+					}
+				}
 			}
 		}
 		return sets;
