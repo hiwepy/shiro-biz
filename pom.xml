@@ -399,15 +399,15 @@
 		<j2cache.version>2.8.0-release</j2cache.version>
  		<redisson.version>3.10.0</redisson.version>
 		<servlet-api.version>4.0.1</servlet-api.version>
-		<shiro.version>1.4.2</shiro.version>
+		<shiro.version>1.5.0</shiro.version>
 		<shiro-ehcache.version>${shiro.version}</shiro-ehcache.version>
 		<shiro-ehcache3.version>1.0.0</shiro-ehcache3.version>
 		<shiro-hazelcast.version>${shiro.version}</shiro-hazelcast.version>
 		<shiro-j2cache.version>1.0.2.RELEASE</shiro-j2cache.version>
-		<shiro-redis.version>3.1.0</shiro-redis.version>
-		<shiro-redisson.version>1.0.0.RELEASE</shiro-redisson.version>
+		<shiro-redis.version>3.2.3</shiro-redis.version>
+		<shiro-redisson.version>1.1.4</shiro-redisson.version> 
 		<slf4j.version>1.7.26</slf4j.version>
-		<spring.version>4.3.15.RELEASE</spring.version>
+		<spring.version>5.1.12.RELEASE</spring.version>
 		<xstream.version>1.4.11.1</xstream.version>
 	</properties>
 
@@ -623,9 +623,9 @@
 		    	</exclusion>
 		    </exclusions>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.github.streamone/shiro-redisson -->
+		<!-- https://mvnrepository.com/artifact/com.github.fartherp/shiro-redisson -->
 		<dependency>
-		    <groupId>com.github.streamone</groupId>
+		    <groupId>com.github.fartherp</groupId>
 		    <artifactId>shiro-redisson</artifactId>
 		    <version>${shiro-redisson.version}</version>
 		    <scope>provided</scope>
