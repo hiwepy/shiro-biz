@@ -15,6 +15,8 @@
  */
 package org.apache.shiro.biz.web.filter.authc;
 
+import java.io.IOException;
+
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
@@ -77,6 +79,31 @@ public abstract class AbstractTrustableAuthenticatingFilter extends AbstractAuth
 		} catch (AuthenticationException e) {
 			return onLoginFailure(token, e, request, response);
 		}
+	}
+	
+	@Override
+	protected AuthenticationToken createToken(ServletRequest request, ServletResponse response) {
+		// Post && JSON
+		if(WebUtils.isObjectRequest(request)) {
+			
+			try {
+				
+				PostLoginRequest loginRequest = objectMapper.readValue(request.getReader(), PostLoginRequest.class);
+				
+				String host = getHost(request);
+				
+				// Determine if a verification code check is required
+				if (isCaptchaEnabled()) {
+					return new DefaultAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword(), loginRequest.getCaptcha(), loginRequest.isRememberMe(), host);
+				}
+				
+				return new DefaultAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword(), loginRequest.isRememberMe(), host);
+				
+			} catch (IOException e) {
+			}
+		
+		}
+		return super.createToken(request, response);
 	}
 	
 	@Override

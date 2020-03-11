@@ -34,6 +34,7 @@ import org.apache.shiro.biz.authc.AuthenticationFailureHandler;
 import org.apache.shiro.biz.authc.AuthenticationSuccessHandler;
 import org.apache.shiro.biz.authc.exception.SessionRestrictedException;
 import org.apache.shiro.biz.authc.exception.TerminalRestrictedException;
+import org.apache.shiro.biz.authc.token.DefaultAuthenticationToken;
 import org.apache.shiro.biz.utils.StringUtils;
 import org.apache.shiro.biz.utils.WebUtils;
 import org.apache.shiro.biz.web.filter.authc.listener.LoginListener;
@@ -52,6 +53,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.net.HttpHeaders;
 
 /**
@@ -88,6 +90,8 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
      * (401 Unauthorized).
      */
     private String unauthorizedUrl;
+	
+    protected ObjectMapper objectMapper = new ObjectMapper();
 	
 	public AbstractAuthenticatingFilter() {
 		setLoginUrl(DEFAULT_LOGIN_URL);
@@ -133,6 +137,27 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 	        return subject;
 		}
 		return super.getSubject(request, response);
+	}
+	
+	
+	@Override
+	protected AuthenticationToken createToken(ServletRequest request, ServletResponse response) {
+		// Post && JSON
+		if(WebUtils.isObjectRequest(request)) {
+			
+			try {
+				
+				PostLoginRequest loginRequest = objectMapper.readValue(request.getReader(), PostLoginRequest.class);
+				
+				String host = getHost(request);
+				
+				return new DefaultAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword(), loginRequest.isRememberMe(), host);
+				
+			} catch (IOException e) {
+			}
+		
+		}
+		return super.createToken(request, response);
 	}
 	
 	@Override
