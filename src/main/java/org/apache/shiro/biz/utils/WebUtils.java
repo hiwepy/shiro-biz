@@ -40,10 +40,6 @@ public class WebUtils extends org.apache.shiro.web.util.WebUtils {
 		return isAjaxRequest(request) || isContentTypeJson(request) || isPostRequest(request);
 	}
 
-    public static boolean isObjectRequest(HttpServletRequest request) {
-        return isPostRequest(request) && isContentTypeJson(request);
-    }
-
     public static boolean isObjectRequest(ServletRequest request) {
         return isPostRequest(request) && isContentTypeJson(request);
     }
