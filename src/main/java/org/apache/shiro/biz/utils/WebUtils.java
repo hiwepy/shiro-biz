@@ -35,15 +35,23 @@ public class WebUtils extends org.apache.shiro.web.util.WebUtils {
 	
 	private static final String XML_HTTP_REQUEST = "XMLHttpRequest";
     private static final String CONTENT_TYPE_JSON = "application/json";
-    
-	public static boolean isAjaxResponse(ServletRequest request) {
+
+	public static boolean isAjaxResponse(HttpServletRequest request) {
 		return isAjaxRequest(request) || isContentTypeJson(request) || isPostRequest(request);
 	}
-    
-	public static boolean isObjectRequest(ServletRequest request) {
-        return isAjaxRequest(request) && isContentTypeJson(request);
+
+    public static boolean isObjectRequest(HttpServletRequest request) {
+        return isPostRequest(request) && isContentTypeJson(request);
     }
 
+    public static boolean isObjectRequest(ServletRequest request) {
+        return isPostRequest(request) && isContentTypeJson(request);
+    }
+    
+    public static boolean isAjaxRequest(HttpServletRequest request) {
+        return XML_HTTP_REQUEST.equals(request.getHeader(HttpHeaders.X_REQUESTED_WITH));
+    }
+    
     public static boolean isAjaxRequest(ServletRequest request) {
         try {
 			return XML_HTTP_REQUEST.equals(toHttp(request).getHeader(HttpHeaders.X_REQUESTED_WITH));
@@ -52,6 +60,10 @@ public class WebUtils extends org.apache.shiro.web.util.WebUtils {
 		}
     }
 
+    public static boolean isContentTypeJson(HttpServletRequest request) {
+        return request.getHeader(HttpHeaders.CONTENT_TYPE).contains(CONTENT_TYPE_JSON);
+    }
+    
     public static boolean isContentTypeJson(ServletRequest request) {
         try {
 			return toHttp(request).getHeader(HttpHeaders.CONTENT_TYPE).contains(CONTENT_TYPE_JSON);
@@ -60,9 +72,19 @@ public class WebUtils extends org.apache.shiro.web.util.WebUtils {
 		}
     }
     
+    
+    public static boolean isPostRequest(HttpServletRequest request) {
+        return HttpMethod.POST.name().equals(request.getMethod());
+    }
+    
     public static boolean isPostRequest(ServletRequest request) {
         return HttpMethod.POST.name().equals(toHttp(request).getMethod());
     }
+     
+	public static boolean isAjaxResponse(ServletRequest request) {
+		return isAjaxRequest(request) || isContentTypeJson(request) || isPostRequest(request);
+	}
+   
     
     public static boolean isWebRequest(RequestPairSource source) {
         ServletRequest request = source.getServletRequest();
