@@ -16,11 +16,16 @@
 package org.apache.shiro.biz.utils;
 
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.shiro.ShiroException;
 import org.apache.shiro.web.util.RequestPairSource;
 import org.springframework.http.HttpMethod;
 
@@ -122,6 +127,52 @@ public class WebUtils extends org.apache.shiro.web.util.WebUtils {
 		 
 		return remoteAddr;
 	}
+    
+	
+
+    /**
+     * Add a new parameter to an url.
+     *
+     * @param url   url
+     * @param name  name of the parameter
+     * @param value value of the parameter
+     * @return the new url with the parameter appended
+     */
+    public static String addParameter(final String url, final String name, final String value) {
+        if (url != null) {
+            final StringBuilder sb = new StringBuilder();
+            sb.append(url);
+            if (name != null) {
+                if (url.indexOf("?") >= 0) {
+                    sb.append("&");
+                } else {
+                    sb.append("?");
+                }
+                sb.append(name);
+                sb.append("=");
+                if (value != null) {
+                    sb.append(urlEncode(value));
+                }
+            }
+            return sb.toString();
+        }
+        return null;
+    }
+
+    /**
+     * URL encode a text using UTF-8.
+     *
+     * @param text text to encode
+     * @return the encoded text
+     */
+    public static String urlEncode(final String text) {
+        try {
+            return URLEncoder.encode(text, StandardCharsets.UTF_8.name());
+        } catch (final UnsupportedEncodingException e) {
+            final String message = "Unable to encode text : " + text;
+            throw new ShiroException(message, e);
+        }
+    }
     
 }
 
