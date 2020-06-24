@@ -80,6 +80,7 @@ public class UsernameWithoutPwdToken implements HostAuthenticationToken, Remembe
      * @return the {@link #getUsername() username}.
      * @see org.apache.shiro.authc.AuthenticationToken#getPrincipal()
      */
+    @Override
     public Object getPrincipal() {
         return getUsername();
     }
@@ -89,6 +90,7 @@ public class UsernameWithoutPwdToken implements HostAuthenticationToken, Remembe
      * @return the password char array.
      * @see org.apache.shiro.authc.AuthenticationToken#getCredentials()
      */
+    @Override
     public Object getCredentials() {
         return null;
     }
@@ -103,6 +105,7 @@ public class UsernameWithoutPwdToken implements HostAuthenticationToken, Remembe
      *         explicitly omitted.
      * @since 1.0
      */
+    @Override
     public String getHost() {
         return host;
     }
@@ -128,6 +131,7 @@ public class UsernameWithoutPwdToken implements HostAuthenticationToken, Remembe
      *         across sessions, <tt>false</tt> otherwise (<tt>false</tt> by default).
      * @since 0.9
      */
+    @Override
     public boolean isRememberMe() {
         return rememberMe;
     }
@@ -166,6 +170,7 @@ public class UsernameWithoutPwdToken implements HostAuthenticationToken, Remembe
      * @return the String representation of the <tt>UsernamePasswordToken</tt>, omitting
      *         the password.
      */
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(getClass().getName());

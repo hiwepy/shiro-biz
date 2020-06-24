@@ -91,7 +91,8 @@ public class SpringSessionValidationScheduler implements SessionValidationSchedu
     public void setSessionManager(ValidatingSessionManager sessionManager) {
         this.sessionManager = sessionManager;
     }
-
+    
+    @Override
     public boolean isEnabled() {
         return this.enabled;
     }
@@ -115,6 +116,7 @@ public class SpringSessionValidationScheduler implements SessionValidationSchedu
     /**
      * Starts session validation by creating a spring PeriodicTrigger.
      */
+    @Override
     public void enableSessionValidation() {
 
         enabled = true;
@@ -150,7 +152,8 @@ public class SpringSessionValidationScheduler implements SessionValidationSchedu
             }
         }
     }
-
+    
+    @Override
     public void disableSessionValidation() {
         if (log.isDebugEnabled()) {
             log.debug("Stopping Spring Scheduler session validation job...");

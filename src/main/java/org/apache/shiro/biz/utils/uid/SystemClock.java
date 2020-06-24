@@ -1,9 +1,8 @@
 package org.apache.shiro.biz.utils.uid;
 
 import java.sql.Timestamp;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -39,14 +38,9 @@ public class SystemClock {
     }
 
     private void scheduleClockUpdating() {
-        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor(new ThreadFactory() {
-            public Thread newThread(Runnable runnable) {
-                Thread thread = new Thread(runnable, "System Clock");
-                thread.setDaemon(true);
-                return thread;
-            }
-        });
+        ScheduledExecutorService scheduler = new ScheduledThreadPoolExecutor(1);
         scheduler.scheduleAtFixedRate(new Runnable() {
+        	@Override
             public void run() {
                 now.set(System.currentTimeMillis());
             }

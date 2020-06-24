@@ -30,7 +30,8 @@ public class SessionCreationEnabledSubjectFactory extends DefaultWebSubjectFacto
 	public SessionCreationEnabledSubjectFactory(boolean sessionCreationEnabled) {
 		this.sessionCreationEnabled = sessionCreationEnabled;
 	}
-
+	
+	@Override
 	public Subject createSubject(SubjectContext context) {
 		// 是否创建 session
 		context.setSessionCreationEnabled(sessionCreationEnabled);

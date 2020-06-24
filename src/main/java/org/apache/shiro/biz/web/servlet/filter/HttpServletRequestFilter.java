@@ -20,7 +20,8 @@ public class HttpServletRequestFilter extends OncePerRequestFilter {
 	@Override
 	protected void onFilterConfigSet() throws Exception {
     }
-
+	
+	@Override
 	protected void doFilterInternal(ServletRequest request,ServletResponse response, FilterChain filterchain)
 		throws ServletException, IOException {
 		 Subject subject = SecurityUtils.getSubject();
@@ -30,7 +31,8 @@ public class HttpServletRequestFilter extends OncePerRequestFilter {
 			 //request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(req, resp);
 		 }
 	}
-
+	
+	@Override
 	public void destroy() {
 		super.destroy();
 		this.filterConfig = null;

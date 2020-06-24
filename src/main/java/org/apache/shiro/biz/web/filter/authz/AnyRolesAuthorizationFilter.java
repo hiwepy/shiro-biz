@@ -45,6 +45,7 @@ public class AnyRolesAuthorizationFilter extends AbstracAuthorizationFilter {
 	 * 2、如果用户没有角色，接着判断用户有没有登录，如果没有登录先重定向到登录；
 	 * 3、如果用户没有角色且设置了未授权页面（unauthorizedUrl），那么重定向到未授权页面；否则直接返回401未授权错误码。
      */
+	@Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) throws Exception {
     	Subject subject = getSubject(request, response);
         return checkRoles(subject, mappedValue);

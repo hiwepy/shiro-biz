@@ -22,7 +22,8 @@ public class CustomPathMatchingFilterChainResolver extends PathMatchingFilterCha
         this.customDefaultFilterChainManager = customDefaultFilterChainManager;
         setFilterChainManager(customDefaultFilterChainManager);
     }
-
+    
+    @Override
     public FilterChain getChain(ServletRequest request, ServletResponse response, FilterChain originalChain) {
         FilterChainManager filterChainManager = getFilterChainManager();
         if (!filterChainManager.hasChains()) {

@@ -75,6 +75,7 @@ public class DefaultAuthenticationToken extends UsernamePasswordToken
 		this.captcha = captcha;
 	}
 	
+	@Override
 	public int getStrength() {
 		return strength;
 	}
@@ -82,7 +83,8 @@ public class DefaultAuthenticationToken extends UsernamePasswordToken
 	public void setStrength(int strength) {
 		this.strength = strength;
 	}
-
+	
+	@Override
 	public String getCaptcha() {
 		return captcha;
 	}
@@ -90,7 +92,8 @@ public class DefaultAuthenticationToken extends UsernamePasswordToken
 	public void setCaptcha(String captcha) {
 		this.captcha = captcha;
 	}
-
+	
+	@Override
 	public LoginType getLoginType() {
 		return loginType;
 	}

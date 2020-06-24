@@ -45,7 +45,8 @@ public class RolesAuthorizationFilter extends AbstracAuthorizationFilter {
 		return subject.hasAllRoles(roles);
 
 	}
-
+	
+	@Override
 	public boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue)
 			throws IOException {
 

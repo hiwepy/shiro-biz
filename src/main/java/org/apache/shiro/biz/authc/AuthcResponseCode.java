@@ -6,7 +6,9 @@ import org.apache.shiro.biz.web.servlet.http.HttpStatus;
  * Enumeration of response code.
  */
 public enum AuthcResponseCode {
-	
+	/**
+	 * Authentication Success
+	 */
 	SC_AUTHC_SUCCESS("0", "shiro.authc.success"),
 	SC_AUTHC_ERROR(HttpStatus.SC_INTERNAL_SERVER_ERROR + "", "shiro.authc.error"),
 	SC_AUTHC_LOGOUT(HttpStatus.SC_SESSION_LOGOUT + "", "shiro.authc.logout"),

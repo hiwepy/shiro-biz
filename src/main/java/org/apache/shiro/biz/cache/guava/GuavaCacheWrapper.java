@@ -35,7 +35,8 @@ public class GuavaCacheWrapper<V> implements Cache<String, V> {
 	public GuavaCacheWrapper( LoadingCache<String, V> cache) {
 		this.cache = cache;
 	}
-
+	
+	@Override
 	public V get(String key) throws CacheException {
 		try {
 			return (V) this.cache.get(key);
@@ -43,29 +44,35 @@ public class GuavaCacheWrapper<V> implements Cache<String, V> {
 			throw new CacheException(e);
 		}
 	}
-
+	
+	@Override
 	public V put(String key, V value) throws CacheException {
 		this.cache.put(key, value);
 		return value;
 	}
-
+	
+	@Override
 	public V remove(String key) throws CacheException {
 		this.cache.invalidate(key);
 		return null;
 	}
-
+	
+	@Override
 	public void clear() throws CacheException {
 		this.cache.invalidateAll();
 	}
-
+	
+	@Override
 	public int size() {
 		return Long.valueOf(this.cache.size()).intValue();
 	}
-
+	
+	@Override
 	public Set<String> keys() {
 		return this.cache.asMap().keySet();
 	}
 	
+	@Override
 	public Collection<V> values() {
 		return this.cache.asMap().values();
 	}

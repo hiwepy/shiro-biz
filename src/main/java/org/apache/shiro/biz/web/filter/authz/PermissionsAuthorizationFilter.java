@@ -32,6 +32,7 @@ public class PermissionsAuthorizationFilter extends AbstracAuthorizationFilter {
         return isPermitted;
 	}
 	
+	@Override
 	public boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) throws IOException {
         Subject subject = getSubject(request, response);
         return checkPerms(subject, mappedValue);

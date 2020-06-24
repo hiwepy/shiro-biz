@@ -94,7 +94,7 @@ public class HttpServletEscapeHtml4RequestWrapper extends HttpServletRequestWrap
 		return StringEscapeUtils.escapeHtml4(taintedHTML);
 	}
 	
-	protected HttpServletRequest _getHttpServletRequest() {
+	protected HttpServletRequest getHttpServletRequest() {
 		 return (HttpServletRequest) super.getRequest();
     }
 

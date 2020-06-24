@@ -24,6 +24,7 @@ public abstract class AbstractHttpServlet extends HttpServlet {
 		Parameters.initialize(config);
 	}
 	
+	@Override
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		doPost(request, response);

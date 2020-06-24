@@ -193,6 +193,7 @@ public abstract class AbstractTrustableAuthenticatingFilter extends AbstractAuth
 		return false;
 	}
 	
+	@Override
 	protected boolean onAccessSuccess(AuthenticationToken token, Subject subject, ServletRequest request,
 			ServletResponse response)  {
 		// Successful authentication, continue the original access request
