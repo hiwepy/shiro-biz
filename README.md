@@ -82,6 +82,7 @@ DAO大家都用过，数据访问对象，用于会话的CRUD，比如我们想�
 
 ### Maven Dependency
 
+
 ``` xml
 <dependency>
 	<groupId>com.github.hiwepy</groupId>
