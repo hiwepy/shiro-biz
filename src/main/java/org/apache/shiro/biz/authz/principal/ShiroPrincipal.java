@@ -65,7 +65,9 @@ public class ShiroPrincipal implements Cloneable, Serializable {
 	/**
 	 * 用户别名（昵称）
 	 */
+	@Deprecated
 	private String alias;
+	private String nickname;
 	/**
 	 * 用户角色ID
 	 */
@@ -154,6 +156,14 @@ public class ShiroPrincipal implements Cloneable, Serializable {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	public String getNickname() {
+		return nickname;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
 
 	public String getSalt() {
 		return salt;
@@ -175,10 +185,12 @@ public class ShiroPrincipal implements Cloneable, Serializable {
 		this.secret = secret;
 	}
 
+	@Deprecated
 	public String getAlias() {
 		return alias;
 	}
 
+	@Deprecated
 	public void setAlias(String alias) {
 		this.alias = alias;
 	}
@@ -327,6 +339,7 @@ public class ShiroPrincipal implements Cloneable, Serializable {
 		claims.put("roles", this.getRoles());
 		claims.put("perms", this.getPerms());
 		claims.put("alias", this.getAlias());
+		claims.put("nickname", this.getNickname());
 		claims.put("userid", this.getUserid());
 		claims.put("username", this.getUsername());
 		claims.put("userkey", this.getUserkey());
