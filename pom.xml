@@ -5,7 +5,7 @@
 
 	<groupId>com.github.hiwepy</groupId>
 	<artifactId>shiro-biz</artifactId>
-	<version>1.1.1-SNAPSHOT</version>
+	<version>1.1.1.RELEASE</version>
 	<description>Shiro Extension</description>
 	<name>${project.groupId}:${project.artifactId}</name>
 	<url>https://github.com/hiwepy/${project.artifactId}</url>
@@ -236,7 +236,7 @@
 					<configuration>
 						<serverId>ossrh</serverId>
 						<nexusUrl>https://oss.sonatype.org/</nexusUrl>
-						<autoReleaseAfterClose>false</autoReleaseAfterClose>
+						<autoReleaseAfterClose>true</autoReleaseAfterClose>
 						<!-- <sslAllowAll>true</sslAllowAll> -->
 						<stagingProgressPauseDurationSeconds>60</stagingProgressPauseDurationSeconds>
 						<stagingProgressTimeoutMinutes>20</stagingProgressTimeoutMinutes>
@@ -379,7 +379,7 @@
 		<guava.version>29.0-jre</guava.version>
 		<junit.version>4.12</junit.version>
 		<java.version>1.8</java.version>
-		<jwt-issuer.version>1.0.6-SNAPSHOT</jwt-issuer.version>
+		<jwt-issuer.version>1.0.6.RELEASE</jwt-issuer.version>
 		<maven.version>3.0</maven.version>
 		<maven-antrun-plugin.version>1.8</maven-antrun-plugin.version>
 		<maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
