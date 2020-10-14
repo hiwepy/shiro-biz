@@ -5,7 +5,7 @@
 
 	<groupId>com.github.hiwepy</groupId>
 	<artifactId>shiro-biz</artifactId>
-	<version>1.1.1.RELEASE</version>
+	<version>1.1.2.RELEASE</version>
 	<description>Shiro Extension</description>
 	<name>${project.groupId}:${project.artifactId}</name>
 	<url>https://github.com/hiwepy/${project.artifactId}</url>
@@ -411,160 +411,77 @@
 		<xstream.version>1.4.11.1</xstream.version>
 	</properties>
 
-	<dependencyManagement>
-		<dependencies>
-
-			<!-- https://mvnrepository.com/artifact/junit/junit -->
-			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<version>${junit.version}</version>
-				<scope>test</scope>
-			</dependency>
-
-			<!-- https://mvnrepository.com/artifact/org.slf4j -->
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-api</artifactId>
-				<version>${slf4j.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-simple</artifactId>
-				<version>${slf4j.version}</version>
-				<scope>test</scope>
-			</dependency>
-			
-			<!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
-			<dependency>
-				<groupId>javax.servlet</groupId>
-				<artifactId>javax.servlet-api</artifactId>
-				<version>${servlet-api.version}</version>
-				<scope>provided</scope>
-			</dependency>
-
-			<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
-			<dependency>
-				<groupId>org.apache.commons</groupId>
-				<artifactId>commons-lang3</artifactId>
-				<version>${commons-lang3.version}</version>
-			</dependency>
-			
-			<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-text -->
-			<dependency>
-			    <groupId>org.apache.commons</groupId>
-			    <artifactId>commons-text</artifactId>
-			    <version>${commons-text.version}</version>
-			</dependency>
-			
-			<!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
-			<dependency>
-				<groupId>com.alibaba</groupId>
-				<artifactId>fastjson</artifactId>
-				<version>${fastjson.version}</version>
-			</dependency>
-			<!-- https://mvnrepository.com/artifact/net.sf.flexjson/flexjson -->
-			<dependency>
-			    <groupId>net.sf.flexjson</groupId>
-			    <artifactId>flexjson</artifactId>
-			    <version>${flexjson.version}</version>
-			</dependency>
-			<!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
-			<dependency>
-			    <groupId>com.google.guava</groupId>
-			    <artifactId>guava</artifactId>
-			    <version>${guava.version}</version>
-			</dependency>
-			<!-- https://mvnrepository.com/artifact/com.thoughtworks.xstream/xstream -->
-			<dependency>
-			    <groupId>com.thoughtworks.xstream</groupId>
-			    <artifactId>xstream</artifactId>
-			    <version>${xstream.version}</version>
-			</dependency>
-			
-			<!-- ###################### Shiro ###################### -->
-
-			<dependency>
-	            <groupId>org.apache.shiro</groupId>
-	            <artifactId>shiro-spring</artifactId>
-	            <version>${shiro.version}</version>
-	        </dependency>
-			
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-webmvc</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
-			
-			<dependency>
-				<groupId>com.github.hiwepy</groupId>
-				<artifactId>jwt-issuer-api</artifactId>
-				<version>${jwt-issuer.version}</version>
-			</dependency>
-			
-		</dependencies>
-	</dependencyManagement>
-
 	<dependencies>
 
+		<!-- https://mvnrepository.com/artifact/junit/junit -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.slf4j -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-simple</artifactId>
+			<version>${slf4j.version}</version>
 			<scope>test</scope>
 		</dependency>
+		 
+		<!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
+			<version>${servlet-api.version}</version>
 			<scope>provided</scope>
 		</dependency>
-		
+
+		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
+			<version>${commons-lang3.version}</version>
 		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-text -->
 		<dependency>
 		    <groupId>org.apache.commons</groupId>
 		    <artifactId>commons-text</artifactId>
+		    <version>${commons-text.version}</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
-		<dependency>
-		    <groupId>commons-io</groupId>
-		    <artifactId>commons-io</artifactId>
-		    <version>2.7</version>
-		</dependency>
-
+		
+		<!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
+			<version>${fastjson.version}</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
 		<dependency>
 		    <groupId>com.google.guava</groupId>
 		    <artifactId>guava</artifactId>
+		    <version>${guava.version}</version>
 		</dependency>
-		
+		<!-- https://mvnrepository.com/artifact/net.sf.flexjson/flexjson -->
 		<dependency>
 		    <groupId>net.sf.flexjson</groupId>
 		    <artifactId>flexjson</artifactId>
+		    <version>${flexjson.version}</version>
 		    <scope>provided</scope>
 		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/com.thoughtworks.xstream/xstream -->
 		<dependency>
 		    <groupId>com.thoughtworks.xstream</groupId>
 		    <artifactId>xstream</artifactId>
+		    <version>${xstream.version}</version>
 		    <scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-webmvc</artifactId>
-			<scope>provided</scope>
 		</dependency>
 		
 		<!-- ###################### Shiro ###################### -->
@@ -572,13 +489,8 @@
 		<dependency>
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-spring</artifactId>
+            <version>${shiro.version}</version>
         </dependency>
-        
-        <dependency>
-			<groupId>com.github.hiwepy</groupId>
-			<artifactId>jwt-issuer-api</artifactId>
-		</dependency>
-		
         <!-- https://mvnrepository.com/artifact/org.apache.shiro/shiro-ehcache -->
 		<dependency>
 			<groupId>org.apache.shiro</groupId>
@@ -653,6 +565,19 @@
 		    <artifactId>redisson</artifactId>
 		    <version>${redisson.version}</version>
 		    <scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${spring.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.github.hiwepy</groupId>
+			<artifactId>jwt-issuer-api</artifactId>
+			<version>${jwt-issuer.version}</version>
 		</dependency>
 
 	</dependencies>
