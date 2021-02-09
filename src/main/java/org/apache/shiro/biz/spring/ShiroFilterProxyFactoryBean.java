@@ -15,7 +15,14 @@ import org.springframework.beans.factory.BeanInitializationException;
 public class ShiroFilterProxyFactoryBean extends ShiroFilterFactoryBean {
 	
 	private static transient final Logger log = LoggerFactory.getLogger(ShiroFilterProxyFactoryBean.class);
-	
+
+    /**
+     * Whether or not to bind the constructed SecurityManager instance to static memory (via
+     * SecurityUtils.setSecurityManager).  This was added to support https://issues.apache.org/jira/browse/SHIRO-287
+     * @since 1.2
+     */
+    private boolean staticSecurityManagerEnabled;
+
 	@Override
 	protected AbstractShiroFilter createInstance() throws Exception {
 
@@ -44,7 +51,9 @@ public class ShiroFilterProxyFactoryBean extends ShiroFilterFactoryBean {
         //FilterChainResolver.  It doesn't matter that the instance is an anonymous inner class
         //here - we're just using it because it is a concrete AbstractShiroFilter instance that accepts
         //injection of the SecurityManager and FilterChainResolver:
-        return new SpringShiroFilterProxy((WebSecurityManager) securityManager, chainResolver);
+        SpringShiroFilterProxy shiroFilterProxy = new SpringShiroFilterProxy((WebSecurityManager) securityManager, chainResolver);
+        shiroFilterProxy.setStaticSecurityManagerEnabled(staticSecurityManagerEnabled);
+        return shiroFilterProxy;
     }
 	
 	 /**
@@ -80,5 +89,9 @@ public class ShiroFilterProxyFactoryBean extends ShiroFilterFactoryBean {
             }
         }
     }
+    
+    public void setStaticSecurityManagerEnabled(boolean staticSecurityManagerEnabled) {
+		this.staticSecurityManagerEnabled = staticSecurityManagerEnabled;
+	}
 
 }
