@@ -1,42 +1,10 @@
 package org.apache.shiro.biz.authc;
 
-import java.io.IOException;
-
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.DisabledAccountException;
-import org.apache.shiro.authc.ExcessiveAttemptsException;
-import org.apache.shiro.authc.ExpiredCredentialsException;
-import org.apache.shiro.authc.IncorrectCredentialsException;
-import org.apache.shiro.authc.LockedAccountException;
-import org.apache.shiro.authc.UnknownAccountException;
+import com.alibaba.fastjson.JSONObject;
+import org.apache.shiro.authc.*;
 import org.apache.shiro.authc.pam.UnsupportedTokenException;
 import org.apache.shiro.biz.ShiroBizMessageSource;
-import org.apache.shiro.biz.authc.exception.CaptchaSendException;
-import org.apache.shiro.biz.authc.exception.ExpiredCaptchaException;
-import org.apache.shiro.biz.authc.exception.ExpiredTicketException;
-import org.apache.shiro.biz.authc.exception.ExpiredTokenException;
-import org.apache.shiro.biz.authc.exception.IncorrectCaptchaException;
-import org.apache.shiro.biz.authc.exception.IncorrectSecretException;
-import org.apache.shiro.biz.authc.exception.IncorrectTicketException;
-import org.apache.shiro.biz.authc.exception.IncorrectTokenException;
-import org.apache.shiro.biz.authc.exception.InvalidAccountException;
-import org.apache.shiro.biz.authc.exception.InvalidCaptchaException;
-import org.apache.shiro.biz.authc.exception.InvalidStateException;
-import org.apache.shiro.biz.authc.exception.InvalidTicketException;
-import org.apache.shiro.biz.authc.exception.InvalidTokenException;
-import org.apache.shiro.biz.authc.exception.NoneCaptchaException;
-import org.apache.shiro.biz.authc.exception.NoneRoleException;
-import org.apache.shiro.biz.authc.exception.NoneTicketException;
-import org.apache.shiro.biz.authc.exception.NoneTokenException;
-import org.apache.shiro.biz.authc.exception.SessionKickedoutException;
-import org.apache.shiro.biz.authc.exception.SessionRestrictedException;
-import org.apache.shiro.biz.authc.exception.TerminalRestrictedException;
-import org.apache.shiro.biz.authc.exception.UnsupportedMethodException;
+import org.apache.shiro.biz.authc.exception.*;
 import org.apache.shiro.biz.utils.SubjectUtils;
 import org.apache.shiro.biz.utils.WebUtils;
 import org.springframework.context.NoSuchMessageException;
@@ -44,7 +12,10 @@ import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
-import com.alibaba.fastjson.JSONObject;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Post认证请求失败后的处理实现
@@ -72,11 +43,9 @@ public class DefaultAuthenticationFailureHandler implements AuthenticationFailur
 
 		try {
 
-			// HttpServletRequest httpRequest = WebUtils.toHttp(request);
-			HttpServletResponse httpResponse = WebUtils.toHttp(response);
-
-			httpResponse.setStatus(HttpStatus.UNAUTHORIZED.value());
-			httpResponse.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+			WebUtils.toHttp(response).setStatus(HttpStatus.OK.value());
+			response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+			response.setCharacterEncoding(StandardCharsets.UTF_8.toString());
 
 			if (e instanceof CaptchaSendException) {
 				JSONObject.writeJSONString(response.getWriter(), AuthcResponse.error(
