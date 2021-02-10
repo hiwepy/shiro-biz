@@ -20,12 +20,13 @@ import javax.servlet.ServletResponse;
 
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.subject.Subject;
+import org.springframework.core.Ordered;
 
 /**
  * TODO
  * @author ： <a href="https://github.com/hiwepy">wandl</a>
  */
-public interface AuthenticationSuccessHandler {
+public interface AuthenticationSuccessHandler extends Ordered{
 
 	public boolean supports(AuthenticationToken token);
 

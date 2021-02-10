@@ -15,21 +15,18 @@
  */
 package org.apache.shiro.biz.authz;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
-import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.biz.web.filter.authz.AbstracAuthorizationFilter;
 import org.apache.shiro.subject.Subject;
+import org.springframework.core.Ordered;
 
 /**
  * TODO
  * @author ： <a href="https://github.com/hiwepy">wandl</a>
  */
-public interface AuthorizationSuccessHandler {
+public interface AuthorizationSuccessHandler extends Ordered {
 
 	public boolean supports(AbstracAuthorizationFilter filter);
 

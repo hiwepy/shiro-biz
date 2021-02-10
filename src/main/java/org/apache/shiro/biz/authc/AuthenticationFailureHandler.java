@@ -20,13 +20,14 @@ import javax.servlet.ServletResponse;
 
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
+import org.springframework.core.Ordered;
 
 /**
  * TODO
  * 
  * @author ： <a href="https://github.com/hiwepy">wandl</a>
  */
-public interface AuthenticationFailureHandler {
+public interface AuthenticationFailureHandler extends Ordered {
 
 	public boolean supports(AuthenticationException ex);
 

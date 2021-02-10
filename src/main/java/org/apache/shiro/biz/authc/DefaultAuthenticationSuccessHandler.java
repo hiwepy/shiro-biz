@@ -17,6 +17,7 @@ import org.apache.shiro.biz.web.servlet.http.HttpStatus;
 import org.apache.shiro.subject.Subject;
 import org.springframework.context.NoSuchMessageException;
 import org.springframework.context.support.MessageSourceAccessor;
+import org.springframework.core.Ordered;
 import org.springframework.http.MediaType;
 
 import com.alibaba.fastjson.JSONObject;
@@ -56,4 +57,9 @@ public class DefaultAuthenticationSuccessHandler  implements AuthenticationSucce
 		
 	}
 
+	@Override
+	public int getOrder() {
+		return Integer.MIN_VALUE;
+	}
+	
 }
