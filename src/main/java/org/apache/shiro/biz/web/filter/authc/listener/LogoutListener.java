@@ -4,8 +4,9 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
 import org.apache.shiro.subject.Subject;
+import org.springframework.core.Ordered;
 
-public interface LogoutListener {
+public interface LogoutListener extends Ordered {
 
 	void beforeLogout(Subject subject, ServletRequest request, ServletResponse response);
 
@@ -13,4 +14,8 @@ public interface LogoutListener {
 
 	void onSuccess(Subject subject, ServletRequest request, ServletResponse response);
 
+	default int getOrder() {
+		return Integer.MIN_VALUE;
+	}
+	
 }

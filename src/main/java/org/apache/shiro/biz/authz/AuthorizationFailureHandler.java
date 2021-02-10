@@ -42,4 +42,8 @@ public interface AuthorizationFailureHandler extends Ordered {
 	public boolean onAuthorizationFailure(Object mappedValue, AuthenticationException e, ServletRequest request,
 			ServletResponse response) throws IOException;
 
+	default int getOrder() {
+		return Integer.MIN_VALUE;
+	}
+	
 }

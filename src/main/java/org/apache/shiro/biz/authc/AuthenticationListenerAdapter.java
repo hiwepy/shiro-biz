@@ -20,12 +20,13 @@ import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationListener;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.springframework.core.Ordered;
 
 /**
  * Simple adapter implementation of the {@link AuthenticationListener} interface, effectively providing
  * no-op implementations of all methods.
  */
-public class AuthenticationListenerAdapter implements AuthenticationListener {
+public class AuthenticationListenerAdapter implements AuthenticationListener, Ordered {
 
 	@Override
 	public void onSuccess(AuthenticationToken token, AuthenticationInfo info) {
@@ -42,4 +43,8 @@ public class AuthenticationListenerAdapter implements AuthenticationListener {
 		
 	}
 
+	public int getOrder() {
+		return Integer.MIN_VALUE;
+	}
+	
 }

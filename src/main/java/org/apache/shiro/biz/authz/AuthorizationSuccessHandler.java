@@ -41,4 +41,8 @@ public interface AuthorizationSuccessHandler extends Ordered {
 	public boolean onAuthorizationSuccess(Object mappedValue, Subject subject, ServletRequest request,
 			ServletResponse response) throws Exception;
 
+	default int getOrder() {
+		return Integer.MIN_VALUE;
+	}
+	
 }

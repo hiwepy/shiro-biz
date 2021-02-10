@@ -40,4 +40,8 @@ public interface AuthenticationFailureHandler extends Ordered {
 	 */
 	public void onAuthenticationFailure(AuthenticationToken token, ServletRequest request, ServletResponse response, AuthenticationException exception) ;
 
+	default int getOrder() {
+		return Integer.MIN_VALUE;
+	}
+	
 }

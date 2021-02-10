@@ -39,4 +39,8 @@ public interface AuthenticationSuccessHandler extends Ordered{
 	 */
 	void onAuthenticationSuccess(AuthenticationToken token, ServletRequest request, ServletResponse response, Subject subject) ;
 
+	default int getOrder() {
+		return Integer.MIN_VALUE;
+	}
+	
 }

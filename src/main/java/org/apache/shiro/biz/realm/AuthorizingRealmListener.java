@@ -19,8 +19,9 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.realm.AuthorizingRealm;
+import org.springframework.core.Ordered;
 
-public interface AuthorizingRealmListener {
+public interface AuthorizingRealmListener extends Ordered {
 
 	/**
 	 * 当认证失败时调用【报异常或则是查询不到认证信息认为是失败】
