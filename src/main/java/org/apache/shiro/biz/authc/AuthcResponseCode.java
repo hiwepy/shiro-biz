@@ -9,7 +9,7 @@ public enum AuthcResponseCode {
 	/**
 	 * Authentication Success
 	 */
-	SC_AUTHC_SUCCESS("0", "shiro.authc.success"),
+	SC_AUTHC_SUCCESS("200", "shiro.authc.success"),
 	SC_AUTHC_ERROR(HttpStatus.SC_INTERNAL_SERVER_ERROR + "", "shiro.authc.error"),
 	SC_AUTHC_LOGOUT(HttpStatus.SC_SESSION_LOGOUT + "", "shiro.authc.logout"),
 	SC_AUTHC_FAIL("10001", "shiro.authc.fail"),
@@ -34,7 +34,7 @@ public enum AuthcResponseCode {
 	SC_AUTHC_SESSION_RESTRICTED("10019", "shiro.authc.session.restricted"),
 	SC_AUTHC_SESSION_TERMINAL_RESTRICTED("10020", "shiro.authc.session.terminal.restricted"),
 	
-	SC_AUTHZ_SUCCESS("0", "shiro.authz.success"),
+	SC_AUTHZ_SUCCESS("200", "shiro.authz.success"),
 	SC_AUTHZ_FAIL("10021", "shiro.authz.fail"),
 	SC_AUTHZ_CODE_REQUIRED("10022", "shiro.authz.code.required"),
 	SC_AUTHZ_CODE_EXPIRED("10023", "shiro.authz.code.expired"),
