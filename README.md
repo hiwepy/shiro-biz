@@ -86,6 +86,6 @@ DAO大家都用过，数据访问对象，用于会话的CRUD，比如我们想�
 <dependency>
 	<groupId>com.github.hiwepy</groupId>
 	<artifactId>shiro-biz</artifactId>
-	<version>1.1.4.RELEASE</version>
+	<version>1.1.7.RELEASE</version>
 </dependency>
 ```
