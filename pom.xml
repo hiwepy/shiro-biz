@@ -58,7 +58,6 @@
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>${maven-compiler-plugin.version}</version>
 					<configuration>
-						<defaultLibBundleDir>lib</defaultLibBundleDir>
 						<source>${java.version}</source>
 						<target>${java.version}</target>
 						<encoding>${project.build.sourceEncoding}</encoding>
@@ -150,11 +149,6 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-source-plugin</artifactId>
 					<version>${maven-source-plugin.version}</version>
-					<configuration>
-						<testFailureIgnore>true</testFailureIgnore>
-						<attach>true</attach>
-						<encoding>${project.build.sourceEncoding}</encoding>
-					</configuration>
 					<executions>
 						<execution>
 							<id>attach-sources</id>
@@ -196,7 +190,6 @@
 					<artifactId>maven-jar-plugin</artifactId>
 					<version>${maven-jar-plugin.version}</version>
 					<configuration>
-						<encoding>${project.build.sourceEncoding}</encoding>
 						<skipIfEmpty>true</skipIfEmpty>
 						<archive>
 							<manifest>
@@ -212,8 +205,6 @@
 					<artifactId>maven-javadoc-plugin</artifactId>
 					<version>${maven-javadoc-plugin.version}</version>
 					<configuration>
-						<aggregate>true</aggregate>
-						<argLine>-Dfile.encoding=UTF-8</argLine>
 						<charset>${project.build.sourceEncoding}</charset>
 						<encoding>${project.build.sourceEncoding}</encoding>
 						<docencoding>${project.build.sourceEncoding}</docencoding>
@@ -372,9 +363,9 @@
 		<commons-codec.version>1.11</commons-codec.version>
 		<commons-lang3.version>3.8.1</commons-lang3.version>
 		<commons-text.version>1.6</commons-text.version>
-		<commons-io.version>2.6</commons-io.version>
+		<commons-io.version>2.7</commons-io.version>
 		<ehcache3.version>3.6.3</ehcache3.version>
-		<fastjson.version>1.2.72</fastjson.version>
+		<fastjson.version>1.2.75</fastjson.version>
 		<flexjson.version>3.3</flexjson.version>
 		<guava.version>29.0-jre</guava.version>
 		<junit.version>4.12</junit.version>
@@ -396,19 +387,13 @@
 		<maven-surefire-plugin.vertsion>2.22.1</maven-surefire-plugin.vertsion>
 		<maven-source-plugin.version>3.0.1</maven-source-plugin.version>
 		<maven-nexus-staging-plugin.version>1.6.8</maven-nexus-staging-plugin.version>
-		<j2cache.version>2.8.0-release</j2cache.version>
- 		<redisson.version>3.10.0</redisson.version>
 		<servlet-api.version>4.0.1</servlet-api.version>
-		<shiro.version>1.7.0</shiro.version>
-		<shiro-ehcache.version>${shiro.version}</shiro-ehcache.version>
-		<shiro-ehcache3.version>1.0.0</shiro-ehcache3.version>
-		<shiro-hazelcast.version>${shiro.version}</shiro-hazelcast.version>
-		<shiro-j2cache.version>1.0.2.RELEASE</shiro-j2cache.version>
-		<shiro-redis.version>3.2.3</shiro-redis.version>
-		<shiro-redisson.version>1.1.4</shiro-redisson.version> 
-		<slf4j.version>1.7.26</slf4j.version>
-		<spring.version>5.1.12.RELEASE</spring.version>
+		<shiro.version>1.7.1</shiro.version>
+		<shiro-redis.version>3.3.1</shiro-redis.version>
+		<slf4j.version>1.7.30</slf4j.version>
+		<spring.version>5.2.13.RELEASE</spring.version>
 		<xstream.version>1.4.11.1</xstream.version>
+		<jackson.version>2.12.2</jackson.version>
 	</properties>
 
 	<dependencyManagement>
@@ -457,6 +442,13 @@
 			    <version>${commons-text.version}</version>
 			</dependency>
 			
+			<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+			<dependency>
+			    <groupId>commons-io</groupId>
+			    <artifactId>commons-io</artifactId>
+			    <version>${commons-io.version}</version>
+			</dependency>
+			
 			<!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
 			<dependency>
 				<groupId>com.alibaba</groupId>
@@ -481,7 +473,13 @@
 			    <artifactId>xstream</artifactId>
 			    <version>${xstream.version}</version>
 			</dependency>
-			
+			<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+			<dependency>
+			    <groupId>com.fasterxml.jackson.core</groupId>
+			    <artifactId>jackson-databind</artifactId>
+			    <version>${jackson.version}</version>
+			</dependency>
+						
 			<!-- ###################### Shiro ###################### -->
 
 			<dependency>
@@ -535,16 +533,14 @@
 		    <groupId>org.apache.commons</groupId>
 		    <artifactId>commons-text</artifactId>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
 		<dependency>
 		    <groupId>commons-io</groupId>
 		    <artifactId>commons-io</artifactId>
-		    <version>2.7</version>
 		</dependency>
 
 		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>fastjson</artifactId>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-databind</artifactId>
 		</dependency>
 		<dependency>
 		    <groupId>com.google.guava</groupId>
@@ -573,46 +569,11 @@
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-spring</artifactId>
         </dependency>
-        
         <dependency>
 			<groupId>com.github.hiwepy</groupId>
 			<artifactId>jwt-issuer-api</artifactId>
 		</dependency>
 		
-        <!-- https://mvnrepository.com/artifact/org.apache.shiro/shiro-ehcache -->
-		<dependency>
-			<groupId>org.apache.shiro</groupId>
-			<artifactId>shiro-ehcache</artifactId>
-			<version>${shiro-ehcache.version}</version>
-			<scope>provided</scope>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.ehcache.integrations.shiro/shiro-ehcache3 -->
-		<dependency>
-		    <groupId>org.ehcache.integrations.shiro</groupId>
-		    <artifactId>shiro-ehcache3</artifactId>
-		    <version>${shiro-ehcache3.version}</version>
-		    <scope>provided</scope>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.ehcache/ehcache -->
-		<dependency>
-		    <groupId>org.ehcache</groupId>
-		    <artifactId>ehcache</artifactId>
-		    <version>${ehcache3.version}</version>
-		    <scope>provided</scope>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.apache.shiro/shiro-hazelcast -->
-		<dependency>
-		    <groupId>org.apache.shiro</groupId>
-		    <artifactId>shiro-hazelcast</artifactId>
-		    <version>${shiro-hazelcast.version}</version>
-		    <scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.github.hiwepy</groupId>
-			<artifactId>shiro-j2cache</artifactId>
-			<version>${shiro-j2cache.version}</version>
-			<scope>provided</scope>
-		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.crazycake/shiro-redis -->
 		<dependency>
 		    <groupId>org.crazycake</groupId>
@@ -629,30 +590,6 @@
 		    		<artifactId>checkstyle</artifactId>
 		    	</exclusion>
 		    </exclusions>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.github.fartherp/shiro-redisson -->
-		<dependency>
-		    <groupId>com.github.fartherp</groupId>
-		    <artifactId>shiro-redisson</artifactId>
-		    <version>${shiro-redisson.version}</version>
-		    <scope>provided</scope>
-		    <exclusions>
-		    	<exclusion>
-		    		<groupId>org.apache.shiro</groupId>
-		    		<artifactId>shiro-core</artifactId>
-		    	</exclusion>
-		    	<exclusion>
-		    		<groupId>org.apache.shiro</groupId>
-		    		<artifactId>shiro-web</artifactId>
-		    	</exclusion>
-		    </exclusions>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.redisson/redisson -->
-		<dependency>
-		    <groupId>org.redisson</groupId>
-		    <artifactId>redisson</artifactId>
-		    <version>${redisson.version}</version>
-		    <scope>provided</scope>
 		</dependency>
 
 	</dependencies>
