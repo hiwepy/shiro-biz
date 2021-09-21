@@ -370,7 +370,7 @@
 		<guava.version>29.0-jre</guava.version>
 		<junit.version>4.12</junit.version>
 		<java.version>1.8</java.version>
-		<jwt-issuer.version>1.0.6.RELEASE</jwt-issuer.version>
+		<jwt-issuer.version>1.0.8.RELEASE</jwt-issuer.version>
 		<maven.version>3.0</maven.version>
 		<maven-antrun-plugin.version>1.8</maven-antrun-plugin.version>
 		<maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
@@ -388,7 +388,7 @@
 		<maven-source-plugin.version>3.0.1</maven-source-plugin.version>
 		<maven-nexus-staging-plugin.version>1.6.8</maven-nexus-staging-plugin.version>
 		<servlet-api.version>4.0.1</servlet-api.version>
-		<shiro.version>1.7.1</shiro.version>
+		<shiro.version>1.8.0</shiro.version>
 		<shiro-redis.version>3.3.1</shiro-redis.version>
 		<slf4j.version>1.7.30</slf4j.version>
 		<spring.version>5.2.13.RELEASE</spring.version>
@@ -412,12 +412,6 @@
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
 				<version>${slf4j.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-simple</artifactId>
-				<version>${slf4j.version}</version>
-				<scope>test</scope>
 			</dependency>
 			
 			<!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
@@ -513,11 +507,6 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-simple</artifactId>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>

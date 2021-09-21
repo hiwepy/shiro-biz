@@ -25,7 +25,7 @@ import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
 
-
+import com.github.hiwepy.jwt.JwtClaims;
 import com.github.hiwepy.jwt.JwtPayload.RolePair;
 
 /**
@@ -334,23 +334,19 @@ public class ShiroPrincipal implements Cloneable, Serializable {
 		
 		Map<String, Object> claims = new HashMap<>(13);
 		
-		claims.put("role", this.getRole());
-		claims.put("roleid", this.getRoleid());
-		claims.put("roles", this.getRoles());
-		claims.put("perms", this.getPerms());
-		claims.put("alias", this.getAlias());
-		claims.put("nickname", this.getNickname());
-		claims.put("userid", this.getUserid());
-		claims.put("username", this.getUsername());
-		claims.put("userkey", this.getUserkey());
-		claims.put("usercode", this.getUsercode());
-		claims.put("initial", this.isInitial());
-		claims.put("faced", this.isFace());
-		claims.put("faceid", this.getFaceId());
+		claims.put(JwtClaims.RKEY, this.getRole());
+		claims.put(JwtClaims.RID, this.getRoleid());
+		claims.put(JwtClaims.ROLES, this.getRoles());
+		claims.put(JwtClaims.PERMS, this.getPerms());
+		claims.put(JwtClaims.UID, this.getUserid());
+		claims.put(JwtClaims.UNAME, this.getUsername());
+		claims.put(JwtClaims.UKEY, this.getUserkey());
+		claims.put(JwtClaims.UCODE, this.getUsercode());
+		claims.put(JwtClaims.INITIAL, this.isInitial());
 		if (CollectionUtils.isEmpty(this.getProfile())) {
-			claims.put("profile", new HashMap<>(0));
+			claims.put(JwtClaims.PROFILE, new HashMap<>(0));
 		} else {
-			claims.put("profile", this.getProfile());
+			claims.put(JwtClaims.PROFILE, this.getProfile());
 		}
 		return claims;
 		

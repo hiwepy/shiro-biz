@@ -1,6 +1,7 @@
 package org.apache.shiro.biz.authc;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -43,7 +44,8 @@ public class DefaultAuthenticationSuccessHandler  implements AuthenticationSucce
 			HttpServletResponse httpResponse = WebUtils.toHttp(response);
 			
 			httpResponse.setStatus(HttpStatus.SC_OK);
-			httpResponse.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+			httpResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
+			httpResponse.setCharacterEncoding(StandardCharsets.UTF_8.toString());
 			
 			// Response Authentication status information
 			JSONObject.writeJSONString(response.getWriter(), AuthcResponse.success(messages.getMessage(AuthcResponseCode.SC_AUTHC_SUCCESS.getMsgKey())));
