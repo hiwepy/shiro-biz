@@ -167,8 +167,8 @@
 						<!-- 跳过单元测试 -->
 						<skip>true</skip>
 						<skipTests>true</skipTests>
-						<!-- forkMode 可设置值有 “never”， “once”， “always” 和 “pertest”。 pretest： 
-							每一个测试创建一个新进程，为每个测试创建新的JVM是单独测试的最彻底方式，但也是最慢的，不适合hudson上持续回归。 once：在一个进程中进行所有测试。once为默认设置，在Hudson上持续回归时建议使用默认设置。 
+						<!-- forkMode 可设置值有 “never”， “once”， “always” 和 “pertest”。 pretest：
+							每一个测试创建一个新进程，为每个测试创建新的JVM是单独测试的最彻底方式，但也是最慢的，不适合hudson上持续回归。 once：在一个进程中进行所有测试。once为默认设置，在Hudson上持续回归时建议使用默认设置。
 							always：在一个进程中并行的运行脚本，Junit4.7以上版本才可以使用，surefire的版本要在2.6以上提供这个功能，其中 threadCount：执行时，指定可分配的线程数量。只和参数parallel配合使用有效。默认：5。 -->
 						<forkMode>once</forkMode>
 						<argLine>-Xmx1024m -XX:PermSize=256m -XX:MaxPermSize=256m
@@ -365,9 +365,9 @@
 		<commons-text.version>1.6</commons-text.version>
 		<commons-io.version>2.7</commons-io.version>
 		<ehcache3.version>3.6.3</ehcache3.version>
-		<fastjson.version>1.2.75</fastjson.version>
+		<fastjson.version>1.2.79</fastjson.version>
 		<flexjson.version>3.3</flexjson.version>
-		<guava.version>29.0-jre</guava.version>
+		<guava.version>31.0.1-jre</guava.version>
 		<junit.version>4.12</junit.version>
 		<java.version>1.8</java.version>
 		<jwt-issuer.version>1.0.8.RELEASE</jwt-issuer.version>
@@ -388,7 +388,7 @@
 		<maven-source-plugin.version>3.0.1</maven-source-plugin.version>
 		<maven-nexus-staging-plugin.version>1.6.8</maven-nexus-staging-plugin.version>
 		<servlet-api.version>4.0.1</servlet-api.version>
-		<shiro.version>1.8.0</shiro.version>
+		<shiro.version>1.9.0</shiro.version>
 		<shiro-redis.version>3.3.1</shiro-redis.version>
 		<slf4j.version>1.7.30</slf4j.version>
 		<spring.version>5.2.13.RELEASE</spring.version>
@@ -413,7 +413,7 @@
 				<artifactId>slf4j-api</artifactId>
 				<version>${slf4j.version}</version>
 			</dependency>
-			
+
 			<!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
 			<dependency>
 				<groupId>javax.servlet</groupId>
@@ -428,21 +428,21 @@
 				<artifactId>commons-lang3</artifactId>
 				<version>${commons-lang3.version}</version>
 			</dependency>
-			
+
 			<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-text -->
 			<dependency>
 			    <groupId>org.apache.commons</groupId>
 			    <artifactId>commons-text</artifactId>
 			    <version>${commons-text.version}</version>
 			</dependency>
-			
+
 			<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
 			<dependency>
 			    <groupId>commons-io</groupId>
 			    <artifactId>commons-io</artifactId>
 			    <version>${commons-io.version}</version>
 			</dependency>
-			
+
 			<!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
 			<dependency>
 				<groupId>com.alibaba</groupId>
@@ -473,7 +473,7 @@
 			    <artifactId>jackson-databind</artifactId>
 			    <version>${jackson.version}</version>
 			</dependency>
-						
+
 			<!-- ###################### Shiro ###################### -->
 
 			<dependency>
@@ -481,19 +481,19 @@
 	            <artifactId>shiro-spring</artifactId>
 	            <version>${shiro.version}</version>
 	        </dependency>
-			
+
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-webmvc</artifactId>
 				<version>${spring.version}</version>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>com.github.hiwepy</groupId>
 				<artifactId>jwt-issuer-api</artifactId>
 				<version>${jwt-issuer.version}</version>
 			</dependency>
-			
+
 		</dependencies>
 	</dependencyManagement>
 
@@ -513,7 +513,7 @@
 			<artifactId>javax.servlet-api</artifactId>
 			<scope>provided</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
@@ -535,7 +535,7 @@
 		    <groupId>com.google.guava</groupId>
 		    <artifactId>guava</artifactId>
 		</dependency>
-		
+
 		<dependency>
 		    <groupId>net.sf.flexjson</groupId>
 		    <artifactId>flexjson</artifactId>
@@ -551,7 +551,7 @@
 			<artifactId>spring-webmvc</artifactId>
 			<scope>provided</scope>
 		</dependency>
-		
+
 		<!-- ###################### Shiro ###################### -->
 
 		<dependency>
@@ -562,7 +562,7 @@
 			<groupId>com.github.hiwepy</groupId>
 			<artifactId>jwt-issuer-api</artifactId>
 		</dependency>
-		
+
 		<!-- https://mvnrepository.com/artifact/org.crazycake/shiro-redis -->
 		<dependency>
 		    <groupId>org.crazycake</groupId>
