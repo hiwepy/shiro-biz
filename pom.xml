@@ -360,10 +360,11 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<commons-codec.version>1.11</commons-codec.version>
-		<commons-lang3.version>3.8.1</commons-lang3.version>
-		<commons-text.version>1.6</commons-text.version>
-		<commons-io.version>2.7</commons-io.version>
+		<caffeine.version>2.9.3</caffeine.version>
+		<commons-codec.version>1.15</commons-codec.version>
+		<commons-lang3.version>3.12.0</commons-lang3.version>
+		<commons-text.version>1.9</commons-text.version>
+		<commons-io.version>2.11.0</commons-io.version>
 		<ehcache3.version>3.6.3</ehcache3.version>
 		<fastjson.version>1.2.79</fastjson.version>
 		<flexjson.version>3.3</flexjson.version>
@@ -461,6 +462,12 @@
 			    <artifactId>guava</artifactId>
 			    <version>${guava.version}</version>
 			</dependency>
+			<!-- https://mvnrepository.com/artifact/com.github.ben-manes.caffeine/caffeine -->
+			<dependency>
+				<groupId>com.github.ben-manes.caffeine</groupId>
+				<artifactId>caffeine</artifactId>
+				<version>${caffeine.version}</version>
+			</dependency>
 			<!-- https://mvnrepository.com/artifact/com.thoughtworks.xstream/xstream -->
 			<dependency>
 			    <groupId>com.thoughtworks.xstream</groupId>
@@ -532,10 +539,15 @@
 		    <artifactId>jackson-databind</artifactId>
 		</dependency>
 		<dependency>
-		    <groupId>com.google.guava</groupId>
-		    <artifactId>guava</artifactId>
+			<groupId>com.github.ben-manes.caffeine</groupId>
+			<artifactId>caffeine</artifactId>
+			<scope>provided</scope>
 		</dependency>
-
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<scope>provided</scope>
+		</dependency>
 		<dependency>
 		    <groupId>net.sf.flexjson</groupId>
 		    <artifactId>flexjson</artifactId>
