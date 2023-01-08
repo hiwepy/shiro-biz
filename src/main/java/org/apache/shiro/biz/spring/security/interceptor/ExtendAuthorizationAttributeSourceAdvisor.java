@@ -1,17 +1,13 @@
 package org.apache.shiro.biz.spring.security.interceptor;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-
-import org.apache.shiro.authz.annotation.RequiresAuthentication;
-import org.apache.shiro.authz.annotation.RequiresGuest;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.apache.shiro.authz.annotation.RequiresRoles;
-import org.apache.shiro.authz.annotation.RequiresUser;
+import org.apache.shiro.authz.annotation.*;
 import org.apache.shiro.biz.authz.annotation.RolesAllowed;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 
 /**
  * 自定义的注解权限AOP扫描

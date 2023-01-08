@@ -1,11 +1,11 @@
 package org.apache.shiro.biz.authz.aop;
 
-import java.lang.annotation.Annotation;
-import java.util.Arrays;
-
 import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.authz.aop.AuthorizingAnnotationHandler;
 import org.apache.shiro.biz.authz.annotation.RolesAllowed;
+
+import java.lang.annotation.Annotation;
+import java.util.Arrays;
 
 public class RolesAllowedAnnotationHandler extends AuthorizingAnnotationHandler {
 

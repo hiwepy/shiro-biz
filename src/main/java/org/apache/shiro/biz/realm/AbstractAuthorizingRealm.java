@@ -15,10 +15,6 @@
  */
 package org.apache.shiro.biz.realm;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -31,6 +27,10 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
 /**
  * <b>抽象Realm</b> 

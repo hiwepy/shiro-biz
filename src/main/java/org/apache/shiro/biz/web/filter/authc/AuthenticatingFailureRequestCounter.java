@@ -15,11 +15,11 @@
  */
 package org.apache.shiro.biz.web.filter.authc;
 
+import org.apache.shiro.biz.utils.WebUtils;
+
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-
-import org.apache.shiro.biz.utils.WebUtils;
 
 public class AuthenticatingFailureRequestCounter implements AuthenticatingFailureCounter {
 

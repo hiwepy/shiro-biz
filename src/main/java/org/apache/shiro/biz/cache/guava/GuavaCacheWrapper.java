@@ -16,14 +16,13 @@
 package org.apache.shiro.biz.cache.guava;
 
 
-import java.util.Collection;
-import java.util.Set;
-import java.util.concurrent.ExecutionException;
-
+import com.google.common.cache.LoadingCache;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheException;
 
-import com.google.common.cache.LoadingCache;
+import java.util.Collection;
+import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Guava Cache Wrapper

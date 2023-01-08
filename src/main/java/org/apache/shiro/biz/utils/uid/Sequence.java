@@ -1,12 +1,12 @@
 package org.apache.shiro.biz.utils.uid;
 
-import java.lang.management.ManagementFactory;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-
 import org.apache.shiro.biz.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.lang.management.ManagementFactory;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
 
 /**
  * <p>

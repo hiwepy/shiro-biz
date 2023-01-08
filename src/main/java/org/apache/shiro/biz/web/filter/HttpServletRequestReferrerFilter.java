@@ -1,13 +1,6 @@
 package org.apache.shiro.biz.web.filter;
 
-import java.util.Iterator;
-import java.util.Map.Entry;
-import java.util.Set;
-
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-
+import com.alibaba.fastjson2.JSON;
 import org.apache.commons.collections.MapUtils;
 import org.apache.shiro.biz.authc.AuthcResponse;
 import org.apache.shiro.biz.utils.WebUtils;
@@ -20,7 +13,12 @@ import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
 import org.springframework.util.StringUtils;
 
-import com.alibaba.fastjson.JSONObject;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Iterator;
+import java.util.Map.Entry;
+import java.util.Set;
 
 
 public class HttpServletRequestReferrerFilter extends AccessControlFilter {
@@ -78,7 +76,7 @@ public class HttpServletRequestReferrerFilter extends AccessControlFilter {
 		if (WebUtils.isAjaxResponse(request)) {
     		WebUtils.toHttp(response).setStatus(HttpStatus.SC_FORBIDDEN);
     		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
-    		JSONObject.writeJSONString(response.getWriter(), AuthcResponse.error(mString));
+    		JSON.writeTo(response.getOutputStream(), AuthcResponse.error(mString));
 		} else {
 			WebUtils.toHttp(response).sendError(HttpStatus.SC_FORBIDDEN, mString);
 		}

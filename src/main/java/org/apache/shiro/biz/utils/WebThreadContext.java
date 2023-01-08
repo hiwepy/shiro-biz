@@ -15,15 +15,14 @@
  */
 package org.apache.shiro.biz.utils;
 
-import java.util.Locale;
+import org.apache.shiro.util.ThreadContext;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
-import org.apache.shiro.util.ThreadContext;
+import java.util.Locale;
 
 public class WebThreadContext extends ThreadContext {
 

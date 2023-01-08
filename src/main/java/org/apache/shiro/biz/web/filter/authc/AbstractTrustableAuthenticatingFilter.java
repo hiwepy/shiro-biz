@@ -15,11 +15,6 @@
  */
 package org.apache.shiro.biz.web.filter.authc;
 
-import java.io.IOException;
-
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.biz.authc.AuthenticationFailureHandler;
@@ -33,6 +28,10 @@ import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import java.io.IOException;
 
 /**
  * 抽象的可信的认证 (authentication)过滤器

@@ -15,16 +15,16 @@
  */
 package org.apache.shiro.biz.authz.permission;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import org.apache.commons.collections.MapUtils;
 import org.apache.shiro.authz.Permission;
 import org.apache.shiro.authz.permission.RolePermissionResolver;
 import org.apache.shiro.authz.permission.WildcardPermission;
 import org.apache.shiro.biz.utils.StringUtils;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * @author <a href="https://github.com/hiwepy">hiwepy</a>

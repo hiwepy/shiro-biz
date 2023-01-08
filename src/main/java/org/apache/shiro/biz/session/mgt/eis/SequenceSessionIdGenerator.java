@@ -15,11 +15,11 @@
  */
 package org.apache.shiro.biz.session.mgt.eis;
 
-import java.io.Serializable;
-
 import org.apache.shiro.biz.utils.IDWorker;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.eis.SessionIdGenerator;
+
+import java.io.Serializable;
 
 public class SequenceSessionIdGenerator implements SessionIdGenerator {
 

@@ -1,11 +1,11 @@
 package org.apache.shiro.biz.web.filter.authc.listener;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.core.Ordered;
+
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 
 public interface LoginListener extends Ordered {
 

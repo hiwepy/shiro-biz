@@ -15,8 +15,6 @@
  */
 package org.apache.shiro.biz.authc.pam;
 
-import java.util.Collection;
-
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -24,6 +22,8 @@ import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.pam.AbstractAuthenticationStrategy;
 import org.apache.shiro.realm.Realm;
 import org.apache.shiro.util.CollectionUtils;
+
+import java.util.Collection;
 
 /**
  * 至少两个认证的策略

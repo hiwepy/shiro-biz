@@ -15,12 +15,12 @@
  */
 package org.apache.shiro.biz.cache.spring;
 
-import java.util.Collection;
-import java.util.Set;
-
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheException;
 import org.springframework.cache.Cache.ValueWrapper;
+
+import java.util.Collection;
+import java.util.Set;
 
 /**
  * Spring Cache Wrapper

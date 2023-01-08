@@ -15,15 +15,15 @@
  */
 package org.apache.shiro.biz.session.mgt;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.shiro.biz.utils.WebUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.SessionContext;
 import org.apache.shiro.session.mgt.SessionFactory;
 import org.apache.shiro.session.mgt.SimpleOnlineSession;
 import org.apache.shiro.web.session.mgt.WebSessionContext;
+
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author <a href="https://github.com/hiwepy">hiwepy</a>

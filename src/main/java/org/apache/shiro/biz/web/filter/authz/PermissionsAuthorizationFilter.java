@@ -1,11 +1,10 @@
 package org.apache.shiro.biz.web.filter.authz;
 
-import java.io.IOException;
+import org.apache.shiro.subject.Subject;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-
-import org.apache.shiro.subject.Subject;
+import java.io.IOException;
 
 /**
  * 

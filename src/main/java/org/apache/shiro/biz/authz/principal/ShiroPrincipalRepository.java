@@ -15,11 +15,11 @@
  */
 package org.apache.shiro.biz.authz.principal;
 
-import java.util.Set;
-
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
+
+import java.util.Set;
 
 /**
  * 认证主体信息提供者接口

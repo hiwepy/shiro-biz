@@ -1,11 +1,6 @@
 package org.apache.shiro.biz.web.filter.authc;
 
-import java.util.List;
-import java.util.Locale;
-
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-
+import com.alibaba.fastjson2.JSON;
 import org.apache.shiro.biz.ShiroBizMessageSource;
 import org.apache.shiro.biz.authc.AuthcResponse;
 import org.apache.shiro.biz.authc.AuthcResponseCode;
@@ -20,7 +15,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.http.MediaType;
 
-import com.alibaba.fastjson.JSONObject;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * 扩展Shiro登出逻辑，增加监听回调接口
@@ -103,7 +101,7 @@ public abstract class AbstractLogoutFilter extends LogoutFilter {
     		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
     		
     		// Response logout status information
-    		JSONObject.writeJSONString(response.getWriter(), AuthcResponse.logout(
+    		JSON.writeTo(response.getOutputStream(), AuthcResponse.logout(
     				messages.getMessage(AuthcResponseCode.SC_AUTHC_LOGOUT.getMsgKey())));
 			
 			return false;

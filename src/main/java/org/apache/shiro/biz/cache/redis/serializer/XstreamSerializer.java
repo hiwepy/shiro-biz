@@ -15,10 +15,9 @@
  */
 package org.apache.shiro.biz.cache.redis.serializer;
 
+import com.thoughtworks.xstream.XStream;
 import org.crazycake.shiro.exception.SerializationException;
 import org.crazycake.shiro.serializer.RedisSerializer;
-
-import com.thoughtworks.xstream.XStream;
 @SuppressWarnings("unchecked")
 public class XstreamSerializer<T> implements RedisSerializer<T> {
 

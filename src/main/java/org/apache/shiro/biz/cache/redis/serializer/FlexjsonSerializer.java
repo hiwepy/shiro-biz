@@ -15,12 +15,11 @@
  */
 package org.apache.shiro.biz.cache.redis.serializer;
 
+import flexjson.JSONDeserializer;
+import flexjson.JSONSerializer;
 import org.apache.shiro.biz.utils.GenericsUtils;
 import org.crazycake.shiro.exception.SerializationException;
 import org.crazycake.shiro.serializer.RedisSerializer;
-
-import flexjson.JSONDeserializer;
-import flexjson.JSONSerializer;
 
 public class FlexjsonSerializer<T> implements RedisSerializer<T> {
 

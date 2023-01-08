@@ -15,9 +15,7 @@
  */
 package org.apache.shiro.biz.web.filter.authc;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-
+import com.alibaba.fastjson2.JSON;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.biz.authc.AuthcResponse;
 import org.apache.shiro.biz.authc.AuthenticationSuccessHandler;
@@ -30,7 +28,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 
-import com.alibaba.fastjson.JSONObject;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 
 public class TrustableRestAuthenticatingFilter extends AbstractTrustableAuthenticatingFilter {
 
@@ -57,7 +56,7 @@ public class TrustableRestAuthenticatingFilter extends AbstractTrustableAuthenti
 				
 				WebUtils.toHttp(response).setStatus(HttpStatus.SC_BAD_REQUEST);
 	    		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
-	    		JSONObject.writeJSONString(response.getWriter(), AuthcResponse.fail(mString));
+	    		JSON.writeTo(response.getOutputStream(), AuthcResponse.fail(mString));
 				return false;
 			}
 		} else {
@@ -71,7 +70,7 @@ public class TrustableRestAuthenticatingFilter extends AbstractTrustableAuthenti
 			// 响应成功状态信息
 			WebUtils.toHttp(response).setStatus(HttpStatus.SC_BAD_REQUEST);
     		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
-    		JSONObject.writeJSONString(response.getWriter(), AuthcResponse.fail(mString));
+    		JSON.writeTo(response.getOutputStream(), AuthcResponse.fail(mString));
 			
 			return false;
 		}

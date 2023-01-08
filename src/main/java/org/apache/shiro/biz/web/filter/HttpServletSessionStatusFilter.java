@@ -1,11 +1,6 @@
 package org.apache.shiro.biz.web.filter;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-
+import com.alibaba.fastjson2.JSON;
 import org.apache.shiro.biz.authc.AuthcResponse;
 import org.apache.shiro.biz.utils.StringUtils;
 import org.apache.shiro.biz.utils.WebUtils;
@@ -19,7 +14,10 @@ import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.AccessControlFilter;
 import org.springframework.http.MediaType;
 
-import com.alibaba.fastjson.JSONObject;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 在线状态会话过滤器
@@ -61,7 +59,7 @@ public class HttpServletSessionStatusFilter extends AccessControlFilter {
     		
     		WebUtils.toHttp(response).setStatus(HttpStatus.SC_UNAUTHORIZED);
     		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
-    		JSONObject.writeJSONString(response.getWriter(), AuthcResponse.error(mString));
+    		JSON.writeTo(response.getOutputStream(), AuthcResponse.error(mString));
     		
 		} else {
 			if (StringUtils.hasText(getLoginUrl())) {

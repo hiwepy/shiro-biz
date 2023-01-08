@@ -15,12 +15,12 @@
  */
 package org.apache.shiro.biz.web.filter.authc;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.biz.utils.WebUtils;
 import org.apache.shiro.subject.Subject;
+
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 
 public class TrustableFormAuthenticatingFilter extends AbstractTrustableAuthenticatingFilter {
 

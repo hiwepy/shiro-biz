@@ -15,8 +15,6 @@
  */
 package org.apache.shiro.biz.authc.pam;
 
-import java.util.Collection;
-
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -26,6 +24,8 @@ import org.apache.shiro.biz.utils.StringUtils;
 import org.apache.shiro.realm.Realm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Collection;
 
 /**
  * 唯一认证策略实现

@@ -1,8 +1,8 @@
 package org.apache.shiro.biz.web.filter;
 
-import java.io.Serializable;
-
 import org.apache.shiro.session.Session;
+
+import java.io.Serializable;
 
 @SuppressWarnings("serial")
 public class SessionControl implements Serializable {

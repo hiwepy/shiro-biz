@@ -15,13 +15,12 @@
  */
 package org.apache.shiro.biz.authz.principal;
 
-import java.util.List;
-import java.util.Set;
-
-import org.apache.commons.collections.CollectionUtils;
-
 import com.github.hiwepy.jwt.JwtPayload.RolePair;
 import com.google.common.collect.Sets;
+import org.apache.commons.collections.CollectionUtils;
+
+import java.util.List;
+import java.util.Set;
 
 public abstract class ShiroPrincipalRepositoryImpl implements ShiroPrincipalRepository {
 

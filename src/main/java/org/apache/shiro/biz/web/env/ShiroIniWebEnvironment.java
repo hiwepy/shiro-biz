@@ -15,8 +15,6 @@
  */
 package org.apache.shiro.biz.web.env;
 
-import javax.servlet.Filter;
-
 import org.apache.shiro.util.ClassUtils;
 import org.apache.shiro.web.env.IniWebEnvironment;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
@@ -25,6 +23,8 @@ import org.apache.shiro.web.filter.mgt.DefaultFilter;
 import org.apache.shiro.web.filter.mgt.DefaultFilterChainManager;
 import org.apache.shiro.web.filter.mgt.FilterChainResolver;
 import org.apache.shiro.web.filter.mgt.PathMatchingFilterChainResolver;
+
+import javax.servlet.Filter;
 
 /**
  * @author <a href="https://github.com/hiwepy">hiwepy</a>

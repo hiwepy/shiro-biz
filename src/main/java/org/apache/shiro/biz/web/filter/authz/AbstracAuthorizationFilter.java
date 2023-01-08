@@ -15,14 +15,9 @@
  */
 package org.apache.shiro.biz.web.filter.authz;
 
-import java.io.IOException;
-import java.util.List;
-
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONObject;
+import com.google.common.net.HttpHeaders;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.biz.authc.AuthcResponse;
 import org.apache.shiro.biz.authz.AuthorizationFailureHandler;
@@ -39,8 +34,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.alibaba.fastjson.JSONObject;
-import com.google.common.net.HttpHeaders;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * 抽象的授权 (authorization)过滤器
@@ -95,7 +94,7 @@ public abstract class AbstracAuthorizationFilter extends AuthorizationFilter {
 				
 				WebUtils.toHttp(response).setStatus(HttpStatus.SC_UNAUTHORIZED);
 	    		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
-	    		JSONObject.writeJSONString(response.getWriter(), AuthcResponse.error("Unauthentication."));
+	    		JSON.writeTo(response.getOutputStream(), AuthcResponse.error("Unauthentication."));
 	    		
 				return false;
 			}
@@ -113,7 +112,7 @@ public abstract class AbstracAuthorizationFilter extends AuthorizationFilter {
 				
 				WebUtils.toHttp(response).setStatus(HttpStatus.SC_FORBIDDEN);
 	    		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
-	    		JSONObject.writeJSONString(response.getWriter(), AuthcResponse.error("Forbidden."));
+	    		JSON.writeTo(response.getOutputStream(), AuthcResponse.error("Forbidden."));
 				return false;
 				
 			} else {

@@ -15,10 +15,10 @@
  */
 package org.apache.shiro.biz.web.filter.authc.captcha;
 
-import javax.servlet.ServletRequest;
-
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.biz.authc.token.CaptchaAuthenticationToken;
+
+import javax.servlet.ServletRequest;
 
 public interface CaptchaResolver {
 

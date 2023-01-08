@@ -15,11 +15,11 @@
  */
 package org.apache.shiro.biz.cache.redis.serializer;
 
-import java.io.Serializable;
-
 import org.apache.commons.lang3.SerializationUtils;
 import org.crazycake.shiro.exception.SerializationException;
 import org.crazycake.shiro.serializer.RedisSerializer;
+
+import java.io.Serializable;
 
 public class InternalSerializer<T> implements RedisSerializer<T> {
 	

@@ -15,13 +15,12 @@
  */
 package org.apache.shiro.biz.authz;
 
-import java.io.IOException;
+import org.apache.shiro.authc.AuthenticationException;
+import org.springframework.core.Ordered;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-
-import org.apache.shiro.authc.AuthenticationException;
-import org.springframework.core.Ordered;
+import java.io.IOException;
 
 /**
  * TODO

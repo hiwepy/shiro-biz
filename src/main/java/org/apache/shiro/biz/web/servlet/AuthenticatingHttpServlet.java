@@ -1,6 +1,7 @@
 package org.apache.shiro.biz.web.servlet;
 
-import java.io.IOException;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.web.util.WebUtils;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -8,9 +9,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.web.util.WebUtils;
+import java.io.IOException;
 
 @SuppressWarnings("serial")
 public abstract class AuthenticatingHttpServlet extends AbstractHttpServlet {

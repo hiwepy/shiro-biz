@@ -16,11 +16,10 @@
 package org.apache.shiro.biz.cache.guava;
 
 
+import com.google.common.cache.LoadingCache;
 import org.apache.shiro.cache.AbstractCacheManager;
 import org.apache.shiro.cache.CacheException;
 import org.apache.shiro.util.Destroyable;
-
-import com.google.common.cache.LoadingCache;
 
 public class GuavaCacheManager extends AbstractCacheManager implements Destroyable {
 	

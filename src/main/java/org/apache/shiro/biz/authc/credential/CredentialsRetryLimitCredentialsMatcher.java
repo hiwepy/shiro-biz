@@ -15,14 +15,14 @@
  */
 package org.apache.shiro.biz.authc.credential;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.ExcessiveAttemptsException;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheManager;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 密码校验器，支持重复提交次数校验，防范暴力破解

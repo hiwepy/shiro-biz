@@ -15,18 +15,13 @@
  */
 package org.apache.shiro.biz.authz.principal;
 
-import java.io.Serializable;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import com.github.hiwepy.jwt.JwtClaims;
+import com.github.hiwepy.jwt.JwtPayload.RolePair;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
 
-import com.github.hiwepy.jwt.JwtClaims;
-import com.github.hiwepy.jwt.JwtPayload.RolePair;
+import java.io.Serializable;
+import java.util.*;
 
 /**
  * @author <a href="https://github.com/hiwepy">hiwepy</a>

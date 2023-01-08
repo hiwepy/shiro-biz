@@ -16,20 +16,18 @@
 package org.apache.shiro.biz.utils;
 
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
+import com.google.common.net.HttpHeaders;
+import org.apache.shiro.ShiroException;
+import org.apache.shiro.web.util.RequestPairSource;
+import org.springframework.http.HttpMethod;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.shiro.ShiroException;
-import org.apache.shiro.web.util.RequestPairSource;
-import org.springframework.http.HttpMethod;
-
-import com.google.common.net.HttpHeaders;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 public class WebUtils extends org.apache.shiro.web.util.WebUtils {
 

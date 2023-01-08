@@ -1,8 +1,8 @@
 package org.apache.shiro.biz.web.servlet.http;
 
-import java.util.Enumeration;
-
 import org.apache.commons.text.StringEscapeUtils;
+
+import java.util.Enumeration;
 
 public class EscapeHtml4Enumeration implements Enumeration<String> {
 

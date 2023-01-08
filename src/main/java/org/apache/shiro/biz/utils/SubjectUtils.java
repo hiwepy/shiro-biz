@@ -15,15 +15,15 @@
  */
 package org.apache.shiro.biz.utils;
 
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.ThreadContext;
 import org.apache.shiro.web.subject.WebSubject;
+
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class SubjectUtils {
 	

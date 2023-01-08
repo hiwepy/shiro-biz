@@ -15,12 +15,12 @@
  */
 package org.apache.shiro.biz.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class SerializeUtils extends org.apache.commons.lang3.SerializationUtils {
 	

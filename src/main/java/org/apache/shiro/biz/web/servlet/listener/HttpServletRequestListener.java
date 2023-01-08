@@ -1,10 +1,10 @@
 package org.apache.shiro.biz.web.servlet.listener;
 
+import org.apache.shiro.biz.utils.WebThreadContext;
+
 import javax.servlet.ServletRequestEvent;
 import javax.servlet.ServletRequestListener;
 import javax.servlet.http.HttpServletRequest;
-
-import org.apache.shiro.biz.utils.WebThreadContext;
 
 public class HttpServletRequestListener implements ServletRequestListener {
 

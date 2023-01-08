@@ -15,15 +15,6 @@
  */
 package org.apache.shiro.biz.web.filter;
 
-import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.Deque;
-import java.util.LinkedList;
-
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.biz.web.Constants;
 import org.apache.shiro.cache.Cache;
@@ -35,6 +26,14 @@ import org.apache.shiro.session.mgt.SimpleOnlineSession;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.AccessControlFilter;
 import org.apache.shiro.web.util.WebUtils;
+
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.Deque;
+import java.util.LinkedList;
 
 /**
  *  <p>cacheManager：使用cacheManager获取相应的cache来缓存用户登录的会话；用于保存用户—会话之间的关系的；</p>

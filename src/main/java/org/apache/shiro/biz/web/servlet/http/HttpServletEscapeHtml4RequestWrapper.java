@@ -1,15 +1,14 @@
 package org.apache.shiro.biz.web.servlet.http;
 
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
+import org.apache.commons.text.StringEscapeUtils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
-
-import org.apache.commons.text.StringEscapeUtils;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 
 
 /**

@@ -1,6 +1,7 @@
 package org.apache.shiro.biz.web.filter;
 
-import java.io.IOException;
+import org.apache.shiro.biz.web.servlet.http.HttpServletEscapeHtml4RequestWrapper;
+import org.apache.shiro.web.filter.AccessControlFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -8,9 +9,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.shiro.biz.web.servlet.http.HttpServletEscapeHtml4RequestWrapper;
-import org.apache.shiro.web.filter.AccessControlFilter;
+import java.io.IOException;
 
 /**
  * 基于StringEscapeUtils.escapeHtml4()方法的XSS(Cross Site Scripting)，即跨站脚本攻击请求过滤

@@ -1,11 +1,6 @@
 package org.apache.shiro.biz.web.filter;
 
-import java.io.IOException;
-
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-
+import com.alibaba.fastjson2.JSON;
 import org.apache.shiro.biz.authc.AuthcResponse;
 import org.apache.shiro.biz.utils.WebUtils;
 import org.apache.shiro.biz.web.servlet.http.HttpStatus;
@@ -14,7 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 
-import com.alibaba.fastjson.JSONObject;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 /**
  * <p>Request Method Filter, 对跨域提供支持</p>
@@ -74,7 +72,7 @@ public class HttpServletRequestMethodFilter extends AccessControlFilter {
 		if (WebUtils.isAjaxResponse(request)) {
 			WebUtils.toHttp(response).setStatus(HttpStatus.SC_FORBIDDEN);
     		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
-    		JSONObject.writeJSONString(response.getWriter(), AuthcResponse.error(mString));
+    		JSON.writeTo(response.getOutputStream(), AuthcResponse.error(mString));
 			return false;
 		} else {
 			try {

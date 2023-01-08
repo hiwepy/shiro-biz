@@ -16,12 +16,11 @@
 package org.apache.shiro.biz.utils;
 
 
+import org.apache.shiro.codec.Hex;
+
 import javax.crypto.Mac;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-
-import org.apache.shiro.codec.Hex;
-
 import java.util.List;
 import java.util.Map;
 

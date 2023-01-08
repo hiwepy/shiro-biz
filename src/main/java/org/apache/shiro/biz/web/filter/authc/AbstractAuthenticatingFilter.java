@@ -15,16 +15,10 @@
  */
 package org.apache.shiro.biz.web.filter.authc;
 
-import java.io.IOException;
-import java.util.Collection;
-import java.util.List;
-
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONObject;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.net.HttpHeaders;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.biz.ShiroBizMessageSource;
@@ -52,9 +46,14 @@ import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.alibaba.fastjson.JSONObject;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.net.HttpHeaders;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * 抽象的认证 (authentication)过滤器
@@ -258,7 +257,7 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
 		
 		// Response Authentication status information
-		JSONObject.writeJSONString(response.getWriter(), AuthcResponse.success(messages.getMessage(AuthcResponseCode.SC_AUTHC_SUCCESS.getMsgKey())));
+		JSON.writeTo(response.getOutputStream(), AuthcResponse.success(messages.getMessage(AuthcResponseCode.SC_AUTHC_SUCCESS.getMsgKey())));
 
 	}
     
@@ -315,7 +314,7 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 			response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
 			
 			// Response Authentication status information
-			JSONObject.writeJSONString(response.getWriter(), AuthcResponse.fail(messages.getMessage(AuthcResponseCode.SC_AUTHC_FAIL.getMsgKey())));
+			JSON.writeTo(response.getOutputStream(), AuthcResponse.fail(messages.getMessage(AuthcResponseCode.SC_AUTHC_FAIL.getMsgKey())));
 			
 		} catch (NoSuchMessageException e1) {
 			throw new AuthenticationException(e1);

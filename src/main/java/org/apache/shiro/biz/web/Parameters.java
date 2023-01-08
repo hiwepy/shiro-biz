@@ -1,13 +1,12 @@
 package org.apache.shiro.biz.web;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import org.apache.shiro.biz.utils.StringUtils;
 
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
-
-import org.apache.shiro.biz.utils.StringUtils;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 
 public abstract class Parameters {

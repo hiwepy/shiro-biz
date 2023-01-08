@@ -1,15 +1,14 @@
 package org.apache.shiro.biz.web.servlet.filter;
 
-import java.io.IOException;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
+import org.apache.shiro.web.servlet.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
-import org.apache.shiro.web.servlet.OncePerRequestFilter;
+import java.io.IOException;
 
 
 public class HttpServletRequestFilter extends OncePerRequestFilter {

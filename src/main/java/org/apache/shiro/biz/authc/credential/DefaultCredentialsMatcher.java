@@ -16,9 +16,6 @@
 package org.apache.shiro.biz.authc.credential;
 
 
-import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.ExcessiveAttemptsException;
@@ -28,6 +25,9 @@ import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.codec.CodecSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * MD5加密对比, 密码重试限制, 默认是5次

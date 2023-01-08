@@ -1,12 +1,6 @@
 package org.apache.shiro.biz.authc;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletResponse;
-
+import com.alibaba.fastjson2.JSON;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -20,7 +14,11 @@ import org.springframework.context.NoSuchMessageException;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.http.MediaType;
 
-import com.alibaba.fastjson.JSONObject;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * 认证请求成功后的处理实现
@@ -48,7 +46,7 @@ public class DefaultAuthenticationSuccessHandler  implements AuthenticationSucce
 			httpResponse.setCharacterEncoding(StandardCharsets.UTF_8.toString());
 			
 			// Response Authentication status information
-			JSONObject.writeJSONString(response.getWriter(), AuthcResponse.success(messages.getMessage(AuthcResponseCode.SC_AUTHC_SUCCESS.getMsgKey())));
+			JSON.writeTo(response.getOutputStream(), AuthcResponse.success(messages.getMessage(AuthcResponseCode.SC_AUTHC_SUCCESS.getMsgKey())));
 			
 		} catch (NoSuchMessageException e) {
 			throw new AuthenticationException(e);

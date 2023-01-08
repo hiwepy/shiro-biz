@@ -15,9 +15,9 @@
  */
 package org.apache.shiro.biz.utils;
 
-import java.util.UUID;
-
 import org.apache.shiro.biz.utils.uid.Sequence;
+
+import java.util.UUID;
 
 /**
  * <p>
