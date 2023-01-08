@@ -15,23 +15,23 @@
  */
 package org.apache.shiro.biz.cache.redis.serializer;
 
+import com.alibaba.fastjson2.JSON;
 import org.apache.shiro.biz.utils.GenericsUtils;
 import org.crazycake.shiro.exception.SerializationException;
 import org.crazycake.shiro.serializer.RedisSerializer;
 
-import com.alibaba.fastjson.JSONObject;
 
 @SuppressWarnings("unchecked")
 public class FastjsonSerializer<T> implements RedisSerializer<T> {
 	
 	@Override
 	public byte[] serialize(T source) throws SerializationException {
-		return JSONObject.toJSONString(source).getBytes();
+		return JSON.toJSONString(source).getBytes();
 	}
 
 	@Override
 	public T deserialize(byte[] bytes) throws SerializationException {
-		return (T) JSONObject.parseObject(new String(bytes), GenericsUtils.getSuperClassGenricType(getClass()));
+		return (T) JSON.parseObject(new String(bytes), GenericsUtils.getSuperClassGenricType(getClass()));
 	}
 	
 }
