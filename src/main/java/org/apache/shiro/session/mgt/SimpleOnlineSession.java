@@ -25,10 +25,18 @@ public class SimpleOnlineSession extends SimpleSession {
 
     private static final int USER_AGENT_BIT_MASK = 1 << bitIndexCounter++;
     private static final int STATUS_BIT_MASK = 1 << bitIndexCounter++;
-
-	protected String userAgent; 	//用户浏览器类型
-	protected OnlineStatus status = OnlineStatus.ON_LINE; //在线状态
-	protected String systemHost; 	//用户登录时系统IP
+    /**
+     * 用户浏览器类型
+     */
+	protected String userAgent;
+    /**
+     * 在线状态
+     */
+    protected OnlineStatus status = OnlineStatus.ON_LINE;
+    /**
+     * 用户登录时系统IP
+     */
+	protected String systemHost;
     
     public static enum OnlineStatus {
     	
