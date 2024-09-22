@@ -19,7 +19,7 @@ package org.apache.shiro.biz.cache.caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
 import org.apache.shiro.cache.AbstractCacheManager;
 import org.apache.shiro.cache.CacheException;
-import org.apache.shiro.util.Destroyable;
+import org.apache.shiro.lang.util.Destroyable;
 
 public class CaffeineCacheManager extends AbstractCacheManager implements Destroyable {
 

@@ -16,8 +16,8 @@
 package org.apache.shiro.biz.web.filter.authc;
 
 import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.biz.utils.WebUtils;
 import org.apache.shiro.subject.Subject;
+import org.apache.shiro.web.util.WebUtils;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -40,7 +40,7 @@ public class TrustableFormAuthenticatingFilter extends AbstractTrustableAuthenti
 		if(isRedirectToSavedRequest()) {
 			issueSuccessRedirect(request, response);
 		} else {
-			 WebUtils.issueRedirect(request, response, getSuccessUrl());
+			WebUtils.issueRedirect(request, response, getSuccessUrl());
 		}
 		
 		// we handled the success redirect directly, prevent the chain from continuing:

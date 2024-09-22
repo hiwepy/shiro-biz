@@ -22,7 +22,7 @@ import org.apache.shiro.authc.ExcessiveAttemptsException;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheManager;
-import org.apache.shiro.codec.CodecSupport;
+import org.apache.shiro.lang.codec.CodecSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -22,10 +22,11 @@ import org.apache.shiro.biz.authc.exception.IncorrectCaptchaException;
 import org.apache.shiro.biz.authc.exception.NoneCaptchaException;
 import org.apache.shiro.biz.authc.token.CaptchaAuthenticationToken;
 import org.apache.shiro.biz.authc.token.DefaultAuthenticationToken;
-import org.apache.shiro.biz.utils.WebUtils;
+import org.apache.shiro.biz.utils.WebUtils2;
 import org.apache.shiro.biz.web.filter.authc.captcha.CaptchaResolver;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.CollectionUtils;
+import org.apache.shiro.web.util.WebUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -83,7 +84,7 @@ public abstract class AbstractTrustableAuthenticatingFilter extends AbstractAuth
 	@Override
 	protected AuthenticationToken createToken(ServletRequest request, ServletResponse response) {
 		// Post && JSON
-		if(WebUtils.isObjectRequest(request)) {
+		if(WebUtils2.isObjectRequest(request)) {
 			
 			try {
 				
@@ -130,7 +131,7 @@ public abstract class AbstractTrustableAuthenticatingFilter extends AbstractAuth
         	LOG.debug( "Authentication exception", e );
         }
         
-		if( WebUtils.isAjaxResponse(request)) {
+		if( WebUtils2.isAjaxResponse(request)) {
 			
 			if (CollectionUtils.isEmpty(getFailureHandlers())) {
 				this.writeFailureString(token , e, request, response);
@@ -175,7 +176,7 @@ public abstract class AbstractTrustableAuthenticatingFilter extends AbstractAuth
 	
 	@Override
 	protected String getHost(ServletRequest request) {
-		return WebUtils.getRemoteAddr(request);
+		return WebUtils2.getRemoteAddr(request);
 	}
 	
 	protected boolean isOverRetryRemind(ServletRequest request, ServletResponse response) {

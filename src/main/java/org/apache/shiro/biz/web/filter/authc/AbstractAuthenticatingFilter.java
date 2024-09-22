@@ -29,16 +29,17 @@ import org.apache.shiro.biz.authc.AuthenticationSuccessHandler;
 import org.apache.shiro.biz.authc.exception.SessionRestrictedException;
 import org.apache.shiro.biz.authc.exception.TerminalRestrictedException;
 import org.apache.shiro.biz.authc.token.DefaultAuthenticationToken;
-import org.apache.shiro.biz.utils.StringUtils;
-import org.apache.shiro.biz.utils.WebUtils;
+import org.apache.shiro.biz.utils.WebUtils2;
 import org.apache.shiro.biz.web.filter.authc.listener.LoginListener;
 import org.apache.shiro.biz.web.servlet.http.HttpStatus;
+import org.apache.shiro.lang.util.StringUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.eis.SessionDAO;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.CollectionUtils;
 import org.apache.shiro.util.ThreadContext;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
+import org.apache.shiro.web.util.WebUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.NoSuchMessageException;
@@ -98,7 +99,7 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 	
 	protected void setHeader(HttpServletResponse response, String key, String value) {
 		if(StringUtils.hasText(value)) {
-			boolean match = response.getHeaderNames().stream().anyMatch(item -> StringUtils.equalsIgnoreCase(item, key));
+			boolean match = response.getHeaderNames().stream().anyMatch(item -> key.equalsIgnoreCase(item));
 			if(!match) {
 				response.setHeader(key, value);
 				if(LOG.isDebugEnabled()){
@@ -142,7 +143,7 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 	@Override
 	protected AuthenticationToken createToken(ServletRequest request, ServletResponse response) {
 		// Post && JSON
-		if(WebUtils.isObjectRequest(request)) {
+		if(WebUtils2.isObjectRequest(request)) {
 			
 			try {
 				
@@ -223,7 +224,7 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 			LOG.error("Host {} Authentication Success : {}", getHost(request), JSONObject.toJSONString(subject.getPrincipal()));
 		}
 		
-		if( WebUtils.isAjaxResponse(request)) {
+		if( WebUtils2.isAjaxResponse(request)) {
 			
 			if (CollectionUtils.isEmpty(successHandlers)) {
 				this.writeSuccessString(token, subject, request, response);
@@ -277,7 +278,7 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 		
 		LOG.error("Host {} Authentication Failure : {}", getHost(request), e.getMessage());
         
-		if( WebUtils.isAjaxResponse(request)) {
+		if( WebUtils2.isAjaxResponse(request)) {
 			
 			if (CollectionUtils.isEmpty(failureHandlers)) {
 				this.writeFailureString(token , e, request, response);
@@ -326,7 +327,7 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
     
 	@Override
 	protected String getHost(ServletRequest request) {
-		return WebUtils.getRemoteAddr(request);
+		return WebUtils2.getRemoteAddr(request);
 	}
 	
 	protected boolean onAccessSuccess(AuthenticationToken token, Subject subject, ServletRequest request,
@@ -340,7 +341,7 @@ public abstract class AbstractAuthenticatingFilter extends FormAuthenticationFil
 		
 		LOG.error("Host {} Authentication Failure : {}", getHost(request), e.getMessage());
         
-		if( WebUtils.isAjaxResponse(request)) {
+		if( WebUtils2.isAjaxResponse(request)) {
 			
 			if (CollectionUtils.isEmpty(failureHandlers)) {
 				this.writeFailureString(token , e, request, response);

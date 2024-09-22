@@ -20,7 +20,7 @@ import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.pam.AbstractAuthenticationStrategy;
-import org.apache.shiro.biz.utils.StringUtils;
+import org.apache.shiro.biz.utils.StringUtils2;
 import org.apache.shiro.realm.Realm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,7 +66,7 @@ public class OnlyOneAuthenticatorStrategy extends AbstractAuthenticationStrategy
 			} else {
 				info = merge(singleRealmInfo, aggregateInfo);
 				if (info.getPrincipals().getRealmNames().size() > 1) {
-					LOG.debug("RealmNames:" + StringUtils.join(info.getPrincipals().getRealmNames(), ","));
+					LOG.debug("RealmNames:" + StringUtils2.join(info.getPrincipals().getRealmNames(), ","));
 					throw new AuthenticationException("Authentication token of type [" + token.getClass() + "] "
 							+ "could not be authenticated by any configured realms.  Please ensure that only one realm can "
 							+ "authenticate these tokens.");

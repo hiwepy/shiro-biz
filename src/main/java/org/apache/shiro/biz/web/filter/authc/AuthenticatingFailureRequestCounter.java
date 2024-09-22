@@ -15,7 +15,7 @@
  */
 package org.apache.shiro.biz.web.filter.authc;
 
-import org.apache.shiro.biz.utils.WebUtils;
+import org.apache.shiro.web.util.WebUtils;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;

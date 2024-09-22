@@ -16,7 +16,7 @@
 package org.apache.shiro.biz.web.filter;
 
 import com.google.common.net.HttpHeaders;
-import org.apache.shiro.biz.utils.StringUtils;
+import org.apache.shiro.lang.util.StringUtils;
 import org.apache.shiro.web.filter.AccessControlFilter;
 import org.apache.shiro.web.util.WebUtils;
 import org.slf4j.Logger;
@@ -137,7 +137,7 @@ public class HttpServletRequestHeaderFilter extends AccessControlFilter {
 	
 	protected void setHeader(HttpServletResponse response, String key, String value) {
 		if(StringUtils.hasText(value)) {
-			boolean match = response.getHeaderNames().stream().anyMatch(item -> StringUtils.equalsIgnoreCase(item, key));
+			boolean match = response.getHeaderNames().stream().anyMatch(item -> item.equalsIgnoreCase(key));
 			if(!match) {
 				response.setHeader(key, value);
 				if(LOG.isDebugEnabled()){

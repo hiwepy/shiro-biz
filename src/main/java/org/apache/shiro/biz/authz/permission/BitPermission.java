@@ -16,7 +16,7 @@
 package org.apache.shiro.biz.authz.permission;
 
 import org.apache.shiro.authz.Permission;
-import org.apache.shiro.util.StringUtils;
+import org.apache.shiro.lang.util.StringUtils;
 
 
 /**

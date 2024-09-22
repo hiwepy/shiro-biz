@@ -15,7 +15,7 @@
  */
 package org.apache.shiro.biz.web.env;
 
-import org.apache.shiro.util.ClassUtils;
+import org.apache.shiro.lang.util.ClassUtils;
 import org.apache.shiro.web.env.IniWebEnvironment;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.apache.shiro.web.filter.authz.RolesAuthorizationFilter;
@@ -42,7 +42,7 @@ public class ShiroIniWebEnvironment extends IniWebEnvironment {
         DefaultFilterChainManager filterChainManager = new DefaultFilterChainManager();  
         //3、注册Filter  
         for(DefaultFilter filter : DefaultFilter.values()) {  
-            filterChainManager.addFilter( filter.name(), (Filter) ClassUtils.newInstance(filter.getFilterClass()));  
+            filterChainManager.addFilter( filter.name(), (Filter) ClassUtils.newInstance(filter.getFilterClass()));
         }  
         //4、注册URL-Filter的映射关系  
         filterChainManager.addToChain("/login.jsp", "authc");  

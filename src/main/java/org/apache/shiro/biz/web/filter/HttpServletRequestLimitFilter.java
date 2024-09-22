@@ -3,9 +3,10 @@ package org.apache.shiro.biz.web.filter;
 import com.alibaba.fastjson2.JSON;
 import com.google.common.util.concurrent.RateLimiter;
 import org.apache.shiro.biz.authc.AuthcResponse;
-import org.apache.shiro.biz.utils.WebUtils;
+import org.apache.shiro.biz.utils.WebUtils2;
 import org.apache.shiro.biz.web.servlet.http.HttpStatus;
 import org.apache.shiro.web.filter.AccessControlFilter;
+import org.apache.shiro.web.util.WebUtils;
 import org.springframework.http.MediaType;
 
 import javax.servlet.FilterChain;
@@ -57,9 +58,9 @@ public class HttpServletRequestLimitFilter extends AccessControlFilter {
 			super.doFilterInternal(request, response, chain);
 		} else {
 			String mString = String.format("Request Forbidden! Requests per second exceeds %s limit.", permitsPerSecond);
-	    	if (WebUtils.isAjaxResponse(request)) {
-	    		
-	    		WebUtils.toHttp(response).setStatus(HttpStatus.SC_FORBIDDEN);
+	    	if (WebUtils2.isAjaxResponse(request)) {
+
+				WebUtils.toHttp(response).setStatus(HttpStatus.SC_FORBIDDEN);
 	    		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
 	    		JSON.writeTo(response.getOutputStream(), AuthcResponse.error(mString));
 	    		

@@ -1,6 +1,6 @@
 package org.apache.shiro.biz.web;
 
-import org.apache.shiro.biz.utils.StringUtils;
+import org.apache.shiro.biz.utils.StringUtils2;
 
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletConfig;
@@ -104,7 +104,7 @@ public abstract class Parameters {
 		assert key != null;
 		final String name = key.getCode();
 		String para = getParameterByName(name);
-		return para == null ? new String[]{} : StringUtils.tokenizeToStringArray(para);
+		return para == null ? new String[]{} : StringUtils2.tokenizeToStringArray(para);
 	}
 	
 	/*多个键值对解析*/
@@ -113,7 +113,7 @@ public abstract class Parameters {
         String[] entries = getStringArray(key);
         if (entries != null) {
             for (String entry : entries) {
-            	if(StringUtils.isEmpty(entry)){
+            	if(StringUtils2.isEmpty(entry)){
 					continue;
 				}
                 String[] split = entry.split("=", 2);

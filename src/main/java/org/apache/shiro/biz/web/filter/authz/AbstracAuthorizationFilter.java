@@ -22,13 +22,14 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.biz.authc.AuthcResponse;
 import org.apache.shiro.biz.authz.AuthorizationFailureHandler;
 import org.apache.shiro.biz.authz.AuthorizationSuccessHandler;
-import org.apache.shiro.biz.utils.StringUtils;
-import org.apache.shiro.biz.utils.WebUtils;
+import org.apache.shiro.biz.utils.WebUtils2;
 import org.apache.shiro.biz.web.servlet.http.HttpStatus;
+import org.apache.shiro.lang.util.StringUtils;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.CollectionUtils;
 import org.apache.shiro.util.ThreadContext;
 import org.apache.shiro.web.filter.authz.AuthorizationFilter;
+import org.apache.shiro.web.util.WebUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -58,7 +59,7 @@ public abstract class AbstracAuthorizationFilter extends AuthorizationFilter {
 	
 	protected void setHeader(HttpServletResponse response, String key, String value) {
 		if(StringUtils.hasText(value)) {
-			boolean match = response.getHeaderNames().stream().anyMatch(item -> StringUtils.equalsIgnoreCase(item, key));
+			boolean match = response.getHeaderNames().stream().anyMatch(item -> key.equalsIgnoreCase(item));
 			if(!match) {
 				response.setHeader(key, value);
 				if(LOG.isDebugEnabled()){
@@ -90,8 +91,8 @@ public abstract class AbstracAuthorizationFilter extends AuthorizationFilter {
 		// 未认证
 		if (null == subject.getPrincipal()) {
 			// Ajax 请求：响应json数据对象
-			if (WebUtils.isAjaxResponse(request)) {
-				
+			if (WebUtils2.isAjaxResponse(request)) {
+
 				WebUtils.toHttp(response).setStatus(HttpStatus.SC_UNAUTHORIZED);
 	    		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
 	    		JSON.writeTo(response.getOutputStream(), AuthcResponse.error("Unauthentication."));
@@ -108,8 +109,8 @@ public abstract class AbstracAuthorizationFilter extends AuthorizationFilter {
 			
 		} else {
 			
-			if (WebUtils.isAjaxResponse(request)) {
-				
+			if (WebUtils2.isAjaxResponse(request)) {
+
 				WebUtils.toHttp(response).setStatus(HttpStatus.SC_FORBIDDEN);
 	    		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
 	    		JSON.writeTo(response.getOutputStream(), AuthcResponse.error("Forbidden."));
@@ -180,7 +181,7 @@ public abstract class AbstracAuthorizationFilter extends AuthorizationFilter {
 	}
 	
 	protected String getHost(ServletRequest request) {
-		return WebUtils.getRemoteAddr(request);
+		return WebUtils2.getRemoteAddr(request);
 	}
 
 	public boolean isSessionStateless() {

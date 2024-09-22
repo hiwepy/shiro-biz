@@ -1,9 +1,9 @@
 package org.apache.shiro.biz.web.filter.mgt;
 
 import org.apache.shiro.config.Ini;
+import org.apache.shiro.lang.util.Nameable;
+import org.apache.shiro.lang.util.StringUtils;
 import org.apache.shiro.util.CollectionUtils;
-import org.apache.shiro.util.Nameable;
-import org.apache.shiro.util.StringUtils;
 import org.apache.shiro.web.config.IniFilterChainResolverFactory;
 import org.apache.shiro.web.filter.AccessControlFilter;
 import org.apache.shiro.web.filter.authc.AuthenticationFilter;
@@ -12,7 +12,6 @@ import org.apache.shiro.web.filter.mgt.DefaultFilterChainManager;
 import org.apache.shiro.web.filter.mgt.NamedFilterList;
 import org.apache.shiro.web.filter.mgt.SimpleNamedFilterList;
 
-import javax.annotation.PostConstruct;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import java.util.LinkedHashMap;
@@ -90,7 +89,6 @@ public class CustomDefaultFilterChainManager extends DefaultFilterChainManager {
         this.unauthorizedUrl = unauthorizedUrl;
     }
 
-    @PostConstruct
     public void init() {
         //Apply the acquired and/or configured filters:
         Map<String, Filter> filters = getFilters();

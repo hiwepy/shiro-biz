@@ -4,12 +4,13 @@ import com.alibaba.fastjson2.JSON;
 import org.apache.shiro.biz.ShiroBizMessageSource;
 import org.apache.shiro.biz.authc.AuthcResponse;
 import org.apache.shiro.biz.authc.AuthcResponseCode;
-import org.apache.shiro.biz.utils.WebUtils;
+import org.apache.shiro.biz.utils.WebUtils2;
 import org.apache.shiro.biz.web.filter.authc.listener.LogoutListener;
 import org.apache.shiro.biz.web.servlet.http.HttpStatus;
 import org.apache.shiro.session.SessionException;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.LogoutFilter;
+import org.apache.shiro.web.util.WebUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.support.MessageSourceAccessor;
@@ -93,11 +94,11 @@ public abstract class AbstractLogoutFilter extends LogoutFilter {
         	LOG.debug("Encountered session exception during logout.  This can generally safely be ignored.", ise);
         }
         
-    	if( WebUtils.isAjaxResponse(request)) {
+    	if( WebUtils2.isAjaxResponse(request)) {
 			
 			// Response success status information
-    		
-    		WebUtils.toHttp(response).setStatus(HttpStatus.SC_OK);
+
+			WebUtils.toHttp(response).setStatus(HttpStatus.SC_OK);
     		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
     		
     		// Response logout status information

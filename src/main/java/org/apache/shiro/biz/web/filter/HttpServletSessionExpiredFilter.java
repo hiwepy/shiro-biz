@@ -2,10 +2,11 @@ package org.apache.shiro.biz.web.filter;
 
 import com.alibaba.fastjson2.JSON;
 import org.apache.shiro.biz.authc.AuthcResponse;
-import org.apache.shiro.biz.utils.WebUtils;
+import org.apache.shiro.biz.utils.WebUtils2;
 import org.apache.shiro.biz.web.servlet.http.HttpStatus;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.AccessControlFilter;
+import org.apache.shiro.web.util.WebUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -37,7 +38,7 @@ public class HttpServletSessionExpiredFilter extends AccessControlFilter {
 	@Override
 	protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
 		String mString = "Request Denied! Session is Expired.";
-		if (WebUtils.isAjaxResponse(request)) {
+		if (WebUtils2.isAjaxResponse(request)) {
 			WebUtils.toHttp(response).setHeader("session-status", "timeout");
 			WebUtils.toHttp(response).setStatus(HttpStatus.SC_FORBIDDEN);
     		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);

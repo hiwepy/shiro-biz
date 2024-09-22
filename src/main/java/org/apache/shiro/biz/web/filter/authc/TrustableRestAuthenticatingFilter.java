@@ -19,11 +19,11 @@ import com.alibaba.fastjson2.JSON;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.biz.authc.AuthcResponse;
 import org.apache.shiro.biz.authc.AuthenticationSuccessHandler;
-import org.apache.shiro.biz.utils.WebUtils;
 import org.apache.shiro.biz.web.filter.authc.listener.LoginListener;
 import org.apache.shiro.biz.web.servlet.http.HttpStatus;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.CollectionUtils;
+import org.apache.shiro.web.util.WebUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -53,7 +53,7 @@ public class TrustableRestAuthenticatingFilter extends AbstractTrustableAuthenti
 				if (LOG.isTraceEnabled()) {
 					LOG.trace(mString);
 				}
-				
+
 				WebUtils.toHttp(response).setStatus(HttpStatus.SC_BAD_REQUEST);
 	    		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
 	    		JSON.writeTo(response.getOutputStream(), AuthcResponse.fail(mString));

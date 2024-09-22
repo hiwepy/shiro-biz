@@ -1,6 +1,6 @@
 package org.apache.shiro.biz.utils.uid;
 
-import org.apache.shiro.biz.utils.StringUtils;
+import org.apache.shiro.biz.utils.StringUtils2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -96,7 +96,7 @@ public class Sequence {
 		StringBuffer mpid = new StringBuffer();
 		mpid.append(datacenterId);
 		String name = ManagementFactory.getRuntimeMXBean().getName();
-		if (!StringUtils.isEmpty(name)) {
+		if (!StringUtils2.isEmpty(name)) {
 			/*
 			 * GET jvmPid
 			 */

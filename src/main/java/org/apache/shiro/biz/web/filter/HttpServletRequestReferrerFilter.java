@@ -3,9 +3,10 @@ package org.apache.shiro.biz.web.filter;
 import com.alibaba.fastjson2.JSON;
 import org.apache.commons.collections.MapUtils;
 import org.apache.shiro.biz.authc.AuthcResponse;
-import org.apache.shiro.biz.utils.WebUtils;
+import org.apache.shiro.biz.utils.WebUtils2;
 import org.apache.shiro.biz.web.servlet.http.HttpStatus;
 import org.apache.shiro.web.filter.AccessControlFilter;
+import org.apache.shiro.web.util.WebUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -73,8 +74,8 @@ public class HttpServletRequestReferrerFilter extends AccessControlFilter {
 	protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
 		String mString = String.format("Request Denied! Request Referer {%s} is Not Allowed.", WebUtils.toHttp(request).getHeader(properties.getRefererHeaderName()));
 		//判断是否ajax请求
-		if (WebUtils.isAjaxResponse(request)) {
-    		WebUtils.toHttp(response).setStatus(HttpStatus.SC_FORBIDDEN);
+		if (WebUtils2.isAjaxResponse(request)) {
+			WebUtils.toHttp(response).setStatus(HttpStatus.SC_FORBIDDEN);
     		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
     		JSON.writeTo(response.getOutputStream(), AuthcResponse.error(mString));
 		} else {

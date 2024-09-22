@@ -2,16 +2,17 @@ package org.apache.shiro.biz.web.filter;
 
 import com.alibaba.fastjson2.JSON;
 import org.apache.shiro.biz.authc.AuthcResponse;
-import org.apache.shiro.biz.utils.StringUtils;
-import org.apache.shiro.biz.utils.WebUtils;
+import org.apache.shiro.biz.utils.WebUtils2;
 import org.apache.shiro.biz.web.Constants;
 import org.apache.shiro.biz.web.servlet.http.HttpStatus;
+import org.apache.shiro.lang.util.StringUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.DefaultSessionKey;
 import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.session.mgt.SimpleOnlineSession;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.AccessControlFilter;
+import org.apache.shiro.web.util.WebUtils;
 import org.springframework.http.MediaType;
 
 import javax.servlet.ServletRequest;
@@ -55,9 +56,9 @@ public class HttpServletSessionStatusFilter extends AccessControlFilter {
 			/* ignore exception */
 		}
     	String mString = "Request Denied! Session is Force Logout.";
-    	if (WebUtils.isAjaxResponse(request)) {
-    		
-    		WebUtils.toHttp(response).setStatus(HttpStatus.SC_UNAUTHORIZED);
+    	if (WebUtils2.isAjaxResponse(request)) {
+
+			WebUtils.toHttp(response).setStatus(HttpStatus.SC_UNAUTHORIZED);
     		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
     		JSON.writeTo(response.getOutputStream(), AuthcResponse.error(mString));
     		

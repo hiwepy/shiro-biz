@@ -16,7 +16,7 @@
 package org.apache.shiro.biz.utils;
 
 
-import org.apache.shiro.codec.Hex;
+import org.apache.shiro.lang.codec.Hex;
 
 import javax.crypto.Mac;
 import javax.crypto.SecretKey;

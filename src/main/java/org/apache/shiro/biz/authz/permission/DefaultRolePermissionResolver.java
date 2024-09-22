@@ -19,7 +19,7 @@ import org.apache.commons.collections.MapUtils;
 import org.apache.shiro.authz.Permission;
 import org.apache.shiro.authz.permission.RolePermissionResolver;
 import org.apache.shiro.authz.permission.WildcardPermission;
-import org.apache.shiro.biz.utils.StringUtils;
+import org.apache.shiro.lang.util.StringUtils;
 
 import java.util.Arrays;
 import java.util.Collection;
