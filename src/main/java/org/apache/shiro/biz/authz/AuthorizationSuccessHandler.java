@@ -35,7 +35,7 @@ public interface AuthorizationSuccessHandler extends Ordered {
 	 *
 	 * @param request        the request which caused the successful authorization
 	 * @param response       the response
-	 * @param subject the <tt>Subject</tt> object which was created during the authorization process.
+	 * @param subject the &lt;tt&gt;Subject&lt;/tt&gt; object which was created during the authorization process.
 	 * @return 
 	 */
 	public boolean onAuthorizationSuccess(Object mappedValue, Subject subject, ServletRequest request,

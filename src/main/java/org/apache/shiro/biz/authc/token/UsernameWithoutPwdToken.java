@@ -96,12 +96,12 @@ public class UsernameWithoutPwdToken implements HostAuthenticationToken, Remembe
     }
 
     /**
-     * Returns the host name or IP string from where the authentication attempt occurs.  May be <tt>null</tt> if the
+     * Returns the host name or IP string from where the authentication attempt occurs.  May be &lt;tt&gt;null&lt;/tt&gt; if the
      * host name/IP is unknown or explicitly omitted.  It is up to the Authenticator implementation processing this
      * token if an authentication attempt without a host is valid or not.
-     * <p>(Shiro's default Authenticator allows <tt>null</tt> hosts to support localhost and proxy server environments).</p>
+     * <p>(Shiro's default Authenticator allows &lt;tt&gt;null&lt;/tt&gt; hosts to support localhost and proxy server environments).</p>
      *
-     * @return the host from where the authentication attempt occurs, or <tt>null</tt> if it is unknown or
+     * @return the host from where the authentication attempt occurs, or &lt;tt&gt;null&lt;/tt&gt; if it is unknown or
      *         explicitly omitted.
      * @since 1.0
      */
@@ -114,7 +114,7 @@ public class UsernameWithoutPwdToken implements HostAuthenticationToken, Remembe
      * Sets the host name or IP string from where the authentication attempt occurs.  It is up to the Authenticator
      * implementation processing this token if an authentication attempt without a host is valid or not.
      * <p>(Shiro's default Authenticator
-     * allows <tt>null</tt> hosts to allow localhost and proxy server environments).</p>
+     * allows &lt;tt&gt;null&lt;/tt&gt; hosts to allow localhost and proxy server environments).</p>
      *
      * @param host the host name or IP string from where the attempt is occurring
      * @since 1.0
@@ -124,11 +124,11 @@ public class UsernameWithoutPwdToken implements HostAuthenticationToken, Remembe
     }
 
     /**
-     * Returns <tt>true</tt> if the submitting user wishes their identity (principal(s)) to be remembered
-     * across sessions, <tt>false</tt> otherwise.  Unless overridden, this value is <tt>false</tt> by default.
+     * Returns &lt;tt&gt;true&lt;/tt&gt; if the submitting user wishes their identity (principal(s)) to be remembered
+     * across sessions, &lt;tt&gt;false&lt;/tt&gt; otherwise.  Unless overridden, this value is &lt;tt&gt;false&lt;/tt&gt; by default.
      *
-     * @return <tt>true</tt> if the submitting user wishes their identity (principal(s)) to be remembered
-     *         across sessions, <tt>false</tt> otherwise (<tt>false</tt> by default).
+     * @return &lt;tt&gt;true&lt;/tt&gt; if the submitting user wishes their identity (principal(s)) to be remembered
+     *         across sessions, &lt;tt&gt;false&lt;/tt&gt; otherwise (&lt;tt&gt;false&lt;/tt&gt; by default).
      * @since 0.9
      */
     @Override
@@ -138,7 +138,7 @@ public class UsernameWithoutPwdToken implements HostAuthenticationToken, Remembe
 
     /**
      * Sets if the submitting user wishes their identity (principal(s)) to be remembered across sessions.  Unless
-     * overridden, the default value is <tt>false</tt>, indicating <em>not</em> to be remembered across sessions.
+     * overridden, the default value is &lt;tt&gt;false&lt;/tt&gt;, indicating <em>not</em> to be remembered across sessions.
      *
      * @param rememberMe value indicating if the user wishes their identity (principal(s)) to be remembered across
      *                   sessions.
@@ -154,7 +154,7 @@ public class UsernameWithoutPwdToken implements HostAuthenticationToken, Remembe
 
     /**
      * Clears out (nulls) the username, password, rememberMe, and inetAddress.  The password bytes are explicitly set to
-     * <tt>0x00</tt> before nulling to eliminate the possibility of memory access at a later time.
+     * &lt;tt&gt;0x00&lt;/tt&gt; before nulling to eliminate the possibility of memory access at a later time.
      */
     public void clear() {
         this.username = null;
@@ -167,7 +167,7 @@ public class UsernameWithoutPwdToken implements HostAuthenticationToken, Remembe
      * string for security reasons to prevent accidentally printing out a password
      * that might be widely viewable).
      *
-     * @return the String representation of the <tt>UsernamePasswordToken</tt>, omitting
+     * @return the String representation of the &lt;tt&gt;UsernamePasswordToken&lt;/tt&gt;, omitting
      *         the password.
      */
     @Override

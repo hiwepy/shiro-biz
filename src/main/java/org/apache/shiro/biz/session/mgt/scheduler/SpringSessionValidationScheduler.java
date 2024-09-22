@@ -69,7 +69,7 @@ public class SpringSessionValidationScheduler implements SessionValidationSchedu
     /**
      * Constructor that specifies the session manager that should be used for validating sessions.
      *
-     * @param sessionManager the <tt>SessionManager</tt> that should be used to validate sessions.
+     * @param sessionManager the &lt;tt&gt;SessionManager&lt;/tt&gt; that should be used to validate sessions.
      */
     public SpringSessionValidationScheduler(ValidatingSessionManager sessionManager) {
         this.sessionManager = sessionManager;

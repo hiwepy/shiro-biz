@@ -35,7 +35,7 @@ public interface AuthenticationSuccessHandler extends Ordered{
 	 *
 	 * @param request        the request which caused the successful authentication
 	 * @param response       the response
-	 * @param subject the <tt>Subject</tt> object which was created during the authentication process.
+	 * @param subject the &lt;tt&gt;Subject&lt;/tt&gt; object which was created during the authentication process.
 	 */
 	void onAuthenticationSuccess(AuthenticationToken token, ServletRequest request, ServletResponse response, Subject subject) ;
 
