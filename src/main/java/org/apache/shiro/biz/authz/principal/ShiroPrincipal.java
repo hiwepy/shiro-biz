@@ -15,8 +15,8 @@
  */
 package org.apache.shiro.biz.authz.principal;
 
-import com.github.hiwepy.jwt.JwtClaims;
-import com.github.hiwepy.jwt.JwtPayload.RolePair;
+import io.github.easy4j.jwt.JwtClaims;
+import io.github.easy4j.jwt.JwtPayload.RolePair;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
 

@@ -15,7 +15,7 @@
  */
 package org.apache.shiro.biz.authz.principal;
 
-import com.github.hiwepy.jwt.JwtPayload.RolePair;
+import io.github.easy4j.jwt.JwtPayload.RolePair;
 import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
 
